@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Used only for the launch theme / window background. All runtime colors live in Color.kt -->
+    <color name="background">#FFF5F0</color>
+</resources>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    The app uses Jetpack Compose Material 3 for all theming.
+    This file only provides the launch theme (window background color)
+    so there is no flash of white before Compose renders.
+-->
+<resources>
+    <style name="Theme.LendTrack" parent="android:Theme.Material.Light.NoActionBar">
+        <!-- Warm off-white background matches LtBackground (#FFF5F0) -->
+        <item name="android:windowBackground">@color/background</item>
+        <item name="android:statusBarColor">@color/background</item>
+        <item name="android:navigationBarColor">@color/background</item>
+        <item name="android:windowLightStatusBar">true</item>
+    </style>
+</resources>

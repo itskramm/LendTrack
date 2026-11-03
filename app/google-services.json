@@ -1,0 +1,49 @@
+{
+  "project_info": {
+    "project_number": "179030463859",
+    "firebase_url": "https://lendtrack-239a1-default-rtdb.firebaseio.com",
+    "project_id": "lendtrack-239a1",
+    "storage_bucket": "lendtrack-239a1.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:179030463859:android:c35aa0f53a4fc7783ba106",
+        "android_client_info": {
+          "package_name": "com.lendtrack.app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD4mf6bQTE54JpnDexVip1b5gssOYzSGW4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:179030463859:android:c35aa0f53a4fc7783ba106",
+        "android_client_info": {
+          "package_name": "com.lendtrack.app.debug"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD4mf6bQTE54JpnDexVip1b5gssOYzSGW4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

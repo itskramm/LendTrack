@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><title>LendTrack — Your Lending, Organized</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Great+Vibes&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#FFF5F0;--card:#FFFCFA;--blush:#F6D8D8;--dusty:#D98C96;--rose:#C45C72;--burg:#783746;--text:#4B3035;--muted:#96757A;--sage:#6F8F72;--amber:#C99A3C;--red:#A8454F;color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+*{box-sizing:border-box}html,body{margin:0}
+body{background:var(--bg);color:var(--text);font-family:Inter,system-ui,sans-serif;font-size:15px;background-image:radial-gradient(rgba(217,140,150,.13) 1px,transparent 1px);background-size:14px 14px}
+h1,h2,h3,.serif{font-family:'Playfair Display',Georgia,serif;color:var(--burg);margin:0}
+.script{font-family:'Great Vibes','Brush Script MT',cursive;color:var(--rose)}
+button,input,select,textarea{font-family:inherit;font-size:15px}
+button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible,[role=button]:focus-visible{outline:2px solid var(--rose);outline-offset:2px}
+.side{position:fixed;top:0;bottom:0;left:0;width:240px;background:var(--blush);border-right:1px solid var(--dusty);padding:20px 14px;display:flex;flex-direction:column;z-index:30;transition:transform .2s}
+.side:after{content:"";position:absolute;inset:6px;border:1px dashed var(--dusty);border-radius:12px;pointer-events:none;opacity:.6}
+.logo{text-align:center;margin-bottom:18px}.logo h1{font-size:28px}.logo .script{font-size:22px}
+.nav{display:flex;flex-direction:column;gap:6px;position:relative;z-index:1}
+.nav button{display:flex;align-items:center;gap:10px;background:transparent;border:1px solid transparent;border-radius:12px;padding:10px 12px;color:var(--text);cursor:pointer;text-align:left}
+.nav button:hover{background:rgba(255,252,250,.5)}
+.nav button.on{background:var(--card);border-color:var(--rose);color:var(--burg);font-weight:600}
+.nav .h{margin-left:auto;color:var(--rose);font-size:11px}
+.quote{margin-top:auto;text-align:center;color:var(--burg);font-size:22px;position:relative;z-index:1}
+.main{margin-left:240px;padding:18px 24px 40px}
+.top{display:flex;align-items:center;gap:12px;margin-bottom:18px;position:relative}
+.top .g{flex:1}.top .g .script{font-size:32px;line-height:1}.top small{color:var(--muted)}
+.ib{background:var(--card);border:1px solid var(--dusty);border-radius:50%;width:40px;height:40px;cursor:pointer;color:var(--burg);position:relative}
+.ib .n{position:absolute;top:-4px;right:-4px;background:var(--rose);color:#fff;border-radius:10px;font-size:11px;padding:0 5px}
+.menu{display:none}
+.prof{display:flex;align-items:center;gap:8px;color:var(--burg)}
+.notif{position:absolute;right:0;top:48px;width:min(340px,92vw);background:var(--card);border:1px solid var(--dusty);border-radius:14px;box-shadow:0 8px 24px rgba(120,55,70,.2);padding:12px;z-index:40}
+.notif div.r{display:flex;justify-content:space-between;gap:8px;padding:8px 0;border-bottom:1px dotted var(--dusty)}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:14px;margin-bottom:18px}
+.stat{background:var(--card);border:1px solid var(--dusty);border-radius:16px;padding:16px;box-shadow:0 3px 10px rgba(120,55,70,.08);position:relative}
+.stat .t{display:flex;justify-content:space-between;color:var(--muted);font-size:13px;letter-spacing:.5px;text-transform:uppercase}
+.stat b{display:block;font-family:'Playfair Display',serif;font-size:26px;color:var(--burg);margin:6px 0}
+.stat small{color:var(--muted)}.stat .hh{position:absolute;right:12px;bottom:8px;color:var(--dusty)}
+.two{display:grid;grid-template-columns:1.25fr 1fr;gap:18px;margin-bottom:18px;align-items:start}
+@media(max-width:1150px){.two{grid-template-columns:1fr}}
+.panel{position:relative;background:var(--card);border:1px solid var(--dusty);border-radius:18px;padding:20px;box-shadow:0 6px 18px rgba(120,55,70,.09);min-width:0;margin-bottom:18px}
+.two .panel{margin-bottom:0}
+.panel:before{content:"";position:absolute;inset:5px;border:1px dashed var(--blush);border-radius:13px;pointer-events:none}
+.cn{position:absolute;top:3px;width:34px;height:34px;color:var(--dusty);pointer-events:none}.cn.r{right:3px;transform:scaleX(-1)}.cn.l{left:3px}
+.ph{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:14px;position:relative}
+.ribbon{background:var(--rose);color:#FFF5F0;font-family:'Playfair Display',serif;padding:6px 26px;font-size:16px;clip-path:polygon(0 0,100% 0,95% 50%,100% 100%,0 100%,5% 50%)}
+.tl{background:none;border:0;color:var(--rose);cursor:pointer;text-decoration:underline}
+.bar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+input,select,textarea{background:var(--bg);border:1px solid var(--dusty);color:var(--text);border-radius:8px;padding:8px 10px;width:100%}
+.bar input,.bar select{width:auto;flex:1;min-width:130px}
+.sc{overflow-x:auto}table{width:100%;border-collapse:collapse;min-width:560px}
+th{font-family:'Playfair Display',serif;color:var(--burg);text-align:left;font-size:14px;border-bottom:2px solid var(--dusty);padding:8px}
+td{padding:10px 8px;border-bottom:1px dotted var(--dusty)}tr.c{cursor:pointer}tr.c:hover td{background:rgba(246,216,216,.3)}
+.lk{background:none;border:0;color:var(--burg);font-weight:600;cursor:pointer;padding:0;text-decoration:underline dotted}
+.badge{padding:2px 10px;border-radius:12px;color:#fff;font-size:13px;white-space:nowrap}
+.Paid{background:var(--sage)}.DueSoon{background:var(--amber)}.Overdue{background:var(--red)}.Upcoming{background:var(--dusty)}
+.btn{background:var(--rose);color:#fff;border:1px solid var(--burg);border-radius:10px;padding:8px 14px;cursor:pointer;font-weight:600;display:inline-flex;gap:6px;align-items:center}
+.btn:hover{background:var(--burg)}.btn.s{padding:3px 10px;font-size:13px}
+.btn.g{background:var(--card);color:var(--burg);border-color:var(--dusty)}.btn.g:hover{background:var(--blush)}
+.qa{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px}.qa .btn{justify-content:center;padding:14px}
+.ch{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px}
+.chip{border:1px solid var(--dusty);background:transparent;color:var(--burg);border-radius:18px;padding:3px 12px;cursor:pointer}.chip.on{background:var(--rose);color:#fff}
+.cal{display:grid;grid-template-columns:repeat(7,1fr);gap:4px}
+.dow{text-align:center;color:var(--rose);font-family:'Playfair Display',serif;font-size:13px}
+.day{min-height:62px;border:1px solid var(--blush);border-radius:8px;padding:3px 4px;cursor:pointer;display:flex;flex-direction:column;gap:2px;background:var(--card);min-width:0}
+.day:hover{background:var(--blush)}.day.sel{background:var(--blush);border:2px solid var(--burg)}.day.bl{border:0;background:none;cursor:default}
+.day.td>span:first-child{color:var(--rose);font-weight:700}
+.big .day{min-height:92px}
+.ev{border:0;border-radius:6px;color:#fff;font-size:11px;padding:1px 3px;cursor:pointer;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.lg{display:flex;gap:12px;flex-wrap:wrap;margin-top:10px;color:var(--muted);font-size:13px}.lg i{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:4px}
+.ch2{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+.dn{display:flex;gap:20px;align-items:center;flex-wrap:wrap}
+.donut{width:150px;height:150px;border-radius:50%;display:grid;place-items:center;flex:none}
+.donut div{width:100px;height:100px;border-radius:50%;background:var(--card);display:grid;place-items:center;text-align:center;font-family:'Playfair Display',serif;color:var(--burg);font-size:20px}
+.lgd div{display:flex;gap:8px;align-items:center;padding:3px 0}.lgd i{width:12px;height:12px;border-radius:50%}
+.act{display:flex;gap:10px;padding:9px 0;border-bottom:1px dotted var(--dusty)}.act small{color:var(--muted);display:block}
+.bk{position:fixed;inset:0;background:rgba(75,48,53,.45);display:grid;place-items:center;z-index:50;padding:12px}
+.modal{background:var(--card);border:2px solid var(--dusty);border-radius:18px;padding:20px;width:min(560px,100%);max-height:90vh;overflow:auto}
+.mh{display:flex;justify-content:space-between;margin-bottom:12px}.x{background:none;border:0;font-size:20px;cursor:pointer;color:var(--burg)}
+.f{display:grid;gap:10px}.f label{display:grid;gap:3px;font-size:13px;color:var(--muted)}
+.err{color:var(--red);font-size:14px}
+.toast{position:fixed;bottom:calc(16px + env(safe-area-inset-bottom,0px));left:50%;transform:translateX(-50%);background:var(--burg);color:#FFF5F0;padding:10px 18px;border-radius:12px;z-index:60;max-width:90vw}
+.note{color:var(--muted);font-size:13px}
+.bd{display:none}
+@media(max-width:900px){.side{transform:translateX(-100%)}.side.open{transform:none}.main{margin-left:0;padding:14px}.menu{display:block}.bd.on{display:block;position:fixed;inset:0;background:rgba(75,48,53,.4);z-index:20}.prof span{display:none}.big .day{min-height:60px}}
+@media(max-width:520px){.day{min-height:48px}.ev{font-size:9px}.top .g .script{font-size:24px}}
+
+.stage{min-height:100vh;display:flex;flex-direction:column;align-items:center;gap:14px;padding:16px;background:#F3E4E6}
+.tb{display:flex;gap:8px;flex-wrap:wrap;justify-content:center}
+.bz{background:#2B2326;border-radius:38px;padding:18px;box-shadow:0 20px 50px rgba(75,48,53,.35);position:relative}
+.bz:before{content:"";position:absolute;top:7px;left:50%;width:6px;height:6px;border-radius:50%;background:#555;transform:translateX(-50%)}
+.screen{position:relative;overflow:hidden;background:var(--bg);border-radius:20px;transform-origin:top left}
+.scr{position:absolute;inset:0;overflow-y:auto}
+.tabP .side{transform:translateX(-100%)}.tabP .side.open{transform:none}.tabP .main{margin-left:0;padding:14px 20px}.tabP .menu{display:block}.tabP .bd.on{display:block;position:fixed;inset:0;background:rgba(75,48,53,.4);z-index:20}.tabP .two{grid-template-columns:1fr}
+.tabL .side{transform:none}.tabL .main{margin-left:240px;padding:18px 24px 40px}.tabL .menu{display:none}.tabL .two{grid-template-columns:1.25fr 1fr}
+.fl{position:fixed;bottom:calc(14px + env(safe-area-inset-bottom,0px));right:14px;z-index:45}
+</style></head>
+<body><div id="root"></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.3.1/umd/react.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.3.1/umd/react-dom.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.24.7/babel.min.js"></script>
+<script type="text/babel">
+const {useState,useMemo,useEffect}=React;
+const TODAY="2025-10-12";
+const D=s=>new Date(s+"T00:00:00");
+const iso=d=>d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");
+const addD=(s,n)=>{const d=D(s);d.setDate(d.getDate()+n);return iso(d)};
+const P=n=>"₱"+Number(n).toLocaleString("en-PH",{minimumFractionDigits:2,maximumFractionDigits:2});
+const fd=s=>D(s).toLocaleDateString("en-US",{month:"short",day:"numeric",year:"numeric"});
+const sd=s=>D(s).toLocaleDateString("en-US",{month:"short",day:"numeric"});
+const rem=i=>Math.max(0,Math.round((i.amount-i.paid)*100)/100);
+const st=i=>rem(i)<=0?"Paid":i.due<TODAY?"Overdue":(D(i.due)-D(TODAY))/864e5<=1?"Due Soon":"Upcoming";
+const COL={Paid:"var(--sage)","Due Soon":"var(--amber)",Overdue:"var(--red)",Upcoming:"var(--dusty)"};
+const gen=(id,first,n,amt,paid=0)=>Array.from({length:n},(_,k)=>({id:id+"-"+k,loanId:id,due:addD(first,k*14),amount:amt,paid:k<paid?amt:0}));
+const B0=[{id:1,name:"Anna Reyes",contact:"0917 555 0101",address:"Quezon City",notes:"Teacher"},{id:2,name:"Miguel Santos",contact:"0918 555 0102",address:"Pasig City",notes:""},{id:3,name:"Jamela Cruz",contact:"0919 555 0103",address:"Mandaluyong",notes:"Sari-sari store"},{id:4,name:"Rafael Dela Cruz",contact:"0920 555 0104",address:"Makati City",notes:""},{id:5,name:"Lea Martinez",contact:"0921 555 0105",address:"Taguig City",notes:"New borrower"}];
+const L0=[{id:"L1",bid:1,principal:10000,interest:2000},{id:"L2",bid:2,principal:15000,interest:3000},{id:"L3",bid:3,principal:8000,interest:2000},{id:"L4",bid:4,principal:20000,interest:4000},{id:"L5",bid:5,principal:12000,interest:2400}];
+const I0=[...gen("L1","2025-09-28",6,2000,1),...gen("L2","2025-09-30",12,1500,1),...gen("L3","2025-10-02",10,1000),...gen("L4","2025-10-04",8,3000),...gen("L5","2025-10-20",8,1800)];
+const PY0=[{id:"p1",loanId:"L1",date:"2025-10-10",amount:2000,method:"GCash"},{id:"p2",loanId:"L2",date:"2025-10-07",amount:1500,method:"Cash"}];
+const A0=[{k:"pay",t:"Payment received from Anna Reyes — ₱2,000.00",d:"2025-10-10"},{k:"warn",t:"Installment marked as overdue — Rafael Dela Cruz",d:"2025-10-09"},{k:"new",t:"New loan added — Lea Martinez",d:"2025-10-08"},{k:"pay",t:"Payment received from Miguel Santos — ₱1,500.00",d:"2025-10-07"}];
+const N0=[{id:1,t:"Rafael Dela Cruz has an overdue installment.",r:false},{id:2,t:"Anna Reyes has an installment due today.",r:false},{id:3,t:"Jamela Cruz has an overdue installment.",r:false}];
+const NAV=[["Dashboard","⌂"],["Borrowers","♡"],["Payment Calendar","▦"],["Balance Ledger","☰"],["Payments","₱"],["Reports","▤"]];
+const AI={pay:"₱",warn:"⚠",new:"✚"};
+let uid=100;
+
+const Corner=()=>[0,1].map(k=><svg key={k} className={"cn "+(k?"r":"l")} viewBox="0 0 34 34" fill="none" stroke="currentColor" strokeWidth="1.2" aria-hidden="true"><path d="M2 32C2 14 14 2 32 2"/><circle cx="7" cy="7" r="2.5" fill="#F6D8D8"/><path d="M8 22c3-1 5-4 4-8-3 1-5 4-4 8z"/></svg>);
+const Panel=({title,right,children,cls})=><section className={"panel "+(cls||"")}><Corner/><div className="ph"><div className="ribbon">{title}</div>{right}</div>{children}</section>;
+const Badge=({s})=><span className={"badge "+s.replace(" ","")}>{s}</span>;
+function Modal({title,onClose,children}){
+useEffect(()=>{const h=e=>e.key==="Escape"&&onClose();addEventListener("keydown",h);return()=>removeEventListener("keydown",h)},[]);
+return <div className="bk" onClick={onClose}><div className="modal" role="dialog" aria-modal="true" aria-label={title} onClick={e=>e.stopPropagation()}><div className="mh"><h2>{title}</h2><button className="x" aria-label="Close dialog" onClick={onClose}>✕</button></div>{children}</div></div>}
+function Cal({ins,sel,setSel,mo,setMo,flt,onEv,big}){
+const {y,m}=mo;const first=new Date(y,m,1).getDay(),n=new Date(y,m+1,0).getDate();
+const key=d=>iso(new Date(y,m,d));const ev=k=>ins.filter(i=>i.due===k&&(flt==="All"||st(i)===flt));
+const go=d=>{const x=new Date(y,m+d,1);setMo({y:x.getFullYear(),m:x.getMonth()})};
+const cells=[...Array(first).fill(null),...Array.from({length:n},(_,i)=>i+1)];
+return <div className={big?"big":""}>
+<div className="ch2"><button className="btn g s" aria-label="Previous month" onClick={()=>go(-1)}>‹</button><h3>{new Date(y,m,1).toLocaleDateString("en-US",{month:"long",year:"numeric"})}</h3><button className="btn g s" aria-label="Next month" onClick={()=>go(1)}>›</button></div>
+<div className="cal">{["Sun","Mon","Tue","Wed","Thu","Fri","Sat"].map(d=><div key={d} className="dow">{d}</div>)}
+{cells.map((d,i)=>{if(d===null)return <div key={i} className="day bl"/>;const k=key(d);return(
+<div key={i} role="button" tabIndex={0} aria-label={"Select "+fd(k)} className={"day"+(k===sel?" sel":"")+(k===TODAY?" td":"")} onClick={()=>setSel(k)} onKeyDown={e=>e.key==="Enter"&&setSel(k)}>
+<span>{d}</span>{ev(k).slice(0,big?3:2).map(i=><button key={i.id} className="ev" style={{background:COL[st(i)]}} onClick={e=>{e.stopPropagation();setSel(k);onEv(i)}}>₱{i.amount.toLocaleString()}</button>)}</div>)})}</div>
+<div className="lg">{Object.keys(COL).map(k=><span key={k}><i style={{background:COL[k]}}/>{k}</span>)}</div></div>}
+
+function Lend(){
+const [bs,setBs]=useState(B0),[ins,setIns]=useState(I0),[pays,setPays]=useState(PY0),[acts,setActs]=useState(A0),[ns,setNs]=useState(N0);
+const [view,setView]=useState("Dashboard"),[open,setOpen]=useState(false),[nOpen,setNOpen]=useState(false),[modal,setModal]=useState(null),[toast,setToast]=useState(""),[err,setErr]=useState("");
+const [sel,setSel]=useState(TODAY),[mo,setMo]=useState({y:2025,m:9}),[flt,setFlt]=useState("All");
+const [q,setQ]=useState(""),[sf,setSf]=useState("All"),[bq,setBq]=useState(""),[lq,setLq]=useState(""),[exp,setExp]=useState(null),[pq,setPq]=useState(""),[pd,setPd]=useState("");
+const [rf,setRf]=useState("2025-10-01"),[rt,setRt]=useState("2025-10-31");
+const [bf,setBf]=useState({name:"",contact:"",address:"",notes:""}),[pf,setPf]=useState({loanId:"L1",amount:"",date:TODAY,method:"Cash"}),[rows,setRows]=useState([]);
+const flash=m=>{setToast(m);setTimeout(()=>setToast(""),3200)};
+const nm=id=>(bs.find(b=>b.id===id)||{}).name||"Unknown";
+const LI=useMemo(()=>L0.map(l=>{const is=ins.filter(i=>i.loanId===l.id),payable=l.principal+l.interest,applied=is.reduce((a,i)=>a+i.paid,0);return{...l,is,payable,applied,bal:payable-applied}}),[ins]);
+const loanOf=id=>LI.find(l=>l.id===id);
+const sum=f=>ins.filter(f).reduce((a,i)=>a+rem(i),0);
+const out=LI.reduce((a,l)=>a+l.bal,0),prin=LI.reduce((a,l)=>a+l.principal,0),intr=LI.reduce((a,l)=>a+l.interest,0),got=LI.reduce((a,l)=>a+l.applied,0);
+const mon=pays.filter(p=>p.date.startsWith(TODAY.slice(0,7))).reduce((a,p)=>a+p.amount,0);
+const dueT=ins.filter(i=>i.due===TODAY&&rem(i)>0),over=ins.filter(i=>i.due<TODAY&&rem(i)>0);
+const unread=ns.filter(n=>!n.r).length;
+const addAct=(k,t,d)=>setActs(a=>[{k,t,d},...a]);
+const openPay=(loanId)=>{setPf({loanId:loanId||(LI.find(l=>l.bal>0)||{}).id||"",amount:"",date:TODAY,method:"Cash"});setErr("");setModal({t:"pay"})};
+const openBorrower=()=>{setBf({name:"",contact:"",address:"",notes:""});setErr("");setModal({t:"add"})};
+const go=v=>{setView(v);setOpen(false);setNOpen(false)};
+const submitB=()=>{if(!bf.name.trim())return setErr("Full name is required.");if(!/^[0-9+\s-]{7,}$/.test(bf.contact.trim()))return setErr("Enter a valid contact number.");
+setBs([...bs,{id:uid++,...bf,name:bf.name.trim()}]);addAct("new","New borrower added — "+bf.name.trim(),TODAY);setModal(null);flash("Borrower added (demo only — not saved).")};
+const submitP=()=>{const l=loanOf(pf.loanId),a=+pf.amount;
+if(!l)return setErr("Select a loan.");if(!(a>0))return setErr("Enter an amount greater than zero.");if(a>l.bal+0.005)return setErr("Amount exceeds the loan balance of "+P(l.bal)+".");if(!pf.date)return setErr("Choose a payment date.");
+let r=a;setIns(ins.map(i=>{if(i.loanId!==l.id||r<=0||rem(i)<=0)return i;const x=Math.min(r,rem(i));r-=x;return{...i,paid:i.paid+x}}));
+setPays([{id:"p"+uid++,loanId:l.id,date:pf.date,amount:a,method:pf.method},...pays]);addAct("pay","Payment received from "+nm(l.bid)+" — "+P(a),pf.date);setModal(null);flash("Payment recorded (demo only — not saved).")};
+const readCsv=f=>{if(!f)return;const r=new FileReader();r.onload=()=>{const ls=String(r.result).split(/\r?\n/).filter(x=>x.trim());if(ls.length&&/name/i.test(ls[0]))ls.shift();
+setRows(ls.map(x=>{const c=x.split(",").map(s=>s.trim());return{name:c[0]||"",contact:c[1]||"",address:c[2]||"",notes:c[3]||"",ok:!!c[0]&&!!c[1]}}))};r.readAsText(f)};
+const importCsv=()=>{const v=rows.filter(r=>r.ok);setBs([...bs,...v.map(r=>({id:uid++,name:r.name,contact:r.contact,address:r.address,notes:r.notes}))]);addAct("new",v.length+" borrowers imported from CSV",TODAY);setModal(null);setRows([]);flash(v.length+" borrower(s) imported (demo only).")};
+const csvText=()=>"Borrower,Principal,Interest,Payable,Applied,Balance\n"+LI.map(l=>['"'+nm(l.bid)+'"',l.principal,l.interest,l.payable,l.applied,l.bal].join(",")).join("\n");
+const setB=k=>e=>setBf({...bf,[k]:e.target.value}),setP=k=>e=>setPf({...pf,[k]:e.target.value});
+const fi=(i)=>({...i,b:nm(loanOf(i.loanId).bid),loan:loanOf(i.loanId)});
+const calP={ins,sel,setSel,mo,setMo,onEv:i=>setModal({t:"ev",i})};
+
+const Dash=()=><>
+<div className="cards">
+<div className="stat"><div className="t">Total Outstanding<span>▣</span></div><b>{P(out)}</b><small>Across {LI.filter(l=>l.bal>0).length} active loans</small><span className="hh">♥</span></div>
+<div className="stat"><div className="t">Collected This Month<span>₱</span></div><b>{P(mon)}</b><small>Total payments received</small><span className="hh">♥</span></div>
+<div className="stat"><div className="t">Due Today<span>▦</span></div><b>{P(sum(i=>i.due===TODAY))}</b><small>{dueT.length} installment{dueT.length!==1&&"s"}</small><span className="hh">♥</span></div>
+<div className="stat"><div className="t">Overdue Payments<span>⚠</span></div><b style={{color:"var(--red)"}}>{P(sum(i=>i.due<TODAY))}</b><small>{over.length} installment{over.length!==1&&"s"}</small><span className="hh">♥</span></div></div>
+<div className="two">
+<Panel title="Upcoming Payments" right={<button className="tl" onClick={()=>go("Payment Calendar")}>View All</button>}>
+<div className="bar"><input aria-label="Search borrower" placeholder="Search borrower…" value={q} onChange={e=>setQ(e.target.value)}/><select aria-label="Filter by status" value={sf} onChange={e=>setSf(e.target.value)}>{["All","Upcoming","Due Soon","Overdue","Paid"].map(s=><option key={s}>{s}</option>)}</select></div>
+<div className="sc"><table><thead><tr><th>Date</th><th>Borrower</th><th>Loan</th><th>Amount Due</th><th>Status</th><th></th></tr></thead><tbody>
+{ins.filter(i=>rem(i)>0||sf==="Paid").map(fi).filter(i=>i.b.toLowerCase().includes(q.toLowerCase())&&(sf==="All"||st(i)===sf)).sort((a,b)=>a.due.localeCompare(b.due)).slice(0,8).map(i=><tr key={i.id} className="c" onClick={()=>setModal({t:"ev",i})}>
+<td>{sd(i.due)}</td><td><button className="lk" onClick={e=>{e.stopPropagation();setModal({t:"bor",id:i.loan.bid})}}>{i.b}</button></td><td>{P(i.loan.principal)}</td><td>{P(rem(i)||i.amount)}</td><td><Badge s={st(i)}/></td>
+<td><button className="btn s" aria-label={"Record payment for "+i.b} onClick={e=>{e.stopPropagation();openPay(i.loanId)}}>Pay</button></td></tr>)}</tbody></table></div></Panel>
+<Panel title="Payment Calendar"><Cal {...calP} flt="All"/><div className="note" style={{marginTop:8}}>{fd(sel)}: {ins.filter(i=>i.due===sel).length} payment(s) — click one for details.</div></Panel></div>
+<div className="two">
+<Panel title="Balance Overview"><div className="dn"><div className="donut" role="img" aria-label={"Repaid "+Math.round(got/(prin+intr)*100)+" percent"} style={{background:`conic-gradient(var(--rose) 0 ${got/(prin+intr)*100}%,var(--blush) 0)`}}><div>{Math.round(got/(prin+intr)*100)}%<br/><small style={{fontSize:12,color:"var(--muted)",fontFamily:"Inter"}}>repaid</small></div></div>
+<div className="lgd"><div><i style={{background:"var(--burg)"}}/>Principal: <b>{P(prin)}</b></div><div><i style={{background:"var(--dusty)"}}/>Interest: <b>{P(intr)}</b></div><div><i style={{background:"var(--rose)"}}/>Payments Received: <b>{P(got)}</b></div><div><i style={{background:"var(--blush)"}}/>Remaining Balance: <b>{P(out)}</b></div></div></div>
+<p className="note">Remaining = principal + interest − payments applied. Demo data.</p></Panel>
+<Panel title="Recent Activity">{acts.slice(0,6).map((a,i)=><div className="act" key={i}><span style={{color:a.k==="warn"?"var(--red)":"var(--rose)"}}>{AI[a.k]}</span><div>{a.t}<small>{fd(a.d)}</small></div></div>)}</Panel></div>
+<Panel title="Quick Actions"><div className="qa"><button className="btn g" onClick={openBorrower}>♡ Add Borrower</button><button className="btn g" onClick={()=>openPay()}>₱ Record Payment</button><button className="btn g" onClick={()=>{setRows([]);setModal({t:"csv"})}}>▤ Import from Excel</button><button className="btn g" onClick={()=>go("Payment Calendar")}>▦ View Calendar</button></div></Panel></>;
+
+const Bor=()=><Panel title="Borrowers" right={<button className="btn" onClick={openBorrower}>♡ Add Borrower</button>}>
+<div className="bar"><input aria-label="Search borrowers" placeholder="Search borrowers…" value={bq} onChange={e=>setBq(e.target.value)}/></div>
+<div className="sc"><table><thead><tr><th>Name</th><th>Contact</th><th>Loans</th><th>Outstanding</th><th>Status</th></tr></thead><tbody>
+{bs.filter(b=>b.name.toLowerCase().includes(bq.toLowerCase())).map(b=>{const ls=LI.filter(l=>l.bid===b.id),bal=ls.reduce((a,l)=>a+l.bal,0);return <tr key={b.id} className="c" onClick={()=>setModal({t:"bor",id:b.id})}><td><span className="lk">{b.name}</span></td><td>{b.contact}</td><td>{ls.length}</td><td>{P(bal)}</td><td>{!ls.length?<span className="note">No loans</span>:bal>0?<Badge s="Upcoming"/>:<Badge s="Paid"/>}</td></tr>})}</tbody></table></div><p className="note">“Upcoming” here means an active loan; “Paid” means fully repaid.</p></Panel>;
+
+const Calv=()=><Panel title="Payment Calendar" right={<button className="btn" onClick={()=>openPay()}>₱ Record Payment</button>}>
+<div className="ch">{["All","Paid","Upcoming","Due Soon","Overdue"].map(s=><button key={s} className={"chip"+(flt===s?" on":"")} onClick={()=>setFlt(s)}>{s}</button>)}</div>
+<Cal {...calP} flt={flt} big/><h3 style={{marginTop:16}}>{fd(sel)}</h3>
+{ins.filter(i=>i.due===sel&&(flt==="All"||st(i)===flt)).map(fi).map(i=><div className="act" key={i.id}><div style={{flex:1}}><button className="lk" onClick={()=>setModal({t:"ev",i})}>{i.b}</button> · {P(i.amount)} <Badge s={st(i)}/></div>{rem(i)>0&&<button className="btn s" onClick={()=>openPay(i.loanId)}>Record payment</button>}</div>)}
+{!ins.some(i=>i.due===sel&&(flt==="All"||st(i)===flt))&&<p className="note">No payments for this day.</p>}</Panel>;
+
+const Led=()=><Panel title="Balance Ledger"><div className="bar"><input aria-label="Search ledger" placeholder="Search loans…" value={lq} onChange={e=>setLq(e.target.value)}/></div>
+<div className="sc"><table><thead><tr><th>Borrower</th><th>Principal</th><th>Interest</th><th>Payable</th><th>Applied</th><th>Loan Balance</th></tr></thead><tbody>
+{LI.filter(l=>nm(l.bid).toLowerCase().includes(lq.toLowerCase())).map(l=><React.Fragment key={l.id}><tr className="c" onClick={()=>setExp(exp===l.id?null:l.id)}><td><span className="lk">{nm(l.bid)}</span></td><td>{P(l.principal)}</td><td>{P(l.interest)}</td><td>{P(l.payable)}</td><td>{P(l.applied)}</td><td><b>{P(l.bal)}</b></td></tr>
+{exp===l.id&&<tr><td colSpan="6"><div className="note">Installment balances (separate from the loan balance):</div>{l.is.map(i=><div key={i.id} className="act" style={{padding:"4px 0"}}><span style={{flex:1}}>{fd(i.due)} · due {P(i.amount)} · paid {P(i.paid)} · left {P(rem(i))}</span><Badge s={st(i)}/></div>)}</td></tr>}</React.Fragment>)}</tbody></table></div>
+<h3 style={{margin:"16px 0 6px"}}>Transaction history</h3>{pays.map(p=><div className="act" key={p.id}><span>₱</span><div>{nm(loanOf(p.loanId).bid)} paid {P(p.amount)}<small>{fd(p.date)} · {p.method}</small></div></div>)}
+<p className="note">Click a row to see its installments. Loan balance = principal + interest − payments applied.</p></Panel>;
+
+const Pay=()=><Panel title="Payments" right={<button className="btn" onClick={()=>openPay()}>₱ Record Payment</button>}>
+<div className="bar"><input aria-label="Filter by borrower" placeholder="Filter by borrower…" value={pq} onChange={e=>setPq(e.target.value)}/><input type="date" aria-label="Filter by date" value={pd} onChange={e=>setPd(e.target.value)}/></div>
+<div className="sc"><table><thead><tr><th>Date</th><th>Borrower</th><th>Method</th><th>Amount</th></tr></thead><tbody>
+{pays.filter(p=>nm(loanOf(p.loanId).bid).toLowerCase().includes(pq.toLowerCase())&&(!pd||p.date===pd)).map(p=><tr key={p.id} className="c" onClick={()=>setModal({t:"py",p})}><td>{fd(p.date)}</td><td>{nm(loanOf(p.loanId).bid)}</td><td>{p.method}</td><td>{P(p.amount)}</td></tr>)}</tbody></table></div></Panel>;
+
+const Rep=()=>{const col=pays.filter(p=>p.date>=rf&&p.date<=rt).reduce((a,p)=>a+p.amount,0);return <Panel title="Reports">
+<div className="cards"><div className="stat"><div className="t">Principal lent</div><b>{P(prin)}</b></div><div className="stat"><div className="t">Outstanding</div><b>{P(out)}</b></div><div className="stat"><div className="t">Overdue</div><b style={{color:"var(--red)"}}>{P(sum(i=>i.due<TODAY))}</b><small>{over.length} installments</small></div></div>
+<div className="bar"><input type="date" aria-label="From date" value={rf} onChange={e=>setRf(e.target.value)}/><input type="date" aria-label="To date" value={rt} onChange={e=>setRt(e.target.value)}/></div>
+<p>Collections {fd(rf)} – {fd(rt)}: <b>{P(col)}</b></p>
+<button className="btn" onClick={()=>setModal({t:"rep"})}>▤ Export CSV</button></Panel>};
+
+const M=()=>{if(!modal)return null;const t=modal.t;
+if(t==="add")return <Modal title="Add Borrower" onClose={()=>setModal(null)}><div className="f"><label>Full name *<input value={bf.name} onChange={setB("name")}/></label><label>Contact number *<input value={bf.contact} onChange={setB("contact")}/></label><label>Address<input value={bf.address} onChange={setB("address")}/></label><label>Notes<textarea rows="2" value={bf.notes} onChange={setB("notes")}/></label>{err&&<div className="err" role="alert">{err}</div>}<button className="btn" onClick={submitB}>Save borrower</button></div></Modal>;
+if(t==="pay"){const l=loanOf(pf.loanId);return <Modal title="Record Payment" onClose={()=>setModal(null)}><div className="f"><label>Borrower / loan<select value={pf.loanId} onChange={setP("loanId")}>{LI.filter(x=>x.bal>0).map(x=><option key={x.id} value={x.id}>{nm(x.bid)} — {P(x.bal)} balance</option>)}</select></label>
+<label>Amount (₱)<input type="number" min="0" value={pf.amount} onChange={setP("amount")}/></label><label>Payment date<input type="date" value={pf.date} onChange={setP("date")}/></label><label>Method<select value={pf.method} onChange={setP("method")}>{["Cash","GCash","Bank transfer","Maya"].map(x=><option key={x}>{x}</option>)}</select></label>
+{l&&<div className="note">Applied to the earliest unpaid installments first; partial payments leave an installment open.</div>}{err&&<div className="err" role="alert">{err}</div>}<button className="btn" onClick={submitP}>Record payment</button></div></Modal>}
+if(t==="csv")return <Modal title="Import Borrowers (CSV)" onClose={()=>setModal(null)}><div className="f"><input type="file" accept=".csv" aria-label="Choose CSV file" onChange={e=>readCsv(e.target.files[0])}/><div className="note">Columns: name, contact, address, notes. Only .csv is parsed — .xlsx files are not supported in this prototype; export to CSV first.</div>
+{rows.length>0&&<div className="sc"><table><thead><tr><th>Name</th><th>Contact</th><th>Check</th></tr></thead><tbody>{rows.map((r,i)=><tr key={i}><td>{r.name}</td><td>{r.contact}</td><td>{r.ok?"✓ Valid":<span className="err">Missing name/contact</span>}</td></tr>)}</tbody></table></div>}
+{rows.some(r=>r.ok)&&<button className="btn" onClick={importCsv}>Add {rows.filter(r=>r.ok).length} valid row(s)</button>}</div></Modal>;
+if(t==="bor"){const b=bs.find(x=>x.id===modal.id),ls=LI.filter(l=>l.bid===b.id);return <Modal title={b.name} onClose={()=>setModal(null)}><p>☎ {b.contact}<br/>⌂ {b.address||"—"}<br/><span className="note">{b.notes}</span></p><p>Outstanding: <b>{P(ls.reduce((a,l)=>a+l.bal,0))}</b></p>
+{ls.map(l=><div key={l.id} className="act"><div>Loan {P(l.principal)} + {P(l.interest)} interest<small>Paid {P(l.applied)} · Balance {P(l.bal)}</small></div></div>)}
+<h3>Payment history</h3>{pays.filter(p=>ls.some(l=>l.id===p.loanId)).map(p=><div key={p.id} className="act">{fd(p.date)} — {P(p.amount)} ({p.method})</div>)||null}
+<button className="btn" style={{marginTop:10}} onClick={()=>openPay(ls[0]&&ls[0].id)}>Record payment</button></Modal>}
+if(t==="ev"){const i=fi(modal.i),cur=ins.find(x=>x.id===i.id);return <Modal title="Installment details" onClose={()=>setModal(null)}><p><b>{i.b}</b> <Badge s={st(cur)}/></p><p>Due {fd(i.due)}<br/>Installment: {P(i.amount)}<br/>Paid toward it: {P(cur.paid)}<br/>Installment balance: {P(rem(cur))}<br/>Loan balance: {P(loanOf(i.loanId).bal)}</p>{rem(cur)>0&&<button className="btn" onClick={()=>openPay(i.loanId)}>Record payment</button>}</Modal>}
+if(t==="py"){const p=modal.p;return <Modal title="Payment details" onClose={()=>setModal(null)}><p><b>{nm(loanOf(p.loanId).bid)}</b><br/>{P(p.amount)} via {p.method}<br/>{fd(p.date)}<br/>Loan {p.loanId}</p></Modal>}
+if(t==="rep")return <Modal title="Export CSV" onClose={()=>setModal(null)}><p className="note">Downloads can’t start from this preview, so copy the text below.</p><textarea rows="8" readOnly aria-label="CSV text" value={csvText()}/></Modal>;};
+
+return <>
+<aside className={"side"+(open?" open":"")} aria-label="Main navigation"><div className="logo"><svg width="44" height="44" viewBox="0 0 40 40" aria-hidden="true"><path d="M8 14l5 5 7-9 7 9 5-5-3 11H11z" fill="#D98C96" stroke="#783746"/><path d="M20 38c-6-4-9-7-9-10a4.5 4.5 0 019-1 4.5 4.5 0 019 1c0 3-3 6-9 10z" fill="#C45C72" transform="translate(0 -5) scale(1 .85)"/></svg><h1>LendTrack</h1><div className="script">Your Lending, Organized.</div></div>
+<nav className="nav">{NAV.map(([n,ic])=><button key={n} className={view===n?"on":""} aria-current={view===n?"page":undefined} onClick={()=>go(n)}><span aria-hidden="true">{ic}</span>{n}<span className="h" aria-hidden="true">♥</span></button>)}</nav>
+<div className="quote script">“Small steps make big dreams come true.” ❀</div></aside>
+<div className={"bd"+(open?" on":"")} onClick={()=>setOpen(false)}/>
+<main className="main"><div className="top"><button className="ib menu" aria-label="Open menu" onClick={()=>setOpen(true)}>☰</button>
+<div className="g"><div className="script">Good morning, Lender!</div><small>{D(TODAY).toLocaleDateString("en-US",{weekday:"long",month:"long",day:"numeric",year:"numeric"})} · demo date</small></div>
+<button className="ib" aria-label={"Notifications, "+unread+" unread"} onClick={()=>setNOpen(!nOpen)}>🔔{unread>0&&<span className="n">{unread}</span>}</button>
+<div className="prof"><span>Lender</span><div className="ib" style={{display:"grid",placeItems:"center"}} aria-hidden="true">♡</div></div>
+{nOpen&&<div className="notif" role="region" aria-label="Notifications"><div className="ch2"><b className="serif">Notifications</b><button className="tl" onClick={()=>setNs(ns.map(n=>({...n,r:true})))}>Mark all read</button></div>
+{ns.map(n=><div className="r" key={n.id} style={{opacity:n.r?.5:1}}><span>{n.t}</span>{!n.r&&<button className="btn s" onClick={()=>setNs(ns.map(x=>x.id===n.id?{...x,r:true}:x))}>Read</button>}</div>)}<div className="note" style={{marginTop:6}}>In-app demo only; nothing is sent externally.</div></div>}</div>
+{view==="Dashboard"&&Dash()}{view==="Borrowers"&&Bor()}{view==="Payment Calendar"&&Calv()}{view==="Balance Ledger"&&Led()}{view==="Payments"&&Pay()}{view==="Reports"&&Rep()}
+<p className="note" style={{textAlign:"center"}}>Frontend prototype · all figures are demo data and reset on reload.</p></main>
+{M()}{toast&&<div className="toast" role="status">{toast}</div>}</>}
+function Root(){
+const [mode,setMode]=useState("tabP"),[vw,setVw]=useState([innerWidth,innerHeight]);
+useEffect(()=>{const h=()=>setVw([innerWidth,innerHeight]);addEventListener("resize",h);return()=>removeEventListener("resize",h)},[]);
+if(mode==="full")return <><Lend/><button className="btn fl" onClick={()=>setMode("tabP")}>▭ Tablet mockup</button></>;
+const W=mode==="tabP"?820:1180,H=mode==="tabP"?1180:820,k=Math.min(1,(vw[0]-68)/W,(vw[1]-100)/H);
+return <div className="stage"><div className="tb">{[["tabP","Tablet · Portrait"],["tabL","Tablet · Landscape"],["full","Full screen"]].map(([m,l])=><button key={m} className={"chip"+(mode===m?" on":"")} onClick={()=>setMode(m)}>{l}</button>)}</div>
+<div className="bz"><div style={{width:W*k,height:H*k}}><div className={"screen "+mode} style={{width:W,height:H,transform:"scale("+k+")"}}><div className="scr"><Lend/></div></div></div></div></div>}
+ReactDOM.createRoot(document.getElementById("root")).render(<Root/>);
+</script></body></html>
