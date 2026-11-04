@@ -68,7 +68,7 @@ fun PaymentsScreen(
     paymentToDelete?.let { pwb ->
         AlertDialog(
             onDismissRequest = { if (!deleting) { paymentToDelete = null; deleteReason = ""; deleteError = null } },
-            containerColor   = LtSurface,
+            containerColor   = MaterialTheme.colorScheme.surface,
             title            = { Text("Delete Payment?", style = MaterialTheme.typography.headlineMedium) },
             text = {
                 Column {
@@ -231,7 +231,7 @@ private fun PaymentDetailSheet(pwb: PaymentWithBorrower, onDismiss: () -> Unit) 
     val p = pwb.payment
     AlertDialog(
         onDismissRequest = onDismiss,
-        containerColor   = LtSurface,
+        containerColor   = MaterialTheme.colorScheme.surface,
         shape            = RoundedCornerShape(18.dp),
         title = {
             Row(
@@ -303,7 +303,7 @@ private fun DetailRow(label: String, value: String, valueColor: Color = LtBurgun
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment     = Alignment.CenterVertically,
     ) {
-        Text(label, style = MaterialTheme.typography.bodySmall, color = LtMuted)
+        Text(label, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
         Text(value, style = MaterialTheme.typography.bodySmall.copy(fontWeight = FontWeight.SemiBold, color = valueColor))
     }
 }

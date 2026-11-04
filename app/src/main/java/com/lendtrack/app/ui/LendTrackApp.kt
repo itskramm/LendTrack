@@ -82,7 +82,7 @@ fun LendTrackApp(
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(LtBackground)
+            .background(MaterialTheme.colorScheme.background)
             .drawBehind {
                 val spacing = 14.dp.toPx()
                 val radius = 1.dp.toPx()
@@ -173,7 +173,7 @@ fun LtOfflineBanner() {
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .background(LtText)
+            .background(MaterialTheme.colorScheme.onSurface)
             .padding(horizontal = 24.dp, vertical = 8.dp),
         verticalAlignment     = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(8.dp),
@@ -181,12 +181,12 @@ fun LtOfflineBanner() {
         Icon(
             Icons.Filled.WifiOff,
             contentDescription = null,
-            tint     = LtBackground,
+            tint     = MaterialTheme.colorScheme.surface,
             modifier = Modifier.size(16.dp),
         )
         Text(
             "You're offline. Changes are saved locally and will sync when you reconnect.",
-            style  = MaterialTheme.typography.bodySmall.copy(color = LtBackground),
+            style  = MaterialTheme.typography.bodySmall.copy(color = MaterialTheme.colorScheme.surface),
             modifier = Modifier.weight(1f),
         )
     }
@@ -214,7 +214,7 @@ fun LtRequiresAttentionBanner(count: Int, onGoToSettings: () -> Unit) {
         )
         Text(
             "$count operation${if (count != 1) "s" else ""} need${if (count == 1) "s" else ""} your review — the server returned an error.",
-            style    = MaterialTheme.typography.bodySmall.copy(color = LtText),
+            style    = MaterialTheme.typography.bodySmall.copy(color = MaterialTheme.colorScheme.onSurface),
             modifier = Modifier.weight(1f),
         )
         TextButton(onClick = onGoToSettings) {
@@ -237,15 +237,15 @@ fun LtSidebar(
     Box(
         modifier = modifier
             .fillMaxHeight()
-            .background(LtBlush)
-            .border(1.dp, LtDusty, RoundedCornerShape(0.dp)),
+            .background(MaterialTheme.colorScheme.surfaceVariant)
+            .border(1.dp, MaterialTheme.colorScheme.outline, RoundedCornerShape(0.dp)),
     ) {
         // Dashed inner decoration
         Box(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(6.dp)
-                .border(1.dp, LtDusty.copy(alpha = 0.6f), RoundedCornerShape(12.dp)),
+                .border(1.dp, MaterialTheme.colorScheme.outline.copy(alpha = 0.6f), RoundedCornerShape(12.dp)),
         )
         
         Column(
@@ -307,8 +307,8 @@ fun LtLogo() {
             modifier = Modifier
                 .size(44.dp)
                 .clip(RoundedCornerShape(22.dp))
-                .background(LtBlush)
-                .border(1.dp, LtDusty, RoundedCornerShape(22.dp)),
+                .background(MaterialTheme.colorScheme.surfaceVariant)
+                .border(1.dp, MaterialTheme.colorScheme.outline, RoundedCornerShape(22.dp)),
             contentAlignment = Alignment.Center,
         ) {
             Text("♥", fontSize = 22.sp, color = LtRose)
@@ -333,7 +333,7 @@ fun LtNavItem(screen: Screen, selected: Boolean, onClick: () -> Unit) {
         modifier = Modifier
             .fillMaxWidth()
             .clip(NavItemShape)
-            .background(if (selected) LtSurface else Color.Transparent)
+            .background(if (selected) MaterialTheme.colorScheme.surface else Color.Transparent)
             .border(1.dp, if (selected) LtRose else Color.Transparent, NavItemShape)
             .clickable(onClick = onClick)
             .padding(horizontal = 12.dp, vertical = 10.dp),
@@ -343,14 +343,14 @@ fun LtNavItem(screen: Screen, selected: Boolean, onClick: () -> Unit) {
         Icon(
             screen.icon,
             contentDescription = null,
-            tint     = if (selected) LtRose else LtMuted,
+            tint     = if (selected) LtRose else MaterialTheme.colorScheme.onSurfaceVariant,
             modifier = Modifier.size(18.dp),
         )
         Text(
             screen.label,
             style    = MaterialTheme.typography.bodyMedium.copy(
                 fontWeight = if (selected) FontWeight.SemiBold else FontWeight.Normal,
-                color      = if (selected) LtBurgundy else LtText,
+                color      = if (selected) LtBurgundy else MaterialTheme.colorScheme.onSurface,
                 fontSize   = 14.sp,
             ),
             modifier = Modifier.weight(1f),
@@ -382,7 +382,7 @@ fun LtTopBar(
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .background(LtBackground)
+            .background(MaterialTheme.colorScheme.background)
             .padding(horizontal = 24.dp, vertical = 12.dp),
         verticalAlignment     = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(12.dp),
@@ -466,7 +466,7 @@ fun LtTopBar(
                 expanded         = notifOpen,
                 onDismissRequest = { notifOpen = false },
                 offset           = DpOffset(x = (-160).dp, y = 4.dp),
-                containerColor   = LtSurface,
+                containerColor   = MaterialTheme.colorScheme.surface,
                 modifier         = Modifier.width(340.dp),
             ) {
                 // Header
@@ -514,7 +514,7 @@ fun LtTopBar(
                     Text(
                         "Recent activity · updates in real time",
                         style = MaterialTheme.typography.labelSmall,
-                        color = LtMuted,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
                     )
                 }
             }
@@ -525,8 +525,8 @@ fun LtTopBar(
             modifier = Modifier
                 .size(40.dp)
                 .clip(RoundedCornerShape(50))
-                .background(LtSurface)
-                .border(1.dp, LtDusty, RoundedCornerShape(50)),
+                .background(MaterialTheme.colorScheme.surface)
+                .border(1.dp, MaterialTheme.colorScheme.outline, RoundedCornerShape(50)),
             contentAlignment = Alignment.Center,
         ) {
             Text("♡", fontSize = 18.sp, color = LtBurgundy)
@@ -557,7 +557,7 @@ private fun NotificationItem(act: ActivityLogEntity) {
             Text(
                 act.description,
                 style    = MaterialTheme.typography.bodySmall,
-                color    = LtText,
+                color    = MaterialTheme.colorScheme.onSurface,
                 maxLines = 2,
             )
             Text(
@@ -565,7 +565,7 @@ private fun NotificationItem(act: ActivityLogEntity) {
                     it.format(DateTimeFormatter.ofPattern("MMM d, yyyy", Locale.ENGLISH))
                 },
                 style = MaterialTheme.typography.labelSmall,
-                color = LtMuted,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
         }
     }

@@ -95,7 +95,7 @@ fun AddLoanScreen(
                     Text(
                         text = "Effective rate: %.1f%%".format(effectiveRate),
                         style = MaterialTheme.typography.bodySmall,
-                        color = LtMuted,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
                         modifier = Modifier.padding(start = 4.dp, top = 4.dp)
                     )
                 }
@@ -125,7 +125,7 @@ fun AddLoanScreen(
                     Text(
                         text = "Recurring charge every month",
                         style = MaterialTheme.typography.bodySmall,
-                        color = LtMuted,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
                         modifier = Modifier.padding(start = 4.dp, top = 2.dp)
                     )
                 }
@@ -139,7 +139,7 @@ fun AddLoanScreen(
                     Text(
                         text = "Fee for overdue installments",
                         style = MaterialTheme.typography.bodySmall,
-                        color = LtMuted,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
                         modifier = Modifier.padding(start = 4.dp, top = 2.dp)
                     )
                 }
@@ -156,7 +156,7 @@ fun AddLoanScreen(
                 Text(
                     text = "Days before late penalty applies (e.g., 3)",
                     style = MaterialTheme.typography.bodySmall,
-                    color = LtMuted,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
                     modifier = Modifier.padding(start = 4.dp, top = 2.dp)
                 )
             }
@@ -338,7 +338,7 @@ fun RepaymentPreviewPanel(
         Text(
             "Last payment due: ${preview.expectedEndDate.formatFull()}",
             style = MaterialTheme.typography.bodySmall,
-            color = LtMuted,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
         )
 
         Spacer(Modifier.height(16.dp))
@@ -378,7 +378,7 @@ fun RepaymentPreviewPanel(
 @Composable
 private fun PreviewStat(label: String, value: String) {
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
-        Text(label, style = MaterialTheme.typography.labelSmall, color = LtMuted)
+        Text(label, style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
         Spacer(Modifier.height(2.dp))
         Text(value, style = MaterialTheme.typography.titleSmall.copy(fontWeight = FontWeight.Bold, color = LtBurgundy))
     }
@@ -400,7 +400,7 @@ fun LtDropdownField(
 
     Column(modifier = modifier, verticalArrangement = Arrangement.spacedBy(3.dp)) {
         if (label.isNotBlank()) {
-            Text(label, style = MaterialTheme.typography.labelSmall, color = LtMuted)
+            Text(label, style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
         }
         Box {
             OutlinedButton(
@@ -408,22 +408,22 @@ fun LtDropdownField(
                 modifier = Modifier.fillMaxWidth(),
                 shape    = InputShape,
                 colors   = ButtonDefaults.outlinedButtonColors(
-                    contentColor   = LtText,
-                    containerColor = LtBackground,
+                    contentColor   = MaterialTheme.colorScheme.onSurface,
+                    containerColor = MaterialTheme.colorScheme.surface,
                 ),
-                border = BorderStroke(1.dp, LtDusty),
+                border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline),
             ) {
                 Text(
                     selected,
-                    style    = MaterialTheme.typography.bodyMedium.copy(color = LtText),
+                    style    = MaterialTheme.typography.bodyMedium.copy(color = MaterialTheme.colorScheme.onSurface),
                     modifier = Modifier.weight(1f),
                 )
-                Icon(Icons.Filled.ArrowDropDown, contentDescription = null, tint = LtDusty)
+                Icon(Icons.Filled.ArrowDropDown, contentDescription = null, tint = MaterialTheme.colorScheme.outline)
             }
             DropdownMenu(
                 expanded         = expanded,
                 onDismissRequest = { expanded = false },
-                containerColor   = LtSurface,
+                containerColor   = MaterialTheme.colorScheme.surface,
             ) {
                 options.forEach { (lbl, value) ->
                     DropdownMenuItem(

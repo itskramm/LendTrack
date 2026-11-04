@@ -269,7 +269,7 @@ private fun AllocationRow(item: AllocationLineItem) {
 @Composable
 private fun AllocationStat(label: String, value: String, color: androidx.compose.ui.graphics.Color = LtBurgundy) {
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
-        Text(label, style = MaterialTheme.typography.labelSmall, color = LtMuted)
+        Text(label, style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
         Spacer(Modifier.height(2.dp))
         Text(value, style = MaterialTheme.typography.titleSmall.copy(fontWeight = FontWeight.Bold, color = color))
     }

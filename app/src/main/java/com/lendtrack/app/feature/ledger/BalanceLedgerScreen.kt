@@ -64,7 +64,7 @@ fun BalanceLedgerScreen(
     loanToDelete?.let { ls ->
         AlertDialog(
             onDismissRequest = { if (!deleting) { loanToDelete = null; deleteReason = ""; deleteError = null } },
-            containerColor   = LtSurface,
+            containerColor   = MaterialTheme.colorScheme.surface,
             title            = { Text("Delete Loan?", style = MaterialTheme.typography.headlineMedium) },
             text = {
                 Column {
@@ -185,12 +185,12 @@ fun BalanceLedgerScreen(
                             Text(
                                 "${pwb.borrower.name} paid ${pwb.payment.amount.peso()}",
                                 style = MaterialTheme.typography.bodySmall.copy(fontWeight = FontWeight.Medium),
-                                color = LtText,
+                                color = MaterialTheme.colorScheme.onSurface,
                             )
                             Text(
                                 "${pwb.payment.paymentDate.formatFull()} · ${pwb.payment.paymentMethod.label}",
                                 style = MaterialTheme.typography.labelSmall,
-                                color = LtMuted,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant,
                             )
                         }
                         LtSyncBadge(pwb.payment.syncStatus)
@@ -283,7 +283,7 @@ private fun LedgerRow(
                         Text(
                             "#${inst.installmentNumber} · ${inst.dueDate.formatFull()} · due ${inst.amount.peso()} · paid ${inst.amountPaid.peso()} · left ${inst.remaining.peso()}",
                             style    = MaterialTheme.typography.labelSmall,
-                            color    = LtText,
+                            color    = MaterialTheme.colorScheme.onSurface,
                             modifier = Modifier.weight(1f),
                         )
                         LtStatusBadge(inst.statusOn(today))

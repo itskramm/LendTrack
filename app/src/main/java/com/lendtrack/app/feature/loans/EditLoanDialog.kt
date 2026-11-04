@@ -43,7 +43,7 @@ fun EditLoanDialog(
 
     AlertDialog(
         onDismissRequest = onDismiss,
-        containerColor = LtSurface,
+        containerColor = MaterialTheme.colorScheme.surface,
         modifier = Modifier
             .fillMaxWidth(0.9f)
             .fillMaxHeight(0.9f),
@@ -403,7 +403,7 @@ private fun PreviewStatSmall(label: String, value: String) {
         Text(
             label,
             style = MaterialTheme.typography.labelSmall,
-            color = LtMuted,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
             fontSize = 10.sp
         )
         Spacer(Modifier.height(2.dp))

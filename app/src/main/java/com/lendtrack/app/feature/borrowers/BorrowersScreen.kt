@@ -39,7 +39,7 @@ fun BorrowersScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(LtBackground)
+            .background(MaterialTheme.colorScheme.background)
             .verticalScroll(rememberScrollState())
             .padding(horizontal = 24.dp, vertical = 18.dp),
     ) {
@@ -259,7 +259,7 @@ fun AddBorrowerDialog(
 private fun LtSectionLabel(text: String) {
     Text(
         text  = text,
-        style = MaterialTheme.typography.labelMedium.copy(color = LtMuted),
+        style = MaterialTheme.typography.labelMedium.copy(color = MaterialTheme.colorScheme.onSurfaceVariant),
         modifier = Modifier.padding(top = 4.dp),
     )
 }
@@ -273,7 +273,7 @@ fun LtFormField(
     onChange:   (String) -> Unit,
 ) {
     Column(modifier = modifier, verticalArrangement = Arrangement.spacedBy(3.dp)) {
-        Text(label, style = MaterialTheme.typography.labelSmall, color = LtMuted)
+        Text(label, style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
         OutlinedTextField(
             value         = value,
             onValueChange = onChange,
@@ -283,9 +283,9 @@ fun LtFormField(
             textStyle     = MaterialTheme.typography.bodyMedium,
             colors        = OutlinedTextFieldDefaults.colors(
                 focusedBorderColor      = LtRose,
-                unfocusedBorderColor    = LtDusty,
-                focusedContainerColor   = LtBackground,
-                unfocusedContainerColor = LtBackground,
+                unfocusedBorderColor    = MaterialTheme.colorScheme.outline,
+                focusedContainerColor   = MaterialTheme.colorScheme.surface,
+                unfocusedContainerColor = MaterialTheme.colorScheme.surface,
                 cursorColor             = LtRose,
             ),
         )

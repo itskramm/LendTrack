@@ -115,7 +115,7 @@ fun PaymentCalendarScreen(
                 ).forEach { (color, label) ->
                     Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(4.dp)) {
                         Box(modifier = Modifier.size(10.dp).clip(RoundedCornerShape(5.dp)).background(color))
-                        Text(label, style = MaterialTheme.typography.labelSmall, color = LtMuted)
+                        Text(label, style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
                     }
                 }
             }
@@ -258,9 +258,9 @@ private fun CalendarDayCell(
     onClick:      () -> Unit,
     modifier:     Modifier,
 ) {
-    val borderColor = if (isSelected) LtBurgundy else LtBlush
+    val borderColor = if (isSelected) LtBurgundy else MaterialTheme.colorScheme.surfaceVariant
     val borderWidth = if (isSelected) 2.dp else 1.dp
-    val bg          = if (isSelected) LtBlush else LtSurface
+    val bg          = if (isSelected) MaterialTheme.colorScheme.surfaceVariant else MaterialTheme.colorScheme.surface
 
     Box(
         modifier = modifier
@@ -278,7 +278,7 @@ private fun CalendarDayCell(
             Text(
                 text  = dayNum.toString(),
                 style = MaterialTheme.typography.labelSmall.copy(
-                    color      = if (isToday) LtRose else LtText,
+                    color      = if (isToday) LtRose else MaterialTheme.colorScheme.onSurface,
                     fontWeight = if (isToday) FontWeight.Bold else FontWeight.Normal,
                 ),
             )

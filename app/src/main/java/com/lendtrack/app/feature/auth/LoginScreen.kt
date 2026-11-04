@@ -57,8 +57,8 @@ fun LoginScreen(
                 .fillMaxWidth()
                 .padding(32.dp),
             shape  = RoundedCornerShape(24.dp),
-            colors = CardDefaults.cardColors(containerColor = LtSurface),
-            border = BorderStroke(1.dp, LtDusty),
+            colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
+            border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline),
             elevation = CardDefaults.cardElevation(defaultElevation = 8.dp),
         ) {
             Column(
@@ -77,7 +77,7 @@ fun LoginScreen(
                             .size(64.dp)
                             .clip(CircleShape)
                             .background(MaterialTheme.colorScheme.surfaceVariant)
-                            .border(2.dp, LtDusty, CircleShape),
+                            .border(2.dp, MaterialTheme.colorScheme.outline, CircleShape),
                         contentAlignment = Alignment.Center,
                     ) {
                         Text("♥", fontSize = 32.sp, color = LtRose)
@@ -148,7 +148,7 @@ fun LoginScreen(
                             Icon(
                                 if (showPass) Icons.Filled.VisibilityOff else Icons.Filled.Visibility,
                                 contentDescription = if (showPass) "Hide password" else "Show password",
-                                tint = LtDusty,
+                                tint = MaterialTheme.colorScheme.outline,
                             )
                         }
                     },
@@ -197,7 +197,7 @@ fun LoginScreen(
                 Text(
                     "Single-device access — account managed in the Firebase Console.",
                     style    = MaterialTheme.typography.bodySmall,
-                    color    = LtMuted,
+                    color    = MaterialTheme.colorScheme.onSurfaceVariant,
                     modifier = Modifier.fillMaxWidth(),
                 )
             }
@@ -208,11 +208,11 @@ fun LoginScreen(
 @Composable
 private fun outlinedFieldColors() = OutlinedTextFieldDefaults.colors(
     focusedBorderColor      = LtRose,
-    unfocusedBorderColor    = LtDusty,
+    unfocusedBorderColor    = MaterialTheme.colorScheme.outline,
     focusedLabelColor       = LtRose,
-    unfocusedLabelColor     = LtMuted,
-    focusedContainerColor   = LtBackground,
-    unfocusedContainerColor = LtBackground,
+    unfocusedLabelColor     = MaterialTheme.colorScheme.onSurfaceVariant,
+    focusedContainerColor   = MaterialTheme.colorScheme.surface,
+    unfocusedContainerColor = MaterialTheme.colorScheme.surface,
     cursorColor             = LtRose,
 )
 

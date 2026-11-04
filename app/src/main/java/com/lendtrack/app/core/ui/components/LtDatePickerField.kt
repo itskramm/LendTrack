@@ -48,13 +48,13 @@ fun LtDatePickerField(
     }.getOrNull()
 
     Column(modifier = modifier, verticalArrangement = Arrangement.spacedBy(3.dp)) {
-        Text(label, style = MaterialTheme.typography.labelSmall, color = LtMuted)
+        Text(label, style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
 
         Box(
             modifier = Modifier
                 .fillMaxWidth()
                 .clip(RoundedCornerShape(8.dp))
-                .border(1.dp, if (enabled) LtDusty else LtDivider, RoundedCornerShape(8.dp))
+                .border(1.dp, if (enabled) MaterialTheme.colorScheme.outline else MaterialTheme.colorScheme.outlineVariant, RoundedCornerShape(8.dp))
                 .clickable(enabled = enabled) { showPicker = true }
                 .padding(horizontal = 12.dp, vertical = 14.dp),
         ) {
@@ -66,12 +66,12 @@ fun LtDatePickerField(
                 Text(
                     text  = value.ifBlank { "Select date" },
                     style = MaterialTheme.typography.bodyMedium,
-                    color = if (value.isBlank()) LtMuted else LtText,
+                    color = if (value.isBlank()) MaterialTheme.colorScheme.onSurfaceVariant else MaterialTheme.colorScheme.onSurface,
                 )
                 Icon(
                     Icons.Filled.CalendarMonth,
                     contentDescription = "Pick date",
-                    tint     = LtDusty,
+                    tint     = MaterialTheme.colorScheme.outline,
                     modifier = Modifier.size(18.dp),
                 )
             }
@@ -101,15 +101,15 @@ fun LtDatePickerField(
             },
             dismissButton = {
                 TextButton(onClick = { showPicker = false }) {
-                    Text("Cancel", color = LtMuted)
+                    Text("Cancel", color = MaterialTheme.colorScheme.onSurfaceVariant)
                 }
             },
             colors = DatePickerDefaults.colors(
-                containerColor = LtSurface,
+                containerColor = MaterialTheme.colorScheme.surface,
                 titleContentColor = LtBurgundy,
                 headlineContentColor = LtBurgundy,
-                weekdayContentColor = LtMuted,
-                subheadContentColor = LtMuted,
+                weekdayContentColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                subheadContentColor = MaterialTheme.colorScheme.onSurfaceVariant,
                 selectedDayContainerColor = LtRose,
                 selectedDayContentColor = androidx.compose.ui.graphics.Color.White,
                 todayDateBorderColor = LtRose,
@@ -119,7 +119,7 @@ fun LtDatePickerField(
             DatePicker(
                 state = state,
                 colors = DatePickerDefaults.colors(
-                    containerColor = LtSurface,
+                    containerColor = MaterialTheme.colorScheme.surface,
                     selectedDayContainerColor = LtRose,
                     todayDateBorderColor = LtRose,
                     todayContentColor = LtRose,

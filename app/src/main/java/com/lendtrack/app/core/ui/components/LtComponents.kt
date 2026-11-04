@@ -48,8 +48,8 @@ fun LtStatCard(
                 ambientColor = LtShadow,
             ),
         shape = CardShape,
-        colors = CardDefaults.cardColors(containerColor = LtSurface),
-        border = BorderStroke(1.dp, LtCardBorder),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
+        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant),
     ) {
         Box(modifier = Modifier.padding(16.dp)) {
             Column {
@@ -61,14 +61,14 @@ fun LtStatCard(
                     Text(
                         text = label.uppercase(),
                         style = MaterialTheme.typography.labelMedium,
-                        color = LtMuted,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
                         letterSpacing = 0.5.sp,
                     )
                     if (icon != null) {
                         Icon(
                             imageVector = icon,
                             contentDescription = null,
-                            tint = LtDusty,
+                            tint = MaterialTheme.colorScheme.outline,
                             modifier = Modifier.size(18.dp),
                         )
                     }
@@ -84,14 +84,14 @@ fun LtStatCard(
                     Text(
                         text = subtitle,
                         style = MaterialTheme.typography.bodySmall,
-                        color = LtMuted,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
                     )
                 }
             }
             // Decorative heart — bottom-right, mirrors .hh
             Text(
                 text = "♥",
-                color = LtDusty,
+                color = MaterialTheme.colorScheme.outline,
                 fontSize = 14.sp,
                 modifier = Modifier.align(Alignment.BottomEnd),
             )
@@ -119,8 +119,8 @@ fun LtPanel(
                 ambientColor = Color(0x08783746),
             ),
         shape = PanelShape,
-        colors = CardDefaults.cardColors(containerColor = LtSurface),
-        border = BorderStroke(1.dp, LtCardBorder),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
+        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant),
     ) {
         Box {
             // Dashed inner border overlay
@@ -130,7 +130,7 @@ fun LtPanel(
                     .padding(5.dp)
                     .border(
                         width = 1.dp,
-                        color = LtBlush,
+                        color = MaterialTheme.colorScheme.surfaceVariant,
                         shape = RoundedCornerShape(13.dp),
                     ),
             ) {
@@ -152,13 +152,14 @@ fun LtPanel(
             
             // Corner ornaments — SVG-style vine/leaf decorations matching prototype
             // Top-left corner
+            val ornamentColor = MaterialTheme.colorScheme.outline
             Canvas(
                 modifier = Modifier
                     .size(34.dp)
                     .align(Alignment.TopStart)
                     .offset(x = 3.dp, y = 3.dp)
             ) {
-                drawCornerOrnament(LtDusty)
+                drawCornerOrnament(ornamentColor)
             }
             
             // Top-right corner (flipped horizontally)
@@ -168,7 +169,7 @@ fun LtPanel(
                     .align(Alignment.TopEnd)
                     .offset(x = (-3).dp, y = 3.dp)
             ) {
-                drawCornerOrnament(LtDusty, flipped = true)
+                drawCornerOrnament(ornamentColor, flipped = true)
             }
         }
     }
@@ -189,7 +190,7 @@ fun LtRibbon(title: String, modifier: Modifier = Modifier) {
         Text(
             text = title,
             style = MaterialTheme.typography.headlineSmall,
-            color = LtBackground,
+            color = Color.White,
         )
     }
 }
@@ -221,9 +222,9 @@ fun LtButton(
     small: Boolean = false,
     enabled: Boolean = true,
 ) {
-    val bgColor    = if (ghost) LtSurface else LtRose
+    val bgColor    = if (ghost) MaterialTheme.colorScheme.surface else LtRose
     val textColor  = if (ghost) LtBurgundy else Color.White
-    val borderColor = if (ghost) LtDusty else LtBurgundy
+    val borderColor = if (ghost) MaterialTheme.colorScheme.outline else LtBurgundy
 
     Button(
         onClick = onClick,
@@ -320,7 +321,7 @@ fun LtChip(
     modifier: Modifier = Modifier,
 ) {
     val bg     = if (selected) LtRose else Color.Transparent
-    val border = if (selected) LtRose else LtDusty
+    val border = if (selected) LtRose else MaterialTheme.colorScheme.outline
     val text   = if (selected) Color.White else LtBurgundy
 
     Box(
@@ -344,7 +345,7 @@ fun LtChip(
 fun LtDivider(modifier: Modifier = Modifier) {
     HorizontalDivider(
         modifier = modifier,
-        color = LtDivider,
+        color = MaterialTheme.colorScheme.outlineVariant,
         thickness = 1.dp,
     )
 }
@@ -372,7 +373,7 @@ fun LtNote(text: String, modifier: Modifier = Modifier) {
     Text(
         text = text,
         style = MaterialTheme.typography.bodySmall,
-        color = LtMuted,
+        color = MaterialTheme.colorScheme.onSurfaceVariant,
         modifier = modifier,
     )
 }
@@ -396,7 +397,7 @@ fun LtToast(message: String, visible: Boolean) {
                 .padding(horizontal = 18.dp, vertical = 10.dp),
             verticalAlignment = Alignment.CenterVertically,
         ) {
-            Text(text = message, color = LtBackground, style = MaterialTheme.typography.bodyMedium)
+            Text(text = message, color = Color.White, style = MaterialTheme.typography.bodyMedium)
         }
     }
 }
@@ -422,13 +423,13 @@ fun LtSearchField(
         shape = InputShape,
         colors = OutlinedTextFieldDefaults.colors(
             focusedBorderColor   = LtRose,
-            unfocusedBorderColor = LtDusty,
-            focusedContainerColor   = LtBackground,
-            unfocusedContainerColor = LtBackground,
+            unfocusedBorderColor = MaterialTheme.colorScheme.outline,
+            focusedContainerColor   = MaterialTheme.colorScheme.surface,
+            unfocusedContainerColor = MaterialTheme.colorScheme.surface,
             cursorColor = LtRose,
         ),
         leadingIcon = if (leadingIcon != null) ({
-            Icon(leadingIcon, contentDescription = null, tint = LtDusty, modifier = Modifier.size(18.dp))
+            Icon(leadingIcon, contentDescription = null, tint = MaterialTheme.colorScheme.outline, modifier = Modifier.size(18.dp))
         }) else null,
         textStyle = MaterialTheme.typography.bodyMedium,
     )
@@ -450,7 +451,7 @@ fun LtEmptyState(
         contentAlignment = Alignment.Center,
     ) {
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
-            Text("♥", fontSize = 32.sp, color = LtBlush)
+            Text("♥", fontSize = 32.sp, color = MaterialTheme.colorScheme.surfaceVariant)
             Spacer(Modifier.height(8.dp))
             LtNote(message)
         }

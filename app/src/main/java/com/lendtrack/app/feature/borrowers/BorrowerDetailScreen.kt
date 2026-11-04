@@ -74,7 +74,7 @@ fun BorrowerDetailScreen(
     if (viewModel.showDeleteDialog) {
         AlertDialog(
             onDismissRequest = { viewModel.dismissDelete() },
-            containerColor   = LtSurface,
+            containerColor   = MaterialTheme.colorScheme.surface,
             title            = { Text("Delete Borrower?", style = MaterialTheme.typography.headlineMedium) },
             text = {
                 Column {
@@ -107,14 +107,14 @@ fun BorrowerDetailScreen(
     }
 
     if (state.isLoading) {
-        Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+        Box(Modifier.fillMaxSize().background(MaterialTheme.colorScheme.background), contentAlignment = Alignment.Center) {
             CircularProgressIndicator(color = LtRose)
         }
         return
     }
 
     val borrower = state.borrower ?: run {
-        Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+        Box(Modifier.fillMaxSize().background(MaterialTheme.colorScheme.background), contentAlignment = Alignment.Center) {
             LtNote("Borrower not found.")
         }
         return
@@ -277,8 +277,8 @@ private fun ContactRow(icon: androidx.compose.ui.graphics.vector.ImageVector, te
         verticalAlignment     = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(6.dp),
     ) {
-        Icon(icon, contentDescription = null, tint = LtDusty, modifier = Modifier.size(16.dp))
-        Text(text, style = MaterialTheme.typography.bodyMedium, color = LtText)
+        Icon(icon, contentDescription = null, tint = MaterialTheme.colorScheme.outline, modifier = Modifier.size(16.dp))
+        Text(text, style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurface)
     }
 }
 
@@ -356,7 +356,7 @@ private fun LoanDetailCard(
             Spacer(Modifier.height(8.dp))
             LtDivider()
             Row(modifier = Modifier.fillMaxWidth().padding(horizontal = 8.dp, vertical = 4.dp)) {
-                Text("#",         style = MaterialTheme.typography.labelSmall, color = LtMuted, modifier = Modifier.width(28.dp))
+                Text("#",         style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.width(28.dp))
                 Text("Due",       style = MaterialTheme.typography.titleMedium.copy(fontSize = 13.sp), color = LtBurgundy, modifier = Modifier.weight(1f))
                 Text("Amount",    style = MaterialTheme.typography.titleMedium.copy(fontSize = 13.sp), color = LtBurgundy, modifier = Modifier.weight(1f))
                 Text("Paid",      style = MaterialTheme.typography.titleMedium.copy(fontSize = 13.sp), color = LtBurgundy, modifier = Modifier.weight(1f))
@@ -373,7 +373,7 @@ private fun LoanDetailCard(
                         .padding(horizontal = 8.dp, vertical = 8.dp),
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
-                    Text(inst.installmentNumber.toString(), style = MaterialTheme.typography.labelSmall, color = LtMuted, modifier = Modifier.width(28.dp))
+                    Text(inst.installmentNumber.toString(), style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.width(28.dp))
                     Text(inst.dueDate.formatShort(), style = MaterialTheme.typography.bodySmall, modifier = Modifier.weight(1f))
                     Text(inst.amount.peso(),         style = MaterialTheme.typography.bodySmall, modifier = Modifier.weight(1f))
                     Text(inst.amountPaid.peso(),     style = MaterialTheme.typography.bodySmall.copy(color = LtSage), modifier = Modifier.weight(1f))
@@ -394,7 +394,7 @@ private fun LoanFinancialItem(
     valueColor: Color = LtBurgundy,
 ) {
     Column(modifier = modifier) {
-        Text(label, style = MaterialTheme.typography.labelSmall, color = LtMuted)
+        Text(label, style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
         Spacer(Modifier.height(2.dp))
         Text(value, style = MaterialTheme.typography.titleSmall.copy(color = valueColor, fontWeight = FontWeight.SemiBold))
     }
