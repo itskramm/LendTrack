@@ -3,7 +3,9 @@ package com.lendtrack.app.data.repository
 import androidx.room.withTransaction
 import com.lendtrack.app.core.database.LendTrackDatabase
 import com.lendtrack.app.core.database.dao.InstallmentDao
+import com.lendtrack.app.core.database.dao.LatePenaltyDao
 import com.lendtrack.app.core.database.dao.LoanDao
+import com.lendtrack.app.core.database.dao.MonthlyInterestChargeDao
 import com.lendtrack.app.core.database.dao.PaymentDao
 import com.lendtrack.app.core.database.dao.SyncDao
 import com.lendtrack.app.core.database.entities.*
@@ -21,12 +23,14 @@ import javax.inject.Singleton
 
 @Singleton
 class PaymentRepository @Inject constructor(
-    private val db:             LendTrackDatabase,
-    private val paymentDao:     PaymentDao,
-    private val loanDao:        LoanDao,
-    private val installmentDao: InstallmentDao,
-    private val syncDao:        SyncDao,
-    private val syncTrigger:    SyncTrigger,
+    private val db:                       LendTrackDatabase,
+    private val paymentDao:               PaymentDao,
+    private val loanDao:                  LoanDao,
+    private val installmentDao:           InstallmentDao,
+    private val monthlyInterestChargeDao: MonthlyInterestChargeDao,
+    private val latePenaltyDao:           LatePenaltyDao,
+    private val syncDao:                  SyncDao,
+    private val syncTrigger:              SyncTrigger,
 ) {
     // ── Observation ───────────────────────────────────────────────────────────
 
@@ -51,6 +55,11 @@ class PaymentRepository @Inject constructor(
     /**
      * Preview how a payment will be allocated before the user confirms.
      * Returns allocation details without writing anything to the database.
+     * 
+     * Allocation priority:
+     * 1. Late penalties (oldest first)
+     * 2. Monthly interest charges (oldest first)
+     * 3. Installments (as currently implemented)
      */
     suspend fun previewPaymentAllocation(
         loanId:        String,
@@ -59,29 +68,88 @@ class PaymentRepository @Inject constructor(
         val loan = loanDao.getById(loanId)
             ?: throw PaymentValidationException("Loan not found.")
 
-        val installments = installmentDao.getByLoan(loanId)
-        val domainInstallments = installments.map { it.toDomain() }
-        val unpaid = domainInstallments.filter { it.remaining > 0 }
-
-        val totalRemaining = unpaid.sumOf { it.remaining }
-
         if (paymentAmount <= 0)
             throw PaymentValidationException("Payment amount must be greater than zero.")
+
+        // Get all unpaid items
+        val penalties = latePenaltyDao.getByLoan(loanId)
+            .map { it.toDomainPenalty() }
+            .filter { it.remaining > 0.005 }
+            .sortedBy { it.penaltyDate }
+
+        val charges = monthlyInterestChargeDao.getByLoan(loanId)
+            .map { it.toDomainCharge() }
+            .filter { it.remaining > 0.005 }
+            .sortedBy { it.chargeDate }
+
+        val installments = installmentDao.getByLoan(loanId)
+            .map { it.toDomain() }
+            .filter { it.remaining > 0.005 }
+
+        val totalRemaining = penalties.sumOf { it.remaining } +
+                           charges.sumOf { it.remaining } +
+                           installments.sumOf { it.remaining }
+
         if (paymentAmount > totalRemaining + 0.005)
             throw PaymentValidationException(
                 "Amount ₱${"%.2f".format(paymentAmount)} exceeds the loan balance of ₱${"%.2f".format(totalRemaining)}."
             )
 
-        val result = LoanCalculator.applyPayment("preview", paymentAmount, domainInstallments)
+        // Allocate payment following priority
+        var remaining = paymentAmount
+        val penaltyItems = mutableListOf<AllocationLineItem>()
+        val chargeItems = mutableListOf<AllocationLineItem>()
+        val installmentItems = mutableListOf<AllocationLineItem>()
 
-        val lineItems = result.allocations.map { alloc ->
-            val inst = domainInstallments.first { it.id == alloc.installmentId }
-            AllocationLineItem(
-                installmentNumber = inst.installmentNumber,
-                dueDate           = inst.dueDate,
-                allocatedAmount   = alloc.allocatedAmount,
-                remainingAfter    = inst.remaining - alloc.allocatedAmount,
+        // 1. Apply to penalties first
+        for (penalty in penalties) {
+            if (remaining <= 0.005) break
+            val allocatedAmount = minOf(remaining, penalty.remaining)
+            penaltyItems.add(
+                AllocationLineItem(
+                    installmentNumber = 0, // penalties don't have installment numbers
+                    dueDate           = penalty.penaltyDate,
+                    allocatedAmount   = allocatedAmount,
+                    remainingAfter    = penalty.remaining - allocatedAmount,
+                    description       = "Late Penalty"
+                )
             )
+            remaining -= allocatedAmount
+        }
+
+        // 2. Apply to monthly charges
+        for (charge in charges) {
+            if (remaining <= 0.005) break
+            val allocatedAmount = minOf(remaining, charge.remaining)
+            chargeItems.add(
+                AllocationLineItem(
+                    installmentNumber = 0, // charges don't have installment numbers
+                    dueDate           = charge.chargeDate,
+                    allocatedAmount   = allocatedAmount,
+                    remainingAfter    = charge.remaining - allocatedAmount,
+                    description       = "Monthly Interest"
+                )
+            )
+            remaining -= allocatedAmount
+        }
+
+        // 3. Apply to installments
+        if (remaining > 0.005) {
+            val domainInstallments = installments.filter { it.remaining > 0 }
+            val result = LoanCalculator.applyPayment("preview", remaining, domainInstallments)
+            
+            result.allocations.forEach { alloc ->
+                val inst = domainInstallments.first { it.id == alloc.installmentId }
+                installmentItems.add(
+                    AllocationLineItem(
+                        installmentNumber = inst.installmentNumber,
+                        dueDate           = inst.dueDate,
+                        allocatedAmount   = alloc.allocatedAmount,
+                        remainingAfter    = inst.remaining - alloc.allocatedAmount,
+                        description       = "Installment #${inst.installmentNumber}"
+                    )
+                )
+            }
         }
 
         return PaymentPreview(
@@ -89,8 +157,10 @@ class PaymentRepository @Inject constructor(
             paymentAmount    = paymentAmount,
             totalRemaining   = totalRemaining,
             balanceAfter     = totalRemaining - paymentAmount,
-            allocationItems  = lineItems,
-            overpayment      = result.overpayment,
+            penaltyItems     = penaltyItems,
+            chargeItems      = chargeItems,
+            installmentItems = installmentItems,
+            overpayment      = maxOf(0.0, remaining),
         )
     }
 
@@ -99,8 +169,8 @@ class PaymentRepository @Inject constructor(
      *
      * Atomically:
      * 1. Insert the payment record.
-     * 2. Insert payment allocation records (one per installment touched).
-     * 3. Update installment amountPaid values.
+     * 2. Apply payment following priority: penalties → charges → installments.
+     * 3. Update amountPaid values for penalties, charges, and installments.
      * 4. Mark the loan as COMPLETED if balance is fully cleared.
      * 5. Insert a sync operation into the outbox.
      * 6. Insert an activity log entry.
@@ -133,9 +203,23 @@ class PaymentRepository @Inject constructor(
         if (loan.status != LoanStatus.ACTIVE)
             throw PaymentValidationException("Cannot record a payment on a ${loan.status.name.lowercase()} loan.")
 
+        // Get all unpaid items in priority order
+        val penalties = latePenaltyDao.getByLoan(loanId)
+            .map { it.toDomainPenalty() }
+            .filter { it.remaining > 0.005 }
+            .sortedBy { it.penaltyDate }
+
+        val charges = monthlyInterestChargeDao.getByLoan(loanId)
+            .map { it.toDomainCharge() }
+            .filter { it.remaining > 0.005 }
+            .sortedBy { it.chargeDate }
+
         val installments = installmentDao.getByLoan(loanId)
         val domainInstallments = installments.map { it.toDomain() }
-        val totalRemaining = domainInstallments.sumOf { it.remaining }
+        
+        val totalRemaining = penalties.sumOf { it.remaining } +
+                           charges.sumOf { it.remaining } +
+                           domainInstallments.sumOf { it.remaining }
 
         if (amount > totalRemaining + 0.005)
             throw PaymentValidationException(
@@ -145,7 +229,49 @@ class PaymentRepository @Inject constructor(
         val now       = LocalDateTime.now()
         val paymentId = UUID.randomUUID().toString()
 
-        val allocationResult = LoanCalculator.applyPayment(paymentId, amount, domainInstallments)
+        // Allocate payment following priority
+        var remaining = amount
+        val updatedPenalties = mutableListOf<LatePenalty>()
+        val updatedCharges = mutableListOf<MonthlyInterestCharge>()
+        var updatedInstallments = domainInstallments
+
+        // 1. Apply to penalties first (oldest first)
+        for (penalty in penalties) {
+            if (remaining <= 0.005) break
+            val allocatedAmount = minOf(remaining, penalty.remaining)
+            val newAmountPaid = penalty.amountPaid + allocatedAmount
+            val isPaid = newAmountPaid >= penalty.amount - 0.005
+            
+            updatedPenalties.add(
+                penalty.copy(
+                    amountPaid = newAmountPaid,
+                    isPaid = isPaid
+                )
+            )
+            remaining -= allocatedAmount
+        }
+
+        // 2. Apply to monthly charges (oldest first)
+        for (charge in charges) {
+            if (remaining <= 0.005) break
+            val allocatedAmount = minOf(remaining, charge.remaining)
+            val newAmountPaid = charge.amountPaid + allocatedAmount
+            val isPaid = newAmountPaid >= charge.amount - 0.005
+            
+            updatedCharges.add(
+                charge.copy(
+                    amountPaid = newAmountPaid,
+                    isPaid = isPaid
+                )
+            )
+            remaining -= allocatedAmount
+        }
+
+        // 3. Apply to installments
+        if (remaining > 0.005) {
+            val allocationResult = LoanCalculator.applyPayment(paymentId, remaining, domainInstallments)
+            updatedInstallments = allocationResult.updatedInstallments
+        }
 
         // Build entities
         val paymentEntity = PaymentEntity(
@@ -162,23 +288,26 @@ class PaymentRepository @Inject constructor(
             syncStatus     = SyncStatus.PENDING,
         )
 
-        val allocationEntities = allocationResult.allocations.map { alloc ->
-            PaymentAllocationEntity(
-                id              = alloc.id,
-                paymentId       = paymentId,
-                installmentId   = alloc.installmentId,
-                allocatedAmount = alloc.allocatedAmount,
-                createdAt       = now,
-            )
+        // Convert updated entities
+        val penaltyEntities = updatedPenalties.map { p ->
+            val original = latePenaltyDao.getById(p.id)!!
+            original.copy(amountPaid = p.amountPaid, isPaid = p.isPaid)
         }
 
-        val updatedInstallmentEntities = allocationResult.updatedInstallments.map { domain ->
+        val chargeEntities = updatedCharges.map { c ->
+            val original = monthlyInterestChargeDao.getById(c.id)!!
+            original.copy(amountPaid = c.amountPaid, isPaid = c.isPaid)
+        }
+
+        val installmentEntities = updatedInstallments.map { domain ->
             val original = installments.first { it.id == domain.id }
             original.copy(amountPaid = domain.amountPaid)
         }
 
         // Check if loan is now fully paid
-        val newBalance = allocationResult.updatedInstallments.sumOf { it.remaining }
+        val newBalance = updatedInstallments.sumOf { it.remaining } +
+                        updatedPenalties.sumOf { it.remaining } +
+                        updatedCharges.sumOf { it.remaining }
         val loanCompleted = newBalance <= 0.005
 
         val syncOp = SyncOperationEntity(
@@ -201,8 +330,16 @@ class PaymentRepository @Inject constructor(
         // Atomic write
         db.withTransaction {
             paymentDao.insertPayment(paymentEntity)
-            paymentDao.insertAllocations(allocationEntities)
-            installmentDao.updateAll(updatedInstallmentEntities)
+            
+            if (penaltyEntities.isNotEmpty()) {
+                latePenaltyDao.updateAll(penaltyEntities)
+            }
+            if (chargeEntities.isNotEmpty()) {
+                monthlyInterestChargeDao.updateAll(chargeEntities)
+            }
+            
+            installmentDao.updateAll(installmentEntities)
+            
             if (loanCompleted) {
                 loanDao.updateStatus(loanId, LoanStatus.COMPLETED, now.toString())
                 syncDao.insertActivity(
@@ -363,17 +500,45 @@ class PaymentRepository @Inject constructor(
         amountPaid        = amountPaid,
         syncStatus        = syncStatus,
     )
+
+    private fun LatePenaltyEntity.toDomainPenalty() = LatePenalty(
+        id            = id,
+        loanId        = loanId,
+        borrowerId    = borrowerId,
+        installmentId = installmentId,
+        amount        = amount,
+        amountPaid    = amountPaid,
+        penaltyDate   = penaltyDate,
+        reason        = reason,
+        isPaid        = isPaid,
+        createdAt     = createdAt,
+        syncStatus    = syncStatus,
+    )
+
+    private fun MonthlyInterestChargeEntity.toDomainCharge() = MonthlyInterestCharge(
+        id         = id,
+        loanId     = loanId,
+        borrowerId = borrowerId,
+        amount     = amount,
+        amountPaid = amountPaid,
+        chargeDate = chargeDate,
+        isPaid     = isPaid,
+        createdAt  = createdAt,
+        syncStatus = syncStatus,
+    )
 }
 
 // ── Payment preview models ────────────────────────────────────────────────────
 
 data class PaymentPreview(
-    val loanId:          String,
-    val paymentAmount:   Double,
-    val totalRemaining:  Double,
-    val balanceAfter:    Double,
-    val allocationItems: List<AllocationLineItem>,
-    val overpayment:     Double,
+    val loanId:           String,
+    val paymentAmount:    Double,
+    val totalRemaining:   Double,
+    val balanceAfter:     Double,
+    val penaltyItems:     List<AllocationLineItem>,
+    val chargeItems:      List<AllocationLineItem>,
+    val installmentItems: List<AllocationLineItem>,
+    val overpayment:      Double,
 )
 
 data class AllocationLineItem(
@@ -381,6 +546,7 @@ data class AllocationLineItem(
     val dueDate:           java.time.LocalDate,
     val allocatedAmount:   Double,
     val remainingAfter:    Double,
+    val description:       String = "Installment",
 )
 
 class PaymentValidationException(message: String) : Exception(message)

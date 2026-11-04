@@ -215,18 +215,27 @@ fun PaymentAllocationPreviewPanel(
         Text("Allocation Detail", style = MaterialTheme.typography.headlineMedium)
         Spacer(Modifier.height(8.dp))
 
-        // Allocation table header
-        Row(modifier = Modifier.fillMaxWidth().padding(horizontal = 8.dp, vertical = 4.dp)) {
-            Text("Installment", style = MaterialTheme.typography.titleMedium.copy(fontSize = 12.sp), color = LtBurgundy, modifier = Modifier.weight(0.5f))
-            Text("Due Date",    style = MaterialTheme.typography.titleMedium.copy(fontSize = 12.sp), color = LtBurgundy, modifier = Modifier.weight(1f))
-            Text("Applied",     style = MaterialTheme.typography.titleMedium.copy(fontSize = 12.sp), color = LtBurgundy, modifier = Modifier.weight(1f))
-            Text("Remaining",   style = MaterialTheme.typography.titleMedium.copy(fontSize = 12.sp), color = LtBurgundy, modifier = Modifier.weight(1f))
+        // Show penalties first if any
+        if (preview.penaltyItems.isNotEmpty()) {
+            Text("Late Penalties", style = MaterialTheme.typography.titleMedium, color = LtBurgundy)
+            Spacer(Modifier.height(4.dp))
+            AllocationTable(preview.penaltyItems, showInstallmentNumber = false)
+            Spacer(Modifier.height(12.dp))
         }
-        LtDivider()
 
-        preview.allocationItems.forEach { item ->
-            AllocationRow(item)
-            LtDivider()
+        // Show monthly charges if any
+        if (preview.chargeItems.isNotEmpty()) {
+            Text("Monthly Interest Charges", style = MaterialTheme.typography.titleMedium, color = LtBurgundy)
+            Spacer(Modifier.height(4.dp))
+            AllocationTable(preview.chargeItems, showInstallmentNumber = false)
+            Spacer(Modifier.height(12.dp))
+        }
+
+        // Show installments if any
+        if (preview.installmentItems.isNotEmpty()) {
+            Text("Installments", style = MaterialTheme.typography.titleMedium, color = LtBurgundy)
+            Spacer(Modifier.height(4.dp))
+            AllocationTable(preview.installmentItems, showInstallmentNumber = true)
         }
 
         Spacer(Modifier.height(16.dp))
@@ -252,15 +261,40 @@ fun PaymentAllocationPreviewPanel(
 }
 
 @Composable
-private fun AllocationRow(item: AllocationLineItem) {
+private fun AllocationTable(items: List<AllocationLineItem>, showInstallmentNumber: Boolean) {
+    // Allocation table header
+    Row(modifier = Modifier.fillMaxWidth().padding(horizontal = 8.dp, vertical = 4.dp)) {
+        if (showInstallmentNumber) {
+            Text("Installment", style = MaterialTheme.typography.titleMedium.copy(fontSize = 12.sp), color = LtBurgundy, modifier = Modifier.weight(0.5f))
+        }
+        Text("Type/Date",   style = MaterialTheme.typography.titleMedium.copy(fontSize = 12.sp), color = LtBurgundy, modifier = Modifier.weight(1f))
+        Text("Applied",     style = MaterialTheme.typography.titleMedium.copy(fontSize = 12.sp), color = LtBurgundy, modifier = Modifier.weight(1f))
+        Text("Remaining",   style = MaterialTheme.typography.titleMedium.copy(fontSize = 12.sp), color = LtBurgundy, modifier = Modifier.weight(1f))
+    }
+    LtDivider()
+
+    items.forEach { item ->
+        AllocationRow(item, showInstallmentNumber)
+        LtDivider()
+    }
+}
+
+@Composable
+private fun AllocationRow(item: AllocationLineItem, showInstallmentNumber: Boolean = true) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 8.dp, vertical = 8.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        Text("#${item.installmentNumber}", style = MaterialTheme.typography.bodySmall, modifier = Modifier.weight(0.5f))
-        Text(item.dueDate.formatShort(),   style = MaterialTheme.typography.bodySmall, modifier = Modifier.weight(1f))
+        if (showInstallmentNumber) {
+            Text("#${item.installmentNumber}", style = MaterialTheme.typography.bodySmall, modifier = Modifier.weight(0.5f))
+        }
+        Text(
+            if (showInstallmentNumber) item.dueDate.formatShort() else item.description,
+            style = MaterialTheme.typography.bodySmall,
+            modifier = Modifier.weight(1f)
+        )
         Text(item.allocatedAmount.peso(),  style = MaterialTheme.typography.bodySmall.copy(fontWeight = FontWeight.SemiBold, color = LtSage), modifier = Modifier.weight(1f))
         Text(item.remainingAfter.peso(),   style = MaterialTheme.typography.bodySmall.copy(color = if (item.remainingAfter <= 0) LtSage else LtBurgundy), modifier = Modifier.weight(1f))
     }

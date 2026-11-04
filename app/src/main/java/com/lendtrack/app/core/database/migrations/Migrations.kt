@@ -164,3 +164,22 @@ val MIGRATION_4_5 = object : Migration(4, 5) {
         db.execSQL("CREATE INDEX index_late_penalties_penalty_date ON late_penalties(penalty_date)")
     }
 }
+
+/**
+ * MIGRATION 5 → 6
+ *
+ * Adds payment allocation tracking for monthly charges and late penalties:
+ * - Adds amount_paid column to monthly_interest_charges table
+ * - Adds amount_paid column to late_penalties table
+ *
+ * All existing records default to 0.0 (unpaid).
+ */
+val MIGRATION_5_6 = object : Migration(5, 6) {
+    override fun migrate(db: SupportSQLiteDatabase) {
+        // Add amount_paid to monthly_interest_charges
+        db.execSQL("ALTER TABLE monthly_interest_charges ADD COLUMN amount_paid REAL NOT NULL DEFAULT 0.0")
+        
+        // Add amount_paid to late_penalties
+        db.execSQL("ALTER TABLE late_penalties ADD COLUMN amount_paid REAL NOT NULL DEFAULT 0.0")
+    }
+}

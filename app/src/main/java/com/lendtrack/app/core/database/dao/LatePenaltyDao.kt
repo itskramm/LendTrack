@@ -16,6 +16,9 @@ interface LatePenaltyDao {
     @Update
     suspend fun update(penalty: LatePenaltyEntity)
 
+    @Update
+    suspend fun updateAll(penalties: List<LatePenaltyEntity>)
+
     @Query("SELECT * FROM late_penalties WHERE id = :id")
     suspend fun getById(id: String): LatePenaltyEntity?
 
@@ -39,24 +42,21 @@ interface LatePenaltyDao {
     suspend fun getPenaltyForInstallment(installmentId: String): LatePenaltyEntity?
 
     @Query("""
-        SELECT COALESCE(SUM(amount), 0.0)
+        SELECT COALESCE(SUM(amount - amount_paid), 0.0)
         FROM late_penalties
         WHERE loan_id = :loanId
-          AND is_paid = 0
     """)
     suspend fun getUnpaidTotal(loanId: String): Double
 
     @Query("""
-        SELECT COALESCE(SUM(amount), 0.0)
+        SELECT COALESCE(SUM(amount - amount_paid), 0.0)
         FROM late_penalties
-        WHERE is_paid = 0
     """)
     fun observeTotalUnpaid(): Flow<Double>
 
     @Query("""
-        SELECT COALESCE(SUM(amount), 0.0)
+        SELECT COALESCE(SUM(amount - amount_paid), 0.0)
         FROM late_penalties
-        WHERE is_paid = 0
     """)
     suspend fun getTotalUnpaid(): Double
 
@@ -71,7 +71,7 @@ interface LatePenaltyDao {
 
     @Query("""
         SELECT * FROM late_penalties
-        WHERE is_paid = 0
+        WHERE amount - amount_paid > 0.01
         ORDER BY penalty_date ASC
     """)
     suspend fun getAllUnpaid(): List<LatePenaltyEntity>

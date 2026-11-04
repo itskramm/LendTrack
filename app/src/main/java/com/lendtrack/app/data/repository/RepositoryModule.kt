@@ -41,11 +41,13 @@ object RepositoryModule {
     @Provides
     @Singleton
     fun providePaymentRepository(
-        db:             LendTrackDatabase,
-        paymentDao:     PaymentDao,
-        loanDao:        LoanDao,
-        installmentDao: InstallmentDao,
-        syncDao:        SyncDao,
-        syncTrigger:    SyncTrigger,
-    ): PaymentRepository = PaymentRepository(db, paymentDao, loanDao, installmentDao, syncDao, syncTrigger)
+        db:                       LendTrackDatabase,
+        paymentDao:               PaymentDao,
+        loanDao:                  LoanDao,
+        installmentDao:           InstallmentDao,
+        monthlyInterestChargeDao: MonthlyInterestChargeDao,
+        latePenaltyDao:           LatePenaltyDao,
+        syncDao:                  SyncDao,
+        syncTrigger:              SyncTrigger,
+    ): PaymentRepository = PaymentRepository(db, paymentDao, loanDao, installmentDao, monthlyInterestChargeDao, latePenaltyDao, syncDao, syncTrigger)
 }

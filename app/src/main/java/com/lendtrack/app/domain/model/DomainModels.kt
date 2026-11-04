@@ -197,6 +197,22 @@ data class PaymentAllocation(
     val createdAt:       LocalDateTime = LocalDateTime.now(),
 )
 
+data class PenaltyPaymentAllocation(
+    val id:              String = UUID.randomUUID().toString(),
+    val paymentId:       String,
+    val penaltyId:       String,
+    val allocatedAmount: Double,
+    val createdAt:       LocalDateTime = LocalDateTime.now(),
+)
+
+data class ChargePaymentAllocation(
+    val id:              String = UUID.randomUUID().toString(),
+    val paymentId:       String,
+    val chargeId:        String,
+    val allocatedAmount: Double,
+    val createdAt:       LocalDateTime = LocalDateTime.now(),
+)
+
 data class LoanAdjustment(
     val id:               String = UUID.randomUUID().toString(),
     val loanId:           String,
@@ -283,11 +299,14 @@ data class MonthlyInterestCharge(
     val loanId:     String,
     val borrowerId: String,
     val amount:     Double,
+    val amountPaid: Double = 0.0,
     val chargeDate: LocalDate,
     val isPaid:     Boolean = false,
     val createdAt:  LocalDateTime = LocalDateTime.now(),
     val syncStatus: SyncStatus = SyncStatus.PENDING,
-)
+) {
+    val remaining: Double get() = maxOf(0.0, amount - amountPaid)
+}
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Late Penalty
@@ -299,12 +318,15 @@ data class LatePenalty(
     val borrowerId:    String,
     val installmentId: String,
     val amount:        Double,
+    val amountPaid:    Double = 0.0,
     val penaltyDate:   LocalDate,
     val reason:        String = "Overdue payment",
     val isPaid:        Boolean = false,
     val createdAt:     LocalDateTime = LocalDateTime.now(),
     val syncStatus:    SyncStatus = SyncStatus.PENDING,
-)
+) {
+    val remaining: Double get() = maxOf(0.0, amount - amountPaid)
+}
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Loan Balance Breakdown

@@ -16,6 +16,9 @@ interface MonthlyInterestChargeDao {
     @Update
     suspend fun update(charge: MonthlyInterestChargeEntity)
 
+    @Update
+    suspend fun updateAll(charges: List<MonthlyInterestChargeEntity>)
+
     @Query("SELECT * FROM monthly_interest_charges WHERE id = :id")
     suspend fun getById(id: String): MonthlyInterestChargeEntity?
 
@@ -37,24 +40,21 @@ interface MonthlyInterestChargeDao {
     suspend fun getChargeForMonth(loanId: String, yearMonth: String): MonthlyInterestChargeEntity?
 
     @Query("""
-        SELECT COALESCE(SUM(amount), 0.0)
+        SELECT COALESCE(SUM(amount - amount_paid), 0.0)
         FROM monthly_interest_charges
         WHERE loan_id = :loanId
-          AND is_paid = 0
     """)
     suspend fun getUnpaidTotal(loanId: String): Double
 
     @Query("""
-        SELECT COALESCE(SUM(amount), 0.0)
+        SELECT COALESCE(SUM(amount - amount_paid), 0.0)
         FROM monthly_interest_charges
-        WHERE is_paid = 0
     """)
     fun observeTotalUnpaid(): Flow<Double>
 
     @Query("""
-        SELECT COALESCE(SUM(amount), 0.0)
+        SELECT COALESCE(SUM(amount - amount_paid), 0.0)
         FROM monthly_interest_charges
-        WHERE is_paid = 0
     """)
     suspend fun getTotalUnpaid(): Double
 
@@ -69,7 +69,7 @@ interface MonthlyInterestChargeDao {
 
     @Query("""
         SELECT * FROM monthly_interest_charges
-        WHERE is_paid = 0
+        WHERE amount - amount_paid > 0.01
         ORDER BY charge_date ASC
     """)
     suspend fun getAllUnpaid(): List<MonthlyInterestChargeEntity>
