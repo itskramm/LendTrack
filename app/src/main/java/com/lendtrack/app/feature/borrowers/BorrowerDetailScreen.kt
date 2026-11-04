@@ -187,7 +187,7 @@ fun BorrowerDetailScreen(
                     modifier            = Modifier
                         .clip(CardShape)
                         .background(MaterialTheme.colorScheme.surfaceVariant)
-                        .border(1.dp, LtDusty, CardShape)
+                        .border(1.dp, MaterialTheme.colorScheme.outline, CardShape)
                         .padding(16.dp),
                 ) {
                     Text("Outstanding",  style = MaterialTheme.typography.labelMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
@@ -303,7 +303,7 @@ private fun LoanDetailCard(
                 LoanStatus.CANCELLED -> Box(
                     modifier = Modifier
                         .clip(BadgeShape)
-                        .background(LtMuted)
+                        .background(MaterialTheme.colorScheme.onSurfaceVariant)
                         .padding(horizontal = 10.dp, vertical = 2.dp),
                 ) { Text("Cancelled", style = MaterialTheme.typography.labelSmall, color = Color.White) }
             }
