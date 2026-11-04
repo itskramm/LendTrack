@@ -6,6 +6,7 @@ import com.lendtrack.app.core.database.dao.LatePenaltyDao
 import com.lendtrack.app.core.database.dao.MonthlyInterestChargeDao
 import com.lendtrack.app.core.database.dao.SyncDao
 import com.lendtrack.app.core.database.entities.*
+import com.lendtrack.app.core.preferences.ThemePreferences
 import com.lendtrack.app.core.sync.NetworkMonitor
 import com.lendtrack.app.data.repository.BorrowerRepository
 import com.lendtrack.app.data.repository.LoanRepository
@@ -13,6 +14,7 @@ import com.lendtrack.app.data.repository.PaymentRepository
 import com.lendtrack.app.domain.model.*
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.launch
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import javax.inject.Inject
@@ -26,6 +28,7 @@ class DashboardViewModel @Inject constructor(
     private val networkMonitor: NetworkMonitor,
     private val monthlyInterestChargeDao: MonthlyInterestChargeDao,
     private val latePenaltyDao: LatePenaltyDao,
+    private val themePreferences: ThemePreferences,
 ) : ViewModel() {
 
     private val today    = LocalDate.now()
@@ -128,6 +131,31 @@ class DashboardViewModel @Inject constructor(
     val overdueAmount: StateFlow<Double> = overdueInstallments
         .map { list -> list.sumOf { it.installment.remaining } }
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), 0.0)
+
+    // ── Theme ─────────────────────────────────────────────────────────────────
+
+    /** True when dark theme is active, false for light theme. */
+    val isDarkTheme: StateFlow<Boolean> = themePreferences.themeMode
+        .map { mode ->
+            when (mode) {
+                ThemePreferences.ThemeMode.DARK -> true
+                ThemePreferences.ThemeMode.LIGHT -> false
+                ThemePreferences.ThemeMode.SYSTEM -> false // Default to light for SYSTEM
+            }
+        }
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), false)
+
+    /** Toggle between LIGHT and DARK theme modes. */
+    fun toggleTheme() {
+        viewModelScope.launch {
+            val currentMode = themePreferences.themeMode.first()
+            val newMode = when (currentMode) {
+                ThemePreferences.ThemeMode.DARK -> ThemePreferences.ThemeMode.LIGHT
+                else -> ThemePreferences.ThemeMode.DARK
+            }
+            themePreferences.setThemeMode(newMode)
+        }
+    }
 }
 
 // ── Shared data classes ───────────────────────────────────────────────────────
