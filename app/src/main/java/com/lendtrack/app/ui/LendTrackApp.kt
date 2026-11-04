@@ -393,24 +393,45 @@ fun LtTopBar(
             }
         }
         
-        // Zelliyah branding on the left
-        Column(
-            horizontalAlignment = Alignment.Start,
-            verticalArrangement = Arrangement.spacedBy(2.dp),
+        // Zelliyah branding on the left with ribbon
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
         ) {
-            Text(
-                "Zelliyah",
-                style = MaterialTheme.typography.headlineLarge.copy(
-                    fontFamily = GreatVibes,
-                    fontSize   = 32.sp,
-                ),
-                color = LtRose,
-            )
-            Text(
-                "Lending Management",
-                style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-            )
+            Column(
+                horizontalAlignment = Alignment.Start,
+                verticalArrangement = Arrangement.spacedBy(2.dp),
+            ) {
+                Text(
+                    "Zelliyah",
+                    style = MaterialTheme.typography.headlineLarge.copy(
+                        fontFamily = GreatVibes,
+                        fontSize   = 32.sp,
+                    ),
+                    color = LtRose,
+                )
+                Text(
+                    "Lending Management",
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                )
+            }
+            
+            // Decorative ribbon
+            Box(
+                modifier = Modifier
+                    .size(width = 60.dp, height = 36.dp)
+                    .clip(RoundedCornerShape(4.dp))
+                    .background(LtRose.copy(alpha = 0.15f))
+                    .border(1.dp, LtRose.copy(alpha = 0.3f), RoundedCornerShape(4.dp)),
+                contentAlignment = Alignment.Center,
+            ) {
+                Text(
+                    "♥",
+                    fontSize = 18.sp,
+                    color = LtRose,
+                )
+            }
         }
         
         Spacer(modifier = Modifier.weight(1f))
@@ -420,7 +441,7 @@ fun LtTopBar(
             horizontalAlignment = Alignment.End,
         ) {
             Text(
-                "$greeting, Lender!",
+                "$greeting, Zelliyah!",
                 style = MaterialTheme.typography.bodyMedium.copy(
                     fontWeight = FontWeight.Medium,
                 ),
