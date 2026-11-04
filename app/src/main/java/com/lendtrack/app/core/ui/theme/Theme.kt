@@ -36,19 +36,19 @@ private val LendTrackColorScheme = lightColorScheme(
     errorContainer     = Color(0xFFFFDAD6),
     onErrorContainer   = Color(0xFF410002),
 
-    background         = LtBackground,
-    onBackground       = LtText,
-    surface            = LtSurface,
-    onSurface          = LtText,
-    surfaceVariant     = LtBlush,
-    onSurfaceVariant   = LtMuted,
+    background         = Color(0xFF2A2A2A), // Dark gray background
+    onBackground       = Color(0xFFE5E5E5), // Light text
+    surface            = Color(0xFF3A3A3A), // Slightly lighter gray
+    onSurface          = Color(0xFFE5E5E5), // Light text
+    surfaceVariant     = Color(0xFF4A4A4A), // Even lighter for elevation
+    onSurfaceVariant   = Color(0xFFD0D0D0),
 
     outline            = LtDusty,
     outlineVariant     = LtDivider,
 
-    inverseSurface     = LtBurgundy,
-    inverseOnSurface   = LtOnInverse,
-    inversePrimary     = LtBlush,
+    inverseSurface     = Color(0xFFE5E5E5),
+    inverseOnSurface   = Color(0xFF2A2A2A),
+    inversePrimary     = LtRose,
 
     scrim              = LtScrim,
 )

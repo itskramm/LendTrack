@@ -51,6 +51,9 @@ fun DashboardScreen(
     val overdueAmount        by viewModel.overdueAmount.collectAsStateWithLifecycle()
 
     val isTabletLandscape = LocalConfiguration.current.screenWidthDp >= 900
+    
+    // Theme toggle state
+    val isDarkTheme by viewModel.isDarkTheme.collectAsStateWithLifecycle()
 
     Column(
         modifier = Modifier
@@ -60,6 +63,25 @@ fun DashboardScreen(
             .padding(horizontal = 24.dp, vertical = 18.dp),
         verticalArrangement = Arrangement.spacedBy(18.dp),
     ) {
+        // ── Theme Toggle Button ─────────────────────────────────────────────
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.End,
+        ) {
+            IconButton(
+                onClick = { viewModel.toggleTheme() },
+                modifier = Modifier
+                    .clip(CircleShape)
+                    .background(MaterialTheme.colorScheme.surfaceVariant),
+            ) {
+                Icon(
+                    imageVector = if (isDarkTheme) Icons.Filled.LightMode else Icons.Filled.DarkMode,
+                    contentDescription = if (isDarkTheme) "Switch to Light Mode" else "Switch to Dark Mode",
+                    tint = MaterialTheme.colorScheme.primary,
+                )
+            }
+        }
+        
         // ── Sync status banner (when there are pending operations) ──────────
         if (pendingSyncCount > 0) {
             LtSyncBanner(pendingCount = pendingSyncCount)
