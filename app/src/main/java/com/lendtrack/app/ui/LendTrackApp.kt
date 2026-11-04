@@ -25,10 +25,12 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.lendtrack.app.R
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavGraph.Companion.findStartDestination
@@ -435,19 +437,21 @@ fun LtTopBar(
             Text(
                 "$greeting, Zelliyah!",
                 style = MaterialTheme.typography.bodyMedium.copy(
-                    fontWeight = FontWeight.Medium,
+                    fontFamily = GreatVibes,
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 32.sp,
                 ),
-                color = MaterialTheme.colorScheme.onBackground,
+                color = Color(0xFFE91E63),
             )
             
             // Ribbon badge next to greeting
             Box(contentAlignment = Alignment.Center) {
                 RibbonBadge(color = MaterialTheme.colorScheme.primary)
                 Icon(
-                    Icons.Filled.Favorite,
-                    contentDescription = null,
-                    tint = Color.White,
-                    modifier = Modifier.size(14.dp).offset(x = (-3).dp),
+                    painterResource(R.drawable.ic_pink_ribbon),
+                    contentDescription = "Ribbon",
+                    tint = null,
+                    modifier = Modifier.size(18.dp).offset(x = (-3).dp),
                 )
             }
         }
