@@ -74,18 +74,18 @@ private val DarkColorScheme = darkColorScheme(
     errorContainer     = Color(0xFF93000A),
     onErrorContainer   = Color(0xFFFFDAD6),
 
-    background         = Color(0xFF121212), // Very dark background like in image
+    background         = Color(0xFF000000), // Pure black background like in image
     onBackground       = Color(0xFFFFFFFF),
-    surface            = Color(0xFF1E1E1E), // Slightly lighter surface
+    surface            = Color(0xFF0A0A0A), // Nearly black surface for cards
     onSurface          = Color(0xFFFFFFFF),
-    surfaceVariant     = Color(0xFF2D2D2D),
+    surfaceVariant     = Color(0xFF1A1A1A), // Dark surface variant
     onSurfaceVariant   = Color(0xFFD0D0D0),
 
     outline            = Color(0xFFE91E63).copy(alpha = 0.3f), // Pink outline
     outlineVariant     = Color(0xFF49454F),
 
     inverseSurface     = Color(0xFFE5E5E5),
-    inverseOnSurface   = Color(0xFF1A1A1A),
+    inverseOnSurface   = Color(0xFF000000),
     inversePrimary     = Color(0xFFE91E63),
 
     scrim              = Color(0xDD000000),
