@@ -157,11 +157,11 @@ fun PaymentsScreen(
             Spacer(Modifier.height(12.dp))
 
             Row(modifier = Modifier.fillMaxWidth().padding(horizontal = 8.dp, vertical = 4.dp)) {
-                Text("Date",     style = MaterialTheme.typography.titleMedium, color = LtBurgundy, modifier = Modifier.weight(1f))
-                Text("Borrower", style = MaterialTheme.typography.titleMedium, color = LtBurgundy, modifier = Modifier.weight(1.5f))
-                Text("Method",   style = MaterialTheme.typography.titleMedium, color = LtBurgundy, modifier = Modifier.weight(1f))
-                Text("Amount",   style = MaterialTheme.typography.titleMedium, color = LtBurgundy, modifier = Modifier.weight(1f))
-                Text("Sync",     style = MaterialTheme.typography.titleMedium, color = LtBurgundy, modifier = Modifier.weight(0.8f))
+                Text("Date",     style = MaterialTheme.typography.titleMedium, color = MaterialTheme.colorScheme.primary, modifier = Modifier.weight(1f))
+                Text("Borrower", style = MaterialTheme.typography.titleMedium, color = MaterialTheme.colorScheme.primary, modifier = Modifier.weight(1.5f))
+                Text("Method",   style = MaterialTheme.typography.titleMedium, color = MaterialTheme.colorScheme.primary, modifier = Modifier.weight(1f))
+                Text("Amount",   style = MaterialTheme.typography.titleMedium, color = MaterialTheme.colorScheme.primary, modifier = Modifier.weight(1f))
+                Text("Sync",     style = MaterialTheme.typography.titleMedium, color = MaterialTheme.colorScheme.primary, modifier = Modifier.weight(0.8f))
             }
             LtDivider()
 
@@ -203,7 +203,7 @@ private fun PaymentTableRow(pwb: PaymentWithBorrower, onClick: () -> Unit, onDel
         Text(pwb.payment.paymentDate.formatFull(), style = MaterialTheme.typography.bodySmall, modifier = Modifier.weight(1f))
         Text(
             pwb.borrower.name,
-            style    = MaterialTheme.typography.bodySmall.copy(fontWeight = FontWeight.SemiBold, color = LtBurgundy),
+            style    = MaterialTheme.typography.bodySmall.copy(fontWeight = FontWeight.SemiBold, color = MaterialTheme.colorScheme.primary),
             modifier = Modifier.weight(1.5f),
         )
         Text(pwb.payment.paymentMethod.label, style = MaterialTheme.typography.bodySmall, modifier = Modifier.weight(1f))
@@ -297,7 +297,7 @@ private fun PaymentDetailSheet(pwb: PaymentWithBorrower, onDismiss: () -> Unit) 
 }
 
 @Composable
-private fun DetailRow(label: String, value: String, valueColor: Color = LtBurgundy) {
+private fun DetailRow(label: String, value: String, valueColor: Color = MaterialTheme.colorScheme.primary) {
     Row(
         modifier              = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.SpaceBetween,

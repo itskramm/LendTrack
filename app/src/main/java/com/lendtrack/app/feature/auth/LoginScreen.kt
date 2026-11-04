@@ -80,7 +80,7 @@ fun LoginScreen(
                             .border(2.dp, MaterialTheme.colorScheme.outline, CircleShape),
                         contentAlignment = Alignment.Center,
                     ) {
-                        Text("♥", fontSize = 32.sp, color = LtRose)
+                        Text("♥", fontSize = 32.sp, color = MaterialTheme.colorScheme.primary)
                     }
                     Text(
                         "LendTrack",
@@ -101,7 +101,7 @@ fun LoginScreen(
                 Text(
                     "Sign In",
                     style = MaterialTheme.typography.headlineMedium,
-                    color = LtBurgundy,
+                    color = MaterialTheme.colorScheme.primary,
                 )
 
                 // ── Email ──────────────────────────────────────────────────

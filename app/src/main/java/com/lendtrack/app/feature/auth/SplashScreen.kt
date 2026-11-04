@@ -52,13 +52,13 @@ fun SplashScreen() {
                     .background(MaterialTheme.colorScheme.surfaceVariant),
                 contentAlignment = Alignment.Center,
             ) {
-                Text("♥", fontSize = 40.sp, color = LtRose)
+                Text("♥", fontSize = 40.sp, color = MaterialTheme.colorScheme.primary)
             }
 
             Text(
                 "LendTrack",
                 style = MaterialTheme.typography.displayLarge,
-                color = LtBurgundy,
+                color = MaterialTheme.colorScheme.primary,
             )
             Text(
                 "Your Lending, Organized.",

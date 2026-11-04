@@ -93,7 +93,7 @@ fun DocumentViewerScreen(
                         text = "${(scale * 100).toInt()}%",
                         modifier = Modifier.padding(horizontal = 12.dp, vertical = 6.dp),
                         style = MaterialTheme.typography.labelSmall,
-                        color = LtRose
+                        color = MaterialTheme.colorScheme.primary
                     )
                 }
             }

@@ -35,7 +35,7 @@ fun LtStatCard(
     label: String,
     value: String,
     subtitle: String = "",
-    valueColor: Color = LtBurgundy,
+    valueColor: Color = MaterialTheme.colorScheme.primary,
     icon: ImageVector? = null,
     modifier: Modifier = Modifier,
 ) {
@@ -44,8 +44,8 @@ fun LtStatCard(
             .shadow(
                 elevation = 3.dp,
                 shape = CardShape,
-                spotColor = LtShadow,
-                ambientColor = LtShadow,
+                spotColor = MaterialTheme.colorScheme.outline.copy(alpha = 0.08f),
+                ambientColor = MaterialTheme.colorScheme.outline.copy(alpha = 0.08f),
             ),
         shape = CardShape,
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
@@ -184,7 +184,7 @@ fun LtRibbon(title: String, modifier: Modifier = Modifier) {
     Box(
         modifier = modifier
             .clip(RibbonShape)
-            .background(LtRose)
+            .background(MaterialTheme.colorScheme.primary)
             .padding(horizontal = 20.dp, vertical = 6.dp),
     ) {
         Text(
@@ -222,9 +222,9 @@ fun LtButton(
     small: Boolean = false,
     enabled: Boolean = true,
 ) {
-    val bgColor    = if (ghost) MaterialTheme.colorScheme.surface else LtRose
-    val textColor  = if (ghost) LtBurgundy else Color.White
-    val borderColor = if (ghost) MaterialTheme.colorScheme.outline else LtBurgundy
+    val bgColor    = if (ghost) MaterialTheme.colorScheme.surface else MaterialTheme.colorScheme.primary
+    val textColor  = if (ghost) MaterialTheme.colorScheme.primary else Color.White
+    val borderColor = if (ghost) MaterialTheme.colorScheme.outline else MaterialTheme.colorScheme.primary
 
     Button(
         onClick = onClick,
@@ -294,7 +294,7 @@ fun LtSyncBadge(status: SyncStatus, modifier: Modifier = Modifier) {
     val (bg, label) = when (status) {
         SyncStatus.SYNCED          -> LtSage          to "Synced"
         SyncStatus.PENDING         -> LtAmber         to "Pending"
-        SyncStatus.SYNCING         -> LtDusty         to "Syncing…"
+        SyncStatus.SYNCING         -> MaterialTheme.colorScheme.secondary to "Syncing…"
         SyncStatus.FAILED          -> LtRed           to "Sync Failed"
         SyncStatus.REQUIRES_ATTENTION -> LtRed        to "Needs Review"
     }
@@ -320,9 +320,9 @@ fun LtChip(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val bg     = if (selected) LtRose else Color.Transparent
-    val border = if (selected) LtRose else MaterialTheme.colorScheme.outline
-    val text   = if (selected) Color.White else LtBurgundy
+    val bg     = if (selected) MaterialTheme.colorScheme.primary else Color.Transparent
+    val border = if (selected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.outline
+    val text   = if (selected) Color.White else MaterialTheme.colorScheme.primary
 
     Box(
         modifier = modifier
@@ -359,7 +359,7 @@ fun LtSectionHeader(text: String, modifier: Modifier = Modifier) {
     Text(
         text = text,
         style = MaterialTheme.typography.headlineMedium,
-        color = LtBurgundy,
+        color = MaterialTheme.colorScheme.primary,
         modifier = modifier.padding(vertical = 8.dp),
     )
 }
@@ -393,7 +393,7 @@ fun LtToast(message: String, visible: Boolean) {
         Row(
             modifier = Modifier
                 .clip(RoundedCornerShape(12.dp))
-                .background(LtBurgundy)
+                .background(MaterialTheme.colorScheme.primary)
                 .padding(horizontal = 18.dp, vertical = 10.dp),
             verticalAlignment = Alignment.CenterVertically,
         ) {
@@ -422,11 +422,11 @@ fun LtSearchField(
         singleLine = true,
         shape = InputShape,
         colors = OutlinedTextFieldDefaults.colors(
-            focusedBorderColor   = LtRose,
+            focusedBorderColor   = MaterialTheme.colorScheme.primary,
             unfocusedBorderColor = MaterialTheme.colorScheme.outline,
             focusedContainerColor   = MaterialTheme.colorScheme.background,
             unfocusedContainerColor = MaterialTheme.colorScheme.background,
-            cursorColor = LtRose,
+            cursorColor = MaterialTheme.colorScheme.primary,
         ),
         leadingIcon = if (leadingIcon != null) ({
             Icon(leadingIcon, contentDescription = null, tint = MaterialTheme.colorScheme.outline, modifier = Modifier.size(18.dp))

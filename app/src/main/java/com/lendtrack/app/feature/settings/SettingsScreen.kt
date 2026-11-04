@@ -164,7 +164,7 @@ fun SettingsScreen(
                 ) {
                     CircularProgressIndicator(
                         modifier = Modifier.size(16.dp),
-                        color = LtRose,
+                        color = MaterialTheme.colorScheme.primary,
                         strokeWidth = 2.dp,
                     )
                     Spacer(Modifier.width(8.dp))
@@ -214,7 +214,7 @@ fun SettingsScreen(
             ) {
                 Icon(Icons.Filled.Info, contentDescription = null, tint = MaterialTheme.colorScheme.outline, modifier = Modifier.size(16.dp))
                 Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
-                    Text("Sync diagnostics", style = MaterialTheme.typography.titleSmall, color = LtBurgundy)
+                    Text("Sync diagnostics", style = MaterialTheme.typography.titleSmall, color = MaterialTheme.colorScheme.primary)
                     Text(
                         "Check Logcat (tag: FirebaseSyncManager) for detailed sync logs showing " +
                         "Firebase connectivity, authentication status, and step-by-step upload progress.",
@@ -224,7 +224,7 @@ fun SettingsScreen(
                     Text(
                         "Tap \"Force Sync Now\" to immediately push all pending changes and see detailed logs.",
                         style = MaterialTheme.typography.bodySmall.copy(fontWeight = FontWeight.Medium),
-                        color = LtRose,
+                        color = MaterialTheme.colorScheme.primary,
                     )
                 }
             }

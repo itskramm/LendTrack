@@ -103,7 +103,7 @@ fun ReportsScreen(
                 Text(
                     collectedInRange.peso(),
                     style = MaterialTheme.typography.headlineMedium,
-                    color = LtBurgundy,
+                    color = MaterialTheme.colorScheme.primary,
                 )
             }
 

@@ -156,7 +156,7 @@ fun RecordPaymentScreen(
 
         if (uiState is RecordPaymentUiState.Loading) {
             Box(Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
-                CircularProgressIndicator(color = LtRose)
+                CircularProgressIndicator(color = MaterialTheme.colorScheme.primary)
             }
         }
     }
@@ -217,7 +217,7 @@ fun PaymentAllocationPreviewPanel(
 
         // Show penalties first if any
         if (preview.penaltyItems.isNotEmpty()) {
-            Text("Late Penalties", style = MaterialTheme.typography.titleMedium, color = LtBurgundy)
+            Text("Late Penalties", style = MaterialTheme.typography.titleMedium, color = MaterialTheme.colorScheme.primary)
             Spacer(Modifier.height(4.dp))
             AllocationTable(preview.penaltyItems, showInstallmentNumber = false)
             Spacer(Modifier.height(12.dp))
@@ -225,7 +225,7 @@ fun PaymentAllocationPreviewPanel(
 
         // Show monthly charges if any
         if (preview.chargeItems.isNotEmpty()) {
-            Text("Monthly Interest Charges", style = MaterialTheme.typography.titleMedium, color = LtBurgundy)
+            Text("Monthly Interest Charges", style = MaterialTheme.typography.titleMedium, color = MaterialTheme.colorScheme.primary)
             Spacer(Modifier.height(4.dp))
             AllocationTable(preview.chargeItems, showInstallmentNumber = false)
             Spacer(Modifier.height(12.dp))
@@ -233,7 +233,7 @@ fun PaymentAllocationPreviewPanel(
 
         // Show installments if any
         if (preview.installmentItems.isNotEmpty()) {
-            Text("Installments", style = MaterialTheme.typography.titleMedium, color = LtBurgundy)
+            Text("Installments", style = MaterialTheme.typography.titleMedium, color = MaterialTheme.colorScheme.primary)
             Spacer(Modifier.height(4.dp))
             AllocationTable(preview.installmentItems, showInstallmentNumber = true)
         }
@@ -265,11 +265,11 @@ private fun AllocationTable(items: List<AllocationLineItem>, showInstallmentNumb
     // Allocation table header
     Row(modifier = Modifier.fillMaxWidth().padding(horizontal = 8.dp, vertical = 4.dp)) {
         if (showInstallmentNumber) {
-            Text("Installment", style = MaterialTheme.typography.titleMedium.copy(fontSize = 12.sp), color = LtBurgundy, modifier = Modifier.weight(0.5f))
+            Text("Installment", style = MaterialTheme.typography.titleMedium.copy(fontSize = 12.sp), color = MaterialTheme.colorScheme.primary, modifier = Modifier.weight(0.5f))
         }
-        Text("Type/Date",   style = MaterialTheme.typography.titleMedium.copy(fontSize = 12.sp), color = LtBurgundy, modifier = Modifier.weight(1f))
-        Text("Applied",     style = MaterialTheme.typography.titleMedium.copy(fontSize = 12.sp), color = LtBurgundy, modifier = Modifier.weight(1f))
-        Text("Remaining",   style = MaterialTheme.typography.titleMedium.copy(fontSize = 12.sp), color = LtBurgundy, modifier = Modifier.weight(1f))
+        Text("Type/Date",   style = MaterialTheme.typography.titleMedium.copy(fontSize = 12.sp), color = MaterialTheme.colorScheme.primary, modifier = Modifier.weight(1f))
+        Text("Applied",     style = MaterialTheme.typography.titleMedium.copy(fontSize = 12.sp), color = MaterialTheme.colorScheme.primary, modifier = Modifier.weight(1f))
+        Text("Remaining",   style = MaterialTheme.typography.titleMedium.copy(fontSize = 12.sp), color = MaterialTheme.colorScheme.primary, modifier = Modifier.weight(1f))
     }
     LtDivider()
 
@@ -301,7 +301,7 @@ private fun AllocationRow(item: AllocationLineItem, showInstallmentNumber: Boole
 }
 
 @Composable
-private fun AllocationStat(label: String, value: String, color: androidx.compose.ui.graphics.Color = LtBurgundy) {
+private fun AllocationStat(label: String, value: String, color: androidx.compose.ui.graphics.Color = MaterialTheme.colorScheme.primary) {
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
         Text(label, style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
         Spacer(Modifier.height(2.dp))

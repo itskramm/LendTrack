@@ -125,12 +125,12 @@ fun BalanceLedgerScreen(
             Spacer(Modifier.height(12.dp))
 
             Row(modifier = Modifier.fillMaxWidth().padding(horizontal = 8.dp, vertical = 4.dp)) {
-                Text("Borrower",  style = MaterialTheme.typography.titleMedium, color = LtBurgundy, modifier = Modifier.weight(2f))
-                Text("Principal", style = MaterialTheme.typography.titleMedium, color = LtBurgundy, modifier = Modifier.weight(1f))
-                Text("Interest",  style = MaterialTheme.typography.titleMedium, color = LtBurgundy, modifier = Modifier.weight(1f))
-                Text("Payable",   style = MaterialTheme.typography.titleMedium, color = LtBurgundy, modifier = Modifier.weight(1f))
-                Text("Applied",   style = MaterialTheme.typography.titleMedium, color = LtBurgundy, modifier = Modifier.weight(1f))  // G-7
-                Text("Balance",   style = MaterialTheme.typography.titleMedium, color = LtBurgundy, modifier = Modifier.weight(1f))
+                Text("Borrower",  style = MaterialTheme.typography.titleMedium, color = MaterialTheme.colorScheme.primary, modifier = Modifier.weight(2f))
+                Text("Principal", style = MaterialTheme.typography.titleMedium, color = MaterialTheme.colorScheme.primary, modifier = Modifier.weight(1f))
+                Text("Interest",  style = MaterialTheme.typography.titleMedium, color = MaterialTheme.colorScheme.primary, modifier = Modifier.weight(1f))
+                Text("Payable",   style = MaterialTheme.typography.titleMedium, color = MaterialTheme.colorScheme.primary, modifier = Modifier.weight(1f))
+                Text("Applied",   style = MaterialTheme.typography.titleMedium, color = MaterialTheme.colorScheme.primary, modifier = Modifier.weight(1f))  // G-7
+                Text("Balance",   style = MaterialTheme.typography.titleMedium, color = MaterialTheme.colorScheme.primary, modifier = Modifier.weight(1f))
             }
             LtDivider()
 
@@ -180,7 +180,7 @@ fun BalanceLedgerScreen(
                         horizontalArrangement = Arrangement.spacedBy(8.dp),
                         verticalAlignment     = Alignment.CenterVertically,
                     ) {
-                        Text("₱", color = LtRose, style = MaterialTheme.typography.bodySmall)
+                        Text("₱", color = MaterialTheme.colorScheme.primary, style = MaterialTheme.typography.bodySmall)
                         Column(modifier = Modifier.weight(1f)) {
                             Text(
                                 "${pwb.borrower.name} paid ${pwb.payment.amount.peso()}",
@@ -228,7 +228,7 @@ private fun LedgerRow(
     ) {
         Text(
             ls.borrower.name,
-            style    = MaterialTheme.typography.bodySmall.copy(fontWeight = FontWeight.SemiBold, color = LtBurgundy),
+            style    = MaterialTheme.typography.bodySmall.copy(fontWeight = FontWeight.SemiBold, color = MaterialTheme.colorScheme.primary),
             modifier = Modifier.weight(2f),
         )
         Text(ls.loan.principal.peso(),      style = MaterialTheme.typography.bodySmall, modifier = Modifier.weight(1f))
@@ -260,7 +260,7 @@ private fun LedgerRow(
     if (isExpanded) {
         if (installments == null) {
             Box(Modifier.fillMaxWidth().padding(8.dp), contentAlignment = Alignment.Center) {
-                CircularProgressIndicator(color = LtRose, modifier = Modifier.size(20.dp))
+                CircularProgressIndicator(color = MaterialTheme.colorScheme.primary, modifier = Modifier.size(20.dp))
             }
         } else {
             Column(

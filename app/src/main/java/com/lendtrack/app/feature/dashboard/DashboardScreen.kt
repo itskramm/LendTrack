@@ -197,7 +197,7 @@ fun StatCardsGrid(
                     label      = card.label,
                     value      = card.value,
                     subtitle   = card.subtitle,
-                    valueColor = card.valueColor,
+                    valueColor = card.valueColor ?: MaterialTheme.colorScheme.primary,
                     icon       = card.icon,
                     modifier   = Modifier.weight(1f),
                 )
@@ -215,6 +215,7 @@ fun StatCardsGrid(
                     value    = cards[0].value,
                     subtitle = cards[0].subtitle,
                     icon     = cards[0].icon,
+                    valueColor = cards[0].valueColor ?: MaterialTheme.colorScheme.primary,
                     modifier = Modifier.weight(1f),
                 )
                 LtStatCard(
@@ -222,6 +223,7 @@ fun StatCardsGrid(
                     value    = cards[1].value,
                     subtitle = cards[1].subtitle,
                     icon     = cards[1].icon,
+                    valueColor = cards[1].valueColor ?: MaterialTheme.colorScheme.primary,
                     modifier = Modifier.weight(1f),
                 )
             }
@@ -234,13 +236,14 @@ fun StatCardsGrid(
                     value    = cards[2].value,
                     subtitle = cards[2].subtitle,
                     icon     = cards[2].icon,
+                    valueColor = cards[2].valueColor ?: MaterialTheme.colorScheme.primary,
                     modifier = Modifier.weight(1f),
                 )
                 LtStatCard(
                     label      = cards[3].label,
                     value      = cards[3].value,
                     subtitle   = cards[3].subtitle,
-                    valueColor = LtRed,
+                    valueColor = cards[3].valueColor ?: LtRed,
                     icon       = cards[3].icon,
                     modifier   = Modifier.weight(1f),
                 )
@@ -254,7 +257,7 @@ private data class StatCardData(
     val value:      String,
     val subtitle:   String = "",
     val icon:       ImageVector? = null,
-    val valueColor: Color = LtBurgundy,
+    val valueColor: Color? = null,
 )
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -300,7 +303,7 @@ fun UpcomingPaymentsPanel(
         modifier = modifier,
         action   = {
             TextButton(onClick = onViewAll) {
-                Text("View All", color = LtRose, style = MaterialTheme.typography.bodySmall)
+                Text("View All", color = MaterialTheme.colorScheme.primary, style = MaterialTheme.typography.bodySmall)
             }
         },
     ) {
@@ -378,7 +381,7 @@ private fun TableHeader(text: String, modifier: Modifier) {
     Text(
         text     = text,
         style    = MaterialTheme.typography.titleMedium.copy(fontSize = 13.sp),
-        color    = LtBurgundy,
+        color    = MaterialTheme.colorScheme.primary,
         modifier = modifier,
     )
 }
@@ -410,7 +413,7 @@ private fun InstallmentRow(
             text  = iwb.borrower.name,
             style = MaterialTheme.typography.bodySmall.copy(
                 fontWeight = FontWeight.SemiBold,
-                color      = LtRose,
+                color      = MaterialTheme.colorScheme.primary,
             ),
             modifier = Modifier.weight(1.5f).clickable(onClick = onBorrowerClick),
         )
@@ -466,7 +469,7 @@ fun BalanceOverviewPanel(
                 CircularProgressIndicator(
                     progress    = { fraction },
                     modifier    = Modifier.fillMaxSize(),
-                    color       = LtRose,
+                    color       = MaterialTheme.colorScheme.primary,
                     strokeWidth = 22.dp,
                     trackColor  = Color.Transparent,
                 )
@@ -482,7 +485,7 @@ fun BalanceOverviewPanel(
                     Text(
                         text  = "${(fraction * 100).toInt()}%",
                         style = MaterialTheme.typography.headlineMedium,
-                        color = LtBurgundy,
+                        color = MaterialTheme.colorScheme.primary,
                     )
                     Text(
                         text  = "repaid",
@@ -494,7 +497,7 @@ fun BalanceOverviewPanel(
 
             // Legend
             Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
-                LegendRow(color = LtBurgundy, label = "Payments Received", value = collectedThisMonth.peso())
+                LegendRow(color = MaterialTheme.colorScheme.primary, label = "Payments Received", value = collectedThisMonth.peso())
                 LegendRow(color = MaterialTheme.colorScheme.secondaryContainer,    label = "Remaining Balance",  value = totalOutstanding.peso())
             }
         }
@@ -514,7 +517,7 @@ private fun LegendRow(color: Color, label: String, value: String) {
         )
         Column {
             Text(label, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
-            Text(value, style = MaterialTheme.typography.labelLarge.copy(fontWeight = FontWeight.SemiBold), color = LtBurgundy)
+            Text(value, style = MaterialTheme.typography.labelLarge.copy(fontWeight = FontWeight.SemiBold), color = MaterialTheme.colorScheme.primary)
         }
     }
 }
@@ -542,12 +545,12 @@ fun RecentActivityPanel(
 @Composable
 private fun ActivityRow(act: com.lendtrack.app.core.database.entities.ActivityLogEntity) {
     val (icon, color) = when (act.type) {
-        com.lendtrack.app.domain.model.ActivityType.PAYMENT     -> "₱" to LtRose
+        com.lendtrack.app.domain.model.ActivityType.PAYMENT     -> "₱" to MaterialTheme.colorScheme.primary
         com.lendtrack.app.domain.model.ActivityType.WARNING     -> "⚠" to LtRed
         com.lendtrack.app.domain.model.ActivityType.NEW_LOAN    -> "✚" to LtSage
-        com.lendtrack.app.domain.model.ActivityType.NEW_BORROWER-> "♡" to LtRose
+        com.lendtrack.app.domain.model.ActivityType.NEW_BORROWER-> "♡" to MaterialTheme.colorScheme.primary
         com.lendtrack.app.domain.model.ActivityType.ADJUSTMENT  -> "✎" to LtAmber
-        com.lendtrack.app.domain.model.ActivityType.SYSTEM      -> "⚙" to LtMuted
+        com.lendtrack.app.domain.model.ActivityType.SYSTEM      -> "⚙" to MaterialTheme.colorScheme.onSurfaceVariant
     }
 
     Row(
@@ -611,10 +614,10 @@ private fun PaymentRow(pwb: PaymentWithBorrower) {
                     .background(MaterialTheme.colorScheme.surfaceVariant),
                 contentAlignment = Alignment.Center,
             ) {
-                Text("₱", color = LtRose, fontSize = 14.sp)
+                Text("₱", color = MaterialTheme.colorScheme.primary, fontSize = 14.sp)
             }
             Column {
-                Text(pwb.borrower.name, style = MaterialTheme.typography.bodySmall.copy(fontWeight = FontWeight.SemiBold), color = LtBurgundy)
+                Text(pwb.borrower.name, style = MaterialTheme.typography.bodySmall.copy(fontWeight = FontWeight.SemiBold), color = MaterialTheme.colorScheme.primary)
                 Text(
                     "${pwb.payment.paymentDate.formatShort()} · ${pwb.payment.paymentMethod.label}",
                     style = MaterialTheme.typography.labelSmall,
@@ -734,7 +737,7 @@ fun InstallmentDetailDialog(
                         iwb.borrower.name,
                         style = MaterialTheme.typography.bodyMedium.copy(
                             fontWeight = FontWeight.SemiBold,
-                            color      = LtBurgundy,
+                            color      = MaterialTheme.colorScheme.primary,
                         ),
                     )
                     LtStatusBadge(status)
@@ -749,9 +752,9 @@ fun InstallmentDetailDialog(
                 InstDetailRow(
                     label      = "Remaining",
                     value      = inst.remaining.peso(),
-                    valueColor = if (inst.remaining <= 0) LtSage else LtBurgundy,
+                    valueColor = if (inst.remaining <= 0) LtSage else MaterialTheme.colorScheme.primary,
                 )
-                HorizontalDivider(color = LtDivider)
+                HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant)
                 InstDetailRow("Loan balance",  iwb.loan.run { (principal + interestAmount).peso() })
             }
         },
@@ -767,7 +770,7 @@ fun InstallmentDetailDialog(
 }
 
 @Composable
-private fun InstDetailRow(label: String, value: String, valueColor: Color = LtBurgundy) {
+private fun InstDetailRow(label: String, value: String, valueColor: Color = MaterialTheme.colorScheme.primary) {
     Row(
         modifier              = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.SpaceBetween,

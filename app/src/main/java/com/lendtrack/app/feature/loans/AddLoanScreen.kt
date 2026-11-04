@@ -268,7 +268,7 @@ fun AddLoanScreen(
 
         if (uiState is AddLoanUiState.Loading) {
             Box(Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
-                CircularProgressIndicator(color = LtRose)
+                CircularProgressIndicator(color = MaterialTheme.colorScheme.primary)
             }
         }
     }
@@ -314,8 +314,8 @@ fun RepaymentPreviewPanel(
 
         Row(modifier = Modifier.fillMaxWidth().padding(horizontal = 8.dp, vertical = 4.dp)) {
             Text("#",      style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.width(32.dp))
-            Text("Due Date", style = MaterialTheme.typography.titleMedium.copy(fontSize = 12.sp), color = LtBurgundy, modifier = Modifier.weight(1f))
-            Text("Amount",   style = MaterialTheme.typography.titleMedium.copy(fontSize = 12.sp), color = LtBurgundy, modifier = Modifier.weight(1f))
+            Text("Due Date", style = MaterialTheme.typography.titleMedium.copy(fontSize = 12.sp), color = MaterialTheme.colorScheme.primary, modifier = Modifier.weight(1f))
+            Text("Amount",   style = MaterialTheme.typography.titleMedium.copy(fontSize = 12.sp), color = MaterialTheme.colorScheme.primary, modifier = Modifier.weight(1f))
         }
         LtDivider()
 
@@ -380,7 +380,7 @@ private fun PreviewStat(label: String, value: String) {
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
         Text(label, style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
         Spacer(Modifier.height(2.dp))
-        Text(value, style = MaterialTheme.typography.titleSmall.copy(fontWeight = FontWeight.Bold, color = LtBurgundy))
+        Text(value, style = MaterialTheme.typography.titleSmall.copy(fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.primary))
     }
 }
 

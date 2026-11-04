@@ -112,7 +112,7 @@ fun BorrowerDetailScreen(
 
     if (state.isLoading) {
         Box(Modifier.fillMaxSize().background(MaterialTheme.colorScheme.background), contentAlignment = Alignment.Center) {
-            CircularProgressIndicator(color = LtRose)
+            CircularProgressIndicator(color = MaterialTheme.colorScheme.primary)
         }
         return
     }
@@ -259,10 +259,10 @@ fun BorrowerDetailScreen(
                 LtEmptyState("No payments recorded yet.")
             } else {
                 Row(modifier = Modifier.fillMaxWidth().padding(horizontal = 8.dp, vertical = 4.dp)) {
-                    Text("Date",   style = MaterialTheme.typography.titleMedium, color = LtBurgundy, modifier = Modifier.weight(1f))
-                    Text("Amount", style = MaterialTheme.typography.titleMedium, color = LtBurgundy, modifier = Modifier.weight(1f))
-                    Text("Method", style = MaterialTheme.typography.titleMedium, color = LtBurgundy, modifier = Modifier.weight(1f))
-                    Text("Status", style = MaterialTheme.typography.titleMedium, color = LtBurgundy, modifier = Modifier.weight(0.8f))
+                    Text("Date",   style = MaterialTheme.typography.titleMedium, color = MaterialTheme.colorScheme.primary, modifier = Modifier.weight(1f))
+                    Text("Amount", style = MaterialTheme.typography.titleMedium, color = MaterialTheme.colorScheme.primary, modifier = Modifier.weight(1f))
+                    Text("Method", style = MaterialTheme.typography.titleMedium, color = MaterialTheme.colorScheme.primary, modifier = Modifier.weight(1f))
+                    Text("Status", style = MaterialTheme.typography.titleMedium, color = MaterialTheme.colorScheme.primary, modifier = Modifier.weight(0.8f))
                 }
                 LtDivider()
                 state.payments.forEach { payment ->
@@ -362,7 +362,7 @@ private fun LoanDetailCard(
             TextButton(onClick = { expanded = !expanded }) {
                 Text(
                     if (expanded) "▲ Hide installments" else "▼ Show installments",
-                    color = LtRose,
+                    color = MaterialTheme.colorScheme.primary,
                     style = MaterialTheme.typography.bodySmall,
                 )
             }
@@ -382,11 +382,11 @@ private fun LoanDetailCard(
             LtDivider()
             Row(modifier = Modifier.fillMaxWidth().padding(horizontal = 8.dp, vertical = 4.dp)) {
                 Text("#",         style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.width(28.dp))
-                Text("Due",       style = MaterialTheme.typography.titleMedium.copy(fontSize = 13.sp), color = LtBurgundy, modifier = Modifier.weight(1f))
-                Text("Amount",    style = MaterialTheme.typography.titleMedium.copy(fontSize = 13.sp), color = LtBurgundy, modifier = Modifier.weight(1f))
-                Text("Paid",      style = MaterialTheme.typography.titleMedium.copy(fontSize = 13.sp), color = LtBurgundy, modifier = Modifier.weight(1f))
-                Text("Remaining", style = MaterialTheme.typography.titleMedium.copy(fontSize = 13.sp), color = LtBurgundy, modifier = Modifier.weight(1f))
-                Text("Status",    style = MaterialTheme.typography.titleMedium.copy(fontSize = 13.sp), color = LtBurgundy, modifier = Modifier.weight(1f))
+                Text("Due",       style = MaterialTheme.typography.titleMedium.copy(fontSize = 13.sp), color = MaterialTheme.colorScheme.primary, modifier = Modifier.weight(1f))
+                Text("Amount",    style = MaterialTheme.typography.titleMedium.copy(fontSize = 13.sp), color = MaterialTheme.colorScheme.primary, modifier = Modifier.weight(1f))
+                Text("Paid",      style = MaterialTheme.typography.titleMedium.copy(fontSize = 13.sp), color = MaterialTheme.colorScheme.primary, modifier = Modifier.weight(1f))
+                Text("Remaining", style = MaterialTheme.typography.titleMedium.copy(fontSize = 13.sp), color = MaterialTheme.colorScheme.primary, modifier = Modifier.weight(1f))
+                Text("Status",    style = MaterialTheme.typography.titleMedium.copy(fontSize = 13.sp), color = MaterialTheme.colorScheme.primary, modifier = Modifier.weight(1f))
             }
             LtDivider()
             lwb.installments.forEach { inst ->

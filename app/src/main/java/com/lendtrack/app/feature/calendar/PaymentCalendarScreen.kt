@@ -258,7 +258,7 @@ private fun CalendarDayCell(
     onClick:      () -> Unit,
     modifier:     Modifier,
 ) {
-    val borderColor = if (isSelected) LtBurgundy else MaterialTheme.colorScheme.surfaceVariant
+    val borderColor = if (isSelected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.surfaceVariant
     val borderWidth = if (isSelected) 2.dp else 1.dp
     val bg          = if (isSelected) MaterialTheme.colorScheme.surfaceVariant else MaterialTheme.colorScheme.surface
 
@@ -278,7 +278,7 @@ private fun CalendarDayCell(
             Text(
                 text  = dayNum.toString(),
                 style = MaterialTheme.typography.labelSmall.copy(
-                    color      = if (isToday) LtRose else MaterialTheme.colorScheme.onSurface,
+                    color      = if (isToday) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface,
                     fontWeight = if (isToday) FontWeight.Bold else FontWeight.Normal,
                 ),
             )

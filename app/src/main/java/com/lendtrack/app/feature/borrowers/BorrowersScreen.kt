@@ -75,12 +75,12 @@ fun BorrowersScreen(
                 LtEmptyState("No borrowers yet. Add your first borrower to get started.")
             } else {
                 Row(modifier = Modifier.fillMaxWidth().padding(horizontal = 8.dp, vertical = 4.dp)) {
-                    Text("Name",        style = MaterialTheme.typography.titleMedium, color = LtBurgundy, modifier = Modifier.weight(2f))
-                    Text("Contact",     style = MaterialTheme.typography.titleMedium, color = LtBurgundy, modifier = Modifier.weight(1.5f))
-                    Text("Prefers",     style = MaterialTheme.typography.titleMedium, color = LtBurgundy, modifier = Modifier.weight(1f))
-                    Text("Loans",       style = MaterialTheme.typography.titleMedium, color = LtBurgundy, modifier = Modifier.weight(0.7f))
-                    Text("Outstanding", style = MaterialTheme.typography.titleMedium, color = LtBurgundy, modifier = Modifier.weight(1f))
-                    Text("Status",      style = MaterialTheme.typography.titleMedium, color = LtBurgundy, modifier = Modifier.weight(0.8f))
+                    Text("Name",        style = MaterialTheme.typography.titleMedium, color = MaterialTheme.colorScheme.primary, modifier = Modifier.weight(2f))
+                    Text("Contact",     style = MaterialTheme.typography.titleMedium, color = MaterialTheme.colorScheme.primary, modifier = Modifier.weight(1.5f))
+                    Text("Prefers",     style = MaterialTheme.typography.titleMedium, color = MaterialTheme.colorScheme.primary, modifier = Modifier.weight(1f))
+                    Text("Loans",       style = MaterialTheme.typography.titleMedium, color = MaterialTheme.colorScheme.primary, modifier = Modifier.weight(0.7f))
+                    Text("Outstanding", style = MaterialTheme.typography.titleMedium, color = MaterialTheme.colorScheme.primary, modifier = Modifier.weight(1f))
+                    Text("Status",      style = MaterialTheme.typography.titleMedium, color = MaterialTheme.colorScheme.primary, modifier = Modifier.weight(0.8f))
                 }
                 LtDivider()
 
@@ -125,7 +125,7 @@ private fun BorrowerRow(bws: BorrowerWithSummary, onClick: () -> Unit) {
             .padding(horizontal = 8.dp, vertical = 10.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        Text(bws.borrower.name, style = MaterialTheme.typography.bodySmall.copy(fontWeight = FontWeight.SemiBold, color = LtBurgundy), modifier = Modifier.weight(2f))
+        Text(bws.borrower.name, style = MaterialTheme.typography.bodySmall.copy(fontWeight = FontWeight.SemiBold, color = MaterialTheme.colorScheme.primary), modifier = Modifier.weight(2f))
         Text(bws.borrower.contactNumber, style = MaterialTheme.typography.bodySmall, modifier = Modifier.weight(1.5f))
         Text(bws.borrower.preferredPaymentChannel.label, style = MaterialTheme.typography.labelSmall.copy(color = MaterialTheme.colorScheme.onSurfaceVariant), modifier = Modifier.weight(1f))
         Text(bws.loanCount.toString(), style = MaterialTheme.typography.bodySmall, modifier = Modifier.weight(0.7f))
@@ -210,11 +210,11 @@ fun AddBorrowerDialog(
                     horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment     = Alignment.CenterVertically,
                 ) {
-                    Text("Additional info (optional)", style = MaterialTheme.typography.bodySmall, color = LtBurgundy)
+                    Text("Additional info (optional)", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.primary)
                     Icon(
                         if (showOptional) Icons.Filled.ExpandLess else Icons.Filled.ExpandMore,
                         contentDescription = null,
-                        tint = LtBurgundy,
+                        tint = MaterialTheme.colorScheme.primary,
                         modifier = Modifier.size(18.dp),
                     )
                 }

@@ -300,7 +300,7 @@ fun LtSidebar(
                     Icon(
                         Icons.Filled.Close,
                         contentDescription = "Close sidebar",
-                        tint = LtBurgundy,
+                        tint = MaterialTheme.colorScheme.primary,
                         modifier = Modifier.size(20.dp),
                     )
                 }
@@ -328,7 +328,7 @@ fun LtSidebar(
                     fontSize   = 14.sp,
                     lineHeight = 20.sp,
                 ),
-                color = LtBurgundy,
+                color = MaterialTheme.colorScheme.primary,
             )
         }
     }
@@ -345,7 +345,7 @@ fun LtLogo() {
                 .border(1.dp, MaterialTheme.colorScheme.outline, RoundedCornerShape(22.dp)),
             contentAlignment = Alignment.Center,
         ) {
-            Text("♥", fontSize = 22.sp, color = LtRose)
+            Text("♥", fontSize = 22.sp, color = MaterialTheme.colorScheme.primary)
         }
         Spacer(Modifier.height(4.dp))
         Text("LendTrack", style = MaterialTheme.typography.displayMedium)
@@ -355,7 +355,7 @@ fun LtLogo() {
             style = MaterialTheme.typography.headlineSmall.copy(
                 fontFamily = GreatVibes,
                 fontSize   = 22.sp,
-                color      = LtRose,
+                color      = MaterialTheme.colorScheme.primary,
             ),
         )
     }
@@ -368,7 +368,7 @@ fun LtNavItem(screen: Screen, selected: Boolean, onClick: () -> Unit) {
             .fillMaxWidth()
             .clip(NavItemShape)
             .background(if (selected) MaterialTheme.colorScheme.surface else Color.Transparent)
-            .border(1.dp, if (selected) LtRose else Color.Transparent, NavItemShape)
+            .border(1.dp, if (selected) MaterialTheme.colorScheme.primary else Color.Transparent, NavItemShape)
             .clickable(onClick = onClick)
             .padding(horizontal = 12.dp, vertical = 10.dp),
         verticalAlignment     = Alignment.CenterVertically,
@@ -377,19 +377,19 @@ fun LtNavItem(screen: Screen, selected: Boolean, onClick: () -> Unit) {
         Icon(
             screen.icon,
             contentDescription = null,
-            tint     = if (selected) LtRose else MaterialTheme.colorScheme.onSurfaceVariant,
+            tint     = if (selected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant,
             modifier = Modifier.size(18.dp),
         )
         Text(
             screen.label,
             style    = MaterialTheme.typography.bodyMedium.copy(
                 fontWeight = if (selected) FontWeight.SemiBold else FontWeight.Normal,
-                color      = if (selected) LtBurgundy else MaterialTheme.colorScheme.onSurface,
+                color      = if (selected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface,
                 fontSize   = 14.sp,
             ),
             modifier = Modifier.weight(1f),
         )
-        if (selected) Text("♥", fontSize = 11.sp, color = LtRose)
+        if (selected) Text("♥", fontSize = 11.sp, color = MaterialTheme.colorScheme.primary)
     }
 }
 
@@ -423,7 +423,7 @@ fun LtTopBar(
     ) {
         if (showMenuButton) {
             IconButton(onClick = onMenuClick) {
-                Icon(Icons.Filled.Menu, contentDescription = "Open menu", tint = LtBurgundy)
+                Icon(Icons.Filled.Menu, contentDescription = "Open menu", tint = MaterialTheme.colorScheme.primary)
             }
         }
         
@@ -493,7 +493,7 @@ fun LtTopBar(
                 badge = {
                     if (unreadCount > 0) {
                         Badge(
-                            containerColor = LtRose,
+                            containerColor = MaterialTheme.colorScheme.primary,
                             contentColor   = Color.White,
                         ) {
                             Text(
@@ -514,7 +514,7 @@ fun LtTopBar(
                     Icon(
                         Icons.Filled.Notifications,
                         contentDescription = "Notifications${if (unreadCount > 0) ", $unreadCount unread" else ""}",
-                        tint = LtBurgundy,
+                        tint = MaterialTheme.colorScheme.primary,
                     )
                 }
             }
@@ -538,15 +538,15 @@ fun LtTopBar(
                     Text(
                         "Notifications",
                         style = MaterialTheme.typography.headlineMedium,
-                        color = LtBurgundy,
+                        color = MaterialTheme.colorScheme.primary,
                     )
                     if (unreadCount > 0) {
                         TextButton(onClick = { appViewModel.markAllRead(); notifOpen = false }) {
-                            Text("Mark all read", color = LtRose, style = MaterialTheme.typography.bodySmall)
+                            Text("Mark all read", color = MaterialTheme.colorScheme.primary, style = MaterialTheme.typography.bodySmall)
                         }
                     }
                 }
-                HorizontalDivider(color = LtDivider)
+                HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant)
 
                 if (activities.isEmpty()) {
                     Box(
@@ -560,7 +560,7 @@ fun LtTopBar(
                 } else {
                     activities.take(8).forEach { act ->
                         NotificationItem(act)
-                        HorizontalDivider(color = LtDivider)
+                        HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant)
                     }
                 }
 
@@ -587,21 +587,21 @@ fun LtTopBar(
                 .border(1.dp, MaterialTheme.colorScheme.outline, RoundedCornerShape(50)),
             contentAlignment = Alignment.Center,
         ) {
-            Text("♡", fontSize = 18.sp, color = LtBurgundy)
+            Text("♡", fontSize = 18.sp, color = MaterialTheme.colorScheme.primary)
         }
     }
-    HorizontalDivider(color = LtDivider)
+    HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant)
 }
 
 @Composable
 private fun NotificationItem(act: ActivityLogEntity) {
     val (icon, color) = when (act.type) {
-        ActivityType.PAYMENT      -> "₱" to LtRose
+        ActivityType.PAYMENT      -> "₱" to MaterialTheme.colorScheme.primary
         ActivityType.WARNING      -> "⚠" to LtRed
         ActivityType.NEW_LOAN     -> "✚" to LtSage
-        ActivityType.NEW_BORROWER -> "♡" to LtRose
+        ActivityType.NEW_BORROWER -> "♡" to MaterialTheme.colorScheme.primary
         ActivityType.ADJUSTMENT   -> "✎" to LtAmber
-        ActivityType.SYSTEM       -> "⚙" to LtMuted
+        ActivityType.SYSTEM       -> "⚙" to MaterialTheme.colorScheme.onSurfaceVariant
     }
     Row(
         modifier = Modifier

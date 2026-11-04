@@ -320,7 +320,7 @@ private fun EditLoanPreviewPanel(preview: LoanPreview) {
         Text(
             "Repayment Preview",
             style = MaterialTheme.typography.titleMedium,
-            color = LtBurgundy
+            color = MaterialTheme.colorScheme.primary
         )
 
         // Totals
@@ -349,13 +349,13 @@ private fun EditLoanPreviewPanel(preview: LoanPreview) {
             Text(
                 "Due Date",
                 style = MaterialTheme.typography.titleMedium.copy(fontSize = 11.sp),
-                color = LtBurgundy,
+                color = MaterialTheme.colorScheme.primary,
                 modifier = Modifier.weight(1f)
             )
             Text(
                 "Amount",
                 style = MaterialTheme.typography.titleMedium.copy(fontSize = 11.sp),
-                color = LtBurgundy,
+                color = MaterialTheme.colorScheme.primary,
                 modifier = Modifier.weight(1f)
             )
         }
@@ -411,7 +411,7 @@ private fun PreviewStatSmall(label: String, value: String) {
             value,
             style = MaterialTheme.typography.titleSmall.copy(
                 fontWeight = FontWeight.SemiBold,
-                color = LtBurgundy,
+                color = MaterialTheme.colorScheme.primary,
                 fontSize = 12.sp
             )
         )
