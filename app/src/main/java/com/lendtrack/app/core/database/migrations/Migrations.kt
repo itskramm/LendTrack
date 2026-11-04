@@ -183,3 +183,23 @@ val MIGRATION_5_6 = object : Migration(5, 6) {
         db.execSQL("ALTER TABLE late_penalties ADD COLUMN amount_paid REAL NOT NULL DEFAULT 0.0")
     }
 }
+
+/**
+ * MIGRATION 6 → 7
+ *
+ * Adds document storage support to borrowers table (Phase 4):
+ * - id_document_uri: local device URI for ID document photo
+ * - billing_address_document_uri: local device URI for billing address document
+ * - id_document_firebase_path: Firebase Storage path for synced ID document
+ * - billing_address_firebase_path: Firebase Storage path for synced billing address document
+ *
+ * All columns are nullable as documents are optional.
+ */
+val MIGRATION_6_7 = object : Migration(6, 7) {
+    override fun migrate(db: SupportSQLiteDatabase) {
+        db.execSQL("ALTER TABLE borrowers ADD COLUMN id_document_uri TEXT DEFAULT NULL")
+        db.execSQL("ALTER TABLE borrowers ADD COLUMN billing_address_document_uri TEXT DEFAULT NULL")
+        db.execSQL("ALTER TABLE borrowers ADD COLUMN id_document_firebase_path TEXT DEFAULT NULL")
+        db.execSQL("ALTER TABLE borrowers ADD COLUMN billing_address_firebase_path TEXT DEFAULT NULL")
+    }
+}

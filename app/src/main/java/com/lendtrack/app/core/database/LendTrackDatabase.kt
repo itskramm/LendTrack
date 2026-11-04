@@ -19,7 +19,7 @@ import com.lendtrack.app.core.database.entities.*
         MonthlyInterestChargeEntity::class,
         LatePenaltyEntity::class,
     ],
-    version = 6,
+    version = 7,
     exportSchema = true,    // schema exported to app/schemas/ for migration review
 )
 @TypeConverters(Converters::class)

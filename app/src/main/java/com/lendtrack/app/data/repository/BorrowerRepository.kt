@@ -62,6 +62,10 @@ class BorrowerRepository @Inject constructor(
         barangay:                     String = "",
         occupation:                   String = "",
         notes:                        String = "",
+        idDocumentUri:                String? = null,
+        billingAddressDocumentUri:    String? = null,
+        idDocumentFirebasePath:       String? = null,
+        billingAddressFirebasePath:   String? = null,
     ): String {
         val trimmedName    = name.trim()
         val trimmedContact = contactNumber.trim()
@@ -93,6 +97,10 @@ class BorrowerRepository @Inject constructor(
             barangay                      = barangay.trim(),
             occupation                    = occupation.trim(),
             notes                         = notes.trim(),
+            idDocumentUri                 = idDocumentUri,
+            billingAddressDocumentUri     = billingAddressDocumentUri,
+            idDocumentFirebasePath        = idDocumentFirebasePath,
+            billingAddressFirebasePath    = billingAddressFirebasePath,
             isArchived                    = false,
             createdAt                     = now,
             updatedAt                     = now,
@@ -139,6 +147,10 @@ class BorrowerRepository @Inject constructor(
         barangay:                     String = "",
         occupation:                   String = "",
         notes:                        String = "",
+        idDocumentUri:                String? = null,
+        billingAddressDocumentUri:    String? = null,
+        idDocumentFirebasePath:       String? = null,
+        billingAddressFirebasePath:   String? = null,
     ) {
         val existing = borrowerDao.getById(id)
             ?: throw BorrowerValidationException("Borrower not found.")
@@ -160,6 +172,10 @@ class BorrowerRepository @Inject constructor(
                 barangay                      = barangay.trim(),
                 occupation                    = occupation.trim(),
                 notes                         = notes.trim(),
+                idDocumentUri                 = idDocumentUri,
+                billingAddressDocumentUri     = billingAddressDocumentUri,
+                idDocumentFirebasePath        = idDocumentFirebasePath,
+                billingAddressFirebasePath    = billingAddressFirebasePath,
                 updatedAt                     = now,
                 syncStatus                    = SyncStatus.PENDING,
             )
@@ -262,6 +278,10 @@ class BorrowerRepository @Inject constructor(
         barangay                      = barangay,
         occupation                    = occupation,
         notes                         = notes,
+        idDocumentUri                 = idDocumentUri,
+        billingAddressDocumentUri     = billingAddressDocumentUri,
+        idDocumentFirebasePath        = idDocumentFirebasePath,
+        billingAddressFirebasePath    = billingAddressFirebasePath,
         isArchived                    = isArchived,
         createdAt                     = createdAt,
         updatedAt                     = updatedAt,
@@ -270,7 +290,7 @@ class BorrowerRepository @Inject constructor(
     )
 
     private fun buildBorrowerPayload(e: BorrowerEntity): String =
-        """{"id":"${e.id}","name":"${e.name}","contact":"${e.contactNumber}","preferredChannel":"${e.preferredPaymentChannel.name}","address":"${e.address}","barangay":"${e.barangay}","occupation":"${e.occupation}","secondaryContactName":"${e.secondaryContactName}","secondaryContactNumber":"${e.secondaryContactNumber}","secondaryContactRelationship":"${e.secondaryContactRelationship}","govIdType":"${e.governmentIdType}","govIdNumber":"${e.governmentIdNumber}","notes":"${e.notes}"}"""
+        """{"id":"${e.id}","name":"${e.name}","contact":"${e.contactNumber}","preferredChannel":"${e.preferredPaymentChannel.name}","address":"${e.address}","barangay":"${e.barangay}","occupation":"${e.occupation}","secondaryContactName":"${e.secondaryContactName}","secondaryContactNumber":"${e.secondaryContactNumber}","secondaryContactRelationship":"${e.secondaryContactRelationship}","govIdType":"${e.governmentIdType}","govIdNumber":"${e.governmentIdNumber}","notes":"${e.notes}","idDocumentFirebasePath":"${e.idDocumentFirebasePath.orEmpty()}","billingAddressFirebasePath":"${e.billingAddressFirebasePath.orEmpty()}"}"""
 }
 
 class BorrowerValidationException(message: String) : Exception(message)

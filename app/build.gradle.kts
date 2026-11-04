@@ -120,7 +120,11 @@ dependencies {
     implementation(firebaseBom)
     implementation(libs.firebase.auth.ktx)        // Firebase Authentication
     implementation(libs.firebase.database.ktx)    // Realtime Database
+    implementation(libs.firebase.storage.ktx)     // Firebase Storage
     implementation(libs.firebase.analytics.ktx)   // optional, useful for diagnostics
+
+    // ── Coil — image loading for document previews ────────────────────────────
+    implementation("io.coil-kt:coil-compose:2.5.0")
 
     // ── Google Fonts via Downloadable Fonts ──────────────────────────────────
     implementation("androidx.compose.ui:ui-text-google-fonts:1.7.4")

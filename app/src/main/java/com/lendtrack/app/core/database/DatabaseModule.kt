@@ -7,6 +7,7 @@ import com.lendtrack.app.core.database.migrations.MIGRATION_2_3
 import com.lendtrack.app.core.database.migrations.MIGRATION_3_4
 import com.lendtrack.app.core.database.migrations.MIGRATION_4_5
 import com.lendtrack.app.core.database.migrations.MIGRATION_5_6
+import com.lendtrack.app.core.database.migrations.MIGRATION_6_7
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -26,7 +27,7 @@ object DatabaseModule {
             LendTrackDatabase::class.java,
             LendTrackDatabase.DATABASE_NAME,
         )
-            .addMigrations(MIGRATION_1_2, MIGRATION_2_3, MIGRATION_3_4, MIGRATION_4_5, MIGRATION_5_6)
+            .addMigrations(MIGRATION_1_2, MIGRATION_2_3, MIGRATION_3_4, MIGRATION_4_5, MIGRATION_5_6, MIGRATION_6_7)
             .fallbackToDestructiveMigration()
             .addCallback(SeedDatabaseCallback())
             .build()

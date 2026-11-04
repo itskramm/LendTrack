@@ -105,6 +105,16 @@ data class Borrower(
     // ── General notes ─────────────────────────────────────────────────────────
     val notes: String = "",
 
+    // ── Document storage (Phase 4) ────────────────────────────────────────────
+    /** Local device URI for ID document photo */
+    val idDocumentUri:                String? = null,
+    /** Local device URI for billing address document photo */
+    val billingAddressDocumentUri:    String? = null,
+    /** Firebase Storage path for synced ID document */
+    val idDocumentFirebasePath:       String? = null,
+    /** Firebase Storage path for synced billing address document */
+    val billingAddressFirebasePath:   String? = null,
+
     // ── System fields ─────────────────────────────────────────────────────────
     val isArchived: Boolean = false,
     val createdAt:  LocalDateTime = LocalDateTime.now(),

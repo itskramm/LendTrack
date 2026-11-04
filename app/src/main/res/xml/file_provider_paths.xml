@@ -2,4 +2,6 @@
 <paths>
     <!-- Exposes the app's cache directory for CSV export via ShareSheet -->
     <cache-path name="csv_exports" path="." />
+    <!-- Exposes the app's files directory for document photos (Phase 4) -->
+    <files-path name="documents" path="documents/" />
 </paths>

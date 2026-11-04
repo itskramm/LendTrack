@@ -61,6 +61,12 @@ data class BorrowerEntity(
 
     val notes: String = "",
 
+    // Document storage paths (Phase 4)
+    @ColumnInfo(name = "id_document_uri")                val idDocumentUri:                String? = null,
+    @ColumnInfo(name = "billing_address_document_uri")   val billingAddressDocumentUri:    String? = null,
+    @ColumnInfo(name = "id_document_firebase_path")      val idDocumentFirebasePath:       String? = null,
+    @ColumnInfo(name = "billing_address_firebase_path")  val billingAddressFirebasePath:   String? = null,
+
     @ColumnInfo(name = "is_archived") val isArchived: Boolean = false,
     @ColumnInfo(name = "created_at")  val createdAt:  LocalDateTime,
     @ColumnInfo(name = "updated_at")  val updatedAt:  LocalDateTime,
