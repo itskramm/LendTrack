@@ -59,13 +59,16 @@ class BorrowerDetailViewModel @Inject constructor(
     private val _cameraPermissionGranted = MutableStateFlow(false)
     val cameraPermissionGranted: StateFlow<Boolean> = _cameraPermissionGranted.asStateFlow()
 
+    private val borrowerFlow = borrowerRepo.observeBorrower(borrowerId)
+        .shareIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), replay = 1)
+
     init {
         // Download missing documents on initialization (multi-device sync)
         downloadMissingDocuments()
     }
 
     val uiState: StateFlow<BorrowerDetailUiState> = combine(
-        borrowerRepo.observeBorrower(borrowerId),
+        borrowerFlow,
         loanRepo.observeLoansByBorrower(borrowerId),
         paymentRepo.observePaymentsByBorrower(borrowerId),
     ) { borrower, loans, payments ->
@@ -91,10 +94,23 @@ class BorrowerDetailViewModel @Inject constructor(
             }
         }
 
+        // Handle empty installment flows case
+        if (installmentFlows.isEmpty()) {
+            return@flatMapLatest flowOf(
+                BorrowerDetailUiState(
+                    borrower         = borrower,
+                    loans            = loans.map { LoanWithBalance(it, emptyList(), 0.0) },
+                    payments         = payments,
+                    totalOutstanding = loans.sumOf { it.totalPayable },
+                    isLoading        = false,
+                )
+            )
+        }
+
         combine(installmentFlows) { installmentArrays ->
             val installmentsMap = installmentArrays.toMap()
             
-            val enrichedLoans = loans.mapNotNull { loan ->
+            val enrichedLoans = loans.map { loan ->
                 val installments = installmentsMap[loan.id] ?: emptyList()
                 val applied = installments.sumOf { it.amountPaid }
                 LoanWithBalance(loan, installments, applied)
@@ -493,89 +509,97 @@ class BorrowerDetailViewModel @Inject constructor(
      */
     private fun downloadMissingDocuments() {
         viewModelScope.launch {
-            uiState.collect { state ->
-                val borrower = state.borrower ?: return@collect
+            borrowerFlow.collect { borrower ->
+                if (borrower == null) return@collect
                 
                 // Download ID document if Firebase path exists but local URI doesn't
                 if (borrower.idDocumentFirebasePath != null && borrower.idDocumentUri == null) {
-                    val targetFile = documentCaptureHelper.getDocumentFile(
-                        borrowerId = borrowerId,
-                        documentType = DocumentCaptureHelper.ID_DOCUMENT,
-                        createIfMissing = true
-                    )
-                    
-                    documentStorageRepo.downloadDocument(
-                        firebasePath = borrower.idDocumentFirebasePath,
-                        localTargetPath = targetFile.absolutePath
-                    ).collect { downloadState ->
-                        when (downloadState) {
-                            is DownloadState.Success -> {
-                                // Update borrower with local URI
-                                borrowerRepo.updateBorrower(
-                                    id = borrowerId,
-                                    name = borrower.name,
-                                    contactNumber = borrower.contactNumber,
-                                    preferredPaymentChannel = borrower.preferredPaymentChannel,
-                                    secondaryContactName = borrower.secondaryContactName,
-                                    secondaryContactNumber = borrower.secondaryContactNumber,
-                                    secondaryContactRelationship = borrower.secondaryContactRelationship,
-                                    governmentIdType = borrower.governmentIdType,
-                                    governmentIdNumber = borrower.governmentIdNumber,
-                                    address = borrower.address,
-                                    barangay = borrower.barangay,
-                                    occupation = borrower.occupation,
-                                    notes = borrower.notes,
-                                    idDocumentUri = Uri.fromFile(targetFile).toString(),
-                                    billingAddressDocumentUri = borrower.billingAddressDocumentUri,
-                                    idDocumentFirebasePath = borrower.idDocumentFirebasePath,
-                                    billingAddressFirebasePath = borrower.billingAddressFirebasePath,
-                                )
-                            }
-                            else -> {
-                                // Handle download failure silently for background sync
+                    try {
+                        val targetFile = documentCaptureHelper.getDocumentFile(
+                            borrowerId = borrowerId,
+                            documentType = DocumentCaptureHelper.ID_DOCUMENT,
+                            createIfMissing = true
+                        )
+                        
+                        documentStorageRepo.downloadDocument(
+                            firebasePath = borrower.idDocumentFirebasePath,
+                            localTargetPath = targetFile.absolutePath
+                        ).collect { downloadState ->
+                            when (downloadState) {
+                                is DownloadState.Success -> {
+                                    // Update borrower with local URI
+                                    borrowerRepo.updateBorrower(
+                                        id = borrowerId,
+                                        name = borrower.name,
+                                        contactNumber = borrower.contactNumber,
+                                        preferredPaymentChannel = borrower.preferredPaymentChannel,
+                                        secondaryContactName = borrower.secondaryContactName,
+                                        secondaryContactNumber = borrower.secondaryContactNumber,
+                                        secondaryContactRelationship = borrower.secondaryContactRelationship,
+                                        governmentIdType = borrower.governmentIdType,
+                                        governmentIdNumber = borrower.governmentIdNumber,
+                                        address = borrower.address,
+                                        barangay = borrower.barangay,
+                                        occupation = borrower.occupation,
+                                        notes = borrower.notes,
+                                        idDocumentUri = Uri.fromFile(targetFile).toString(),
+                                        billingAddressDocumentUri = borrower.billingAddressDocumentUri,
+                                        idDocumentFirebasePath = borrower.idDocumentFirebasePath,
+                                        billingAddressFirebasePath = borrower.billingAddressFirebasePath,
+                                    )
+                                }
+                                else -> {
+                                    // Handle download failure silently for background sync
+                                }
                             }
                         }
+                    } catch (e: Exception) {
+                        // Silently handle errors in background download
                     }
                 }
                 
                 // Download billing address document if Firebase path exists but local URI doesn't
                 if (borrower.billingAddressFirebasePath != null && borrower.billingAddressDocumentUri == null) {
-                    val targetFile = documentCaptureHelper.getDocumentFile(
-                        borrowerId = borrowerId,
-                        documentType = DocumentCaptureHelper.BILLING_ADDRESS_DOCUMENT,
-                        createIfMissing = true
-                    )
-                    
-                    documentStorageRepo.downloadDocument(
-                        firebasePath = borrower.billingAddressFirebasePath,
-                        localTargetPath = targetFile.absolutePath
-                    ).collect { downloadState ->
-                        when (downloadState) {
-                            is DownloadState.Success -> {
-                                borrowerRepo.updateBorrower(
-                                    id = borrowerId,
-                                    name = borrower.name,
-                                    contactNumber = borrower.contactNumber,
-                                    preferredPaymentChannel = borrower.preferredPaymentChannel,
-                                    secondaryContactName = borrower.secondaryContactName,
-                                    secondaryContactNumber = borrower.secondaryContactNumber,
-                                    secondaryContactRelationship = borrower.secondaryContactRelationship,
-                                    governmentIdType = borrower.governmentIdType,
-                                    governmentIdNumber = borrower.governmentIdNumber,
-                                    address = borrower.address,
-                                    barangay = borrower.barangay,
-                                    occupation = borrower.occupation,
-                                    notes = borrower.notes,
-                                    idDocumentUri = borrower.idDocumentUri,
-                                    billingAddressDocumentUri = Uri.fromFile(targetFile).toString(),
-                                    idDocumentFirebasePath = borrower.idDocumentFirebasePath,
-                                    billingAddressFirebasePath = borrower.billingAddressFirebasePath,
-                                )
-                            }
-                            else -> {
-                                // Handle download failure silently
+                    try {
+                        val targetFile = documentCaptureHelper.getDocumentFile(
+                            borrowerId = borrowerId,
+                            documentType = DocumentCaptureHelper.BILLING_ADDRESS_DOCUMENT,
+                            createIfMissing = true
+                        )
+                        
+                        documentStorageRepo.downloadDocument(
+                            firebasePath = borrower.billingAddressFirebasePath,
+                            localTargetPath = targetFile.absolutePath
+                        ).collect { downloadState ->
+                            when (downloadState) {
+                                is DownloadState.Success -> {
+                                    borrowerRepo.updateBorrower(
+                                        id = borrowerId,
+                                        name = borrower.name,
+                                        contactNumber = borrower.contactNumber,
+                                        preferredPaymentChannel = borrower.preferredPaymentChannel,
+                                        secondaryContactName = borrower.secondaryContactName,
+                                        secondaryContactNumber = borrower.secondaryContactNumber,
+                                        secondaryContactRelationship = borrower.secondaryContactRelationship,
+                                        governmentIdType = borrower.governmentIdType,
+                                        governmentIdNumber = borrower.governmentIdNumber,
+                                        address = borrower.address,
+                                        barangay = borrower.barangay,
+                                        occupation = borrower.occupation,
+                                        notes = borrower.notes,
+                                        idDocumentUri = borrower.idDocumentUri,
+                                        billingAddressDocumentUri = Uri.fromFile(targetFile).toString(),
+                                        idDocumentFirebasePath = borrower.idDocumentFirebasePath,
+                                        billingAddressFirebasePath = borrower.billingAddressFirebasePath,
+                                    )
+                                }
+                                else -> {
+                                    // Handle download failure silently
+                                }
                             }
                         }
+                    } catch (e: Exception) {
+                        // Silently handle errors in background download
                     }
                 }
             }

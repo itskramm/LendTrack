@@ -427,31 +427,20 @@ fun LtTopBar(
             }
         }
         
-        // Zelliyah branding on the left with ribbon badge
+        // Greeting on the left with ribbon badge
         Row(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(8.dp),
         ) {
-            Column(
-                horizontalAlignment = Alignment.Start,
-                verticalArrangement = Arrangement.spacedBy(2.dp),
-            ) {
-                Text(
-                    "Zelliyah",
-                    style = MaterialTheme.typography.headlineLarge.copy(
-                        fontFamily = GreatVibes,
-                        fontSize   = 32.sp,
-                    ),
-                    color = MaterialTheme.colorScheme.primary,
-                )
-                Text(
-                    "Lending Management",
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                )
-            }
+            Text(
+                "$greeting, Zelliyah!",
+                style = MaterialTheme.typography.bodyMedium.copy(
+                    fontWeight = FontWeight.Medium,
+                ),
+                color = MaterialTheme.colorScheme.onBackground,
+            )
             
-            // Ribbon badge with heart icon (like in the image)
+            // Ribbon badge next to greeting
             Box(contentAlignment = Alignment.Center) {
                 RibbonBadge(color = MaterialTheme.colorScheme.primary)
                 Icon(
@@ -465,27 +454,8 @@ fun LtTopBar(
         
         Spacer(modifier = Modifier.weight(1f))
         
-        // Greeting and date on the right with ribbon badge
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(8.dp),
-        ) {
-            Column(
-                horizontalAlignment = Alignment.End,
-            ) {
-                Text(
-                    "$greeting, Zelliyah!",
-                    style = MaterialTheme.typography.bodyMedium.copy(
-                        fontWeight = FontWeight.Medium,
-                    ),
-                    color = MaterialTheme.colorScheme.onBackground,
-                )
-                Text(dateStr, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
-            }
-            
-            // Decorative ribbon badge (no icon)
-            RibbonBadge(color = MaterialTheme.colorScheme.primary)
-        }
+        // Date only on the right
+        Text(dateStr, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
 
         // ── G-1: Notification bell with unread badge and panel ────────────
         Box {
