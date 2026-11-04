@@ -1,6 +1,7 @@
 package com.lendtrack.app.feature.borrowers
 
 import android.net.Uri
+import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -92,19 +93,6 @@ class BorrowerDetailViewModel @Inject constructor(
             loanRepo.observeInstallments(loan.id).map { installments ->
                 loan.id to installments
             }
-        }
-
-        // Handle empty installment flows case
-        if (installmentFlows.isEmpty()) {
-            return@flatMapLatest flowOf(
-                BorrowerDetailUiState(
-                    borrower         = borrower,
-                    loans            = loans.map { LoanWithBalance(it, emptyList(), 0.0) },
-                    payments         = payments,
-                    totalOutstanding = loans.sumOf { it.totalPayable },
-                    isLoading        = false,
-                )
-            )
         }
 
         combine(installmentFlows) { installmentArrays ->
@@ -509,7 +497,7 @@ class BorrowerDetailViewModel @Inject constructor(
      */
     private fun downloadMissingDocuments() {
         viewModelScope.launch {
-            borrowerFlow.collect { borrower ->
+            borrowerFlow.take(1).collect { borrower ->
                 if (borrower == null) return@collect
                 
                 // Download ID document if Firebase path exists but local URI doesn't
@@ -554,7 +542,7 @@ class BorrowerDetailViewModel @Inject constructor(
                             }
                         }
                     } catch (e: Exception) {
-                        // Silently handle errors in background download
+                        Log.w("BorrowerDetailVM", "Background ID document download failed for borrower $borrowerId", e)
                     }
                 }
                 
@@ -599,7 +587,7 @@ class BorrowerDetailViewModel @Inject constructor(
                             }
                         }
                     } catch (e: Exception) {
-                        // Silently handle errors in background download
+                        Log.w("BorrowerDetailVM", "Background billing address document download failed for borrower $borrowerId", e)
                     }
                 }
             }
