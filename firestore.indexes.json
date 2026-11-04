@@ -1,0 +1,177 @@
+{
+  "indexes": [
+    {
+      "collectionGroup": "loans",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "borrowerId",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "status",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "loanDate",
+          "order": "DESCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "installments",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "loanId",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "dueDate",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "installments",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "dueDate",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "amountPaid",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "payments",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "loanId",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "paymentDate",
+          "order": "DESCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "payments",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "borrowerId",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "paymentDate",
+          "order": "DESCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "monthly_interest_charges",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "loanId",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "chargeDate",
+          "order": "DESCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "monthly_interest_charges",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "borrowerId",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "chargeDate",
+          "order": "DESCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "late_penalties",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "loanId",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "penaltyDate",
+          "order": "DESCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "late_penalties",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "borrowerId",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "penaltyDate",
+          "order": "DESCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "late_penalties",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "installmentId",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "penaltyDate",
+          "order": "DESCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "sync_operations",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "syncStatus",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "createdAt",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "activity_log",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "type",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "occurredAt",
+          "order": "DESCENDING"
+        }
+      ]
+    }
+  ],
+  "fieldOverrides": []
+}

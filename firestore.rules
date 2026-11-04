@@ -1,0 +1,61 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // Helper function to check if user is authenticated
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+    
+    // Borrowers collection
+    match /borrowers/{borrowerId} {
+      allow read, write: if isAuthenticated();
+    }
+    
+    // Loans collection
+    match /loans/{loanId} {
+      allow read, write: if isAuthenticated();
+    }
+    
+    // Installments collection
+    match /installments/{installmentId} {
+      allow read, write: if isAuthenticated();
+    }
+    
+    // Payments collection
+    match /payments/{paymentId} {
+      allow read, write: if isAuthenticated();
+    }
+    
+    // Payment allocations collection
+    match /payment_allocations/{allocationId} {
+      allow read, write: if isAuthenticated();
+    }
+    
+    // Loan adjustments collection
+    match /loan_adjustments/{adjustmentId} {
+      allow read, write: if isAuthenticated();
+    }
+    
+    // Monthly interest charges collection (Phase 3)
+    match /monthly_interest_charges/{chargeId} {
+      allow read, write: if isAuthenticated();
+    }
+    
+    // Late penalties collection (Phase 3)
+    match /late_penalties/{penaltyId} {
+      allow read, write: if isAuthenticated();
+    }
+    
+    // Sync operations collection (internal use)
+    match /sync_operations/{operationId} {
+      allow read, write: if isAuthenticated();
+    }
+    
+    // Activity log collection
+    match /activity_log/{activityId} {
+      allow read, write: if isAuthenticated();
+    }
+  }
+}
