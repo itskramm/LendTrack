@@ -20,7 +20,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Path
+import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.DpOffset
@@ -41,6 +44,37 @@ import java.time.LocalDate
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
 import java.util.Locale
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Ribbon shape composable - creates a banner with pointed right edge
+// ─────────────────────────────────────────────────────────────────────────────
+
+@Composable
+fun RibbonBadge(
+    modifier: Modifier = Modifier,
+    color: Color = MaterialTheme.colorScheme.primary,
+) {
+    Box(
+        modifier = modifier
+            .size(width = 50.dp, height = 30.dp)
+            .drawBehind {
+                val width = size.width
+                val height = size.height
+                val triangleWidth = 10.dp.toPx()
+                
+                val path = Path().apply {
+                    moveTo(0f, 0f) // Top left
+                    lineTo(width - triangleWidth, 0f) // Top right (before triangle)
+                    lineTo(width, height / 2f) // Triangle point (right middle)
+                    lineTo(width - triangleWidth, height) // Bottom right (after triangle)
+                    lineTo(0f, height) // Bottom left
+                    close()
+                }
+                
+                drawPath(path, color)
+            }
+    )
+}
 
 // ─────────────────────────────────────────────────────────────────────────────
 // AppViewModel — provides connectivity and sync state to the app shell
@@ -393,7 +427,7 @@ fun LtTopBar(
             }
         }
         
-        // Zelliyah branding on the left with ribbon
+        // Zelliyah branding on the left with ribbon badge
         Row(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(8.dp),
@@ -408,7 +442,7 @@ fun LtTopBar(
                         fontFamily = GreatVibes,
                         fontSize   = 32.sp,
                     ),
-                    color = LtRose,
+                    color = MaterialTheme.colorScheme.primary,
                 )
                 Text(
                     "Lending Management",
@@ -417,37 +451,40 @@ fun LtTopBar(
                 )
             }
             
-            // Decorative ribbon
-            Box(
-                modifier = Modifier
-                    .size(width = 60.dp, height = 36.dp)
-                    .clip(RoundedCornerShape(4.dp))
-                    .background(LtRose.copy(alpha = 0.15f))
-                    .border(1.dp, LtRose.copy(alpha = 0.3f), RoundedCornerShape(4.dp)),
-                contentAlignment = Alignment.Center,
-            ) {
-                Text(
-                    "♥",
-                    fontSize = 18.sp,
-                    color = LtRose,
+            // Ribbon badge with heart icon (like in the image)
+            Box(contentAlignment = Alignment.Center) {
+                RibbonBadge(color = MaterialTheme.colorScheme.primary)
+                Icon(
+                    Icons.Filled.Favorite,
+                    contentDescription = null,
+                    tint = Color.White,
+                    modifier = Modifier.size(14.dp).offset(x = (-3).dp),
                 )
             }
         }
         
         Spacer(modifier = Modifier.weight(1f))
         
-        // Greeting and date on the right
-        Column(
-            horizontalAlignment = Alignment.End,
+        // Greeting and date on the right with ribbon badge
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
         ) {
-            Text(
-                "$greeting, Zelliyah!",
-                style = MaterialTheme.typography.bodyMedium.copy(
-                    fontWeight = FontWeight.Medium,
-                ),
-                color = MaterialTheme.colorScheme.onBackground,
-            )
-            Text(dateStr, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+            Column(
+                horizontalAlignment = Alignment.End,
+            ) {
+                Text(
+                    "$greeting, Zelliyah!",
+                    style = MaterialTheme.typography.bodyMedium.copy(
+                        fontWeight = FontWeight.Medium,
+                    ),
+                    color = MaterialTheme.colorScheme.onBackground,
+                )
+                Text(dateStr, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+            }
+            
+            // Decorative ribbon badge (no icon)
+            RibbonBadge(color = MaterialTheme.colorScheme.primary)
         }
 
         // ── G-1: Notification bell with unread badge and panel ────────────

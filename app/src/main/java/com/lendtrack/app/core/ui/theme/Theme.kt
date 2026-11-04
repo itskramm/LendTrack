@@ -54,39 +54,39 @@ private val LendTrackColorScheme = lightColorScheme(
 )
 
 private val DarkColorScheme = darkColorScheme(
-    primary            = LtRose.copy(alpha = 0.85f),
+    primary            = Color(0xFFE91E63), // Vibrant pink from the image
     onPrimary          = Color.White,
-    primaryContainer   = Color(0xFF5A2833),
+    primaryContainer   = Color(0xFF8E1537), // Deeper pink for containers
     onPrimaryContainer = Color(0xFFFFDADF),
 
-    secondary          = LtDusty,
+    secondary          = Color(0xFFCF6679), // Dusty rose
     onSecondary        = Color.White,
     secondaryContainer = Color(0xFF5A3A3E),
     onSecondaryContainer = Color(0xFFFFD9DD),
 
-    tertiary           = LtSage,
+    tertiary           = Color(0xFFE91E63), // Accent pink
     onTertiary         = Color.White,
-    tertiaryContainer  = Color(0xFF2E4A30),
-    onTertiaryContainer = Color(0xFFD8EBD9),
+    tertiaryContainer  = Color(0xFF8E1537),
+    onTertiaryContainer = Color(0xFFFFDADF),
 
     error              = Color(0xFFFFB4AB),
     onError            = Color(0xFF690005),
     errorContainer     = Color(0xFF93000A),
     onErrorContainer   = Color(0xFFFFDAD6),
 
-    background         = Color(0xFF1A1A1A),
-    onBackground       = Color(0xFFE5E5E5),
-    surface            = Color(0xFF2A2A2A),
-    onSurface          = Color(0xFFE5E5E5),
-    surfaceVariant     = Color(0xFF3A3A3A),
+    background         = Color(0xFF121212), // Very dark background like in image
+    onBackground       = Color(0xFFFFFFFF),
+    surface            = Color(0xFF1E1E1E), // Slightly lighter surface
+    onSurface          = Color(0xFFFFFFFF),
+    surfaceVariant     = Color(0xFF2D2D2D),
     onSurfaceVariant   = Color(0xFFD0D0D0),
 
-    outline            = Color(0xFF938F99),
+    outline            = Color(0xFFE91E63).copy(alpha = 0.3f), // Pink outline
     outlineVariant     = Color(0xFF49454F),
 
     inverseSurface     = Color(0xFFE5E5E5),
     inverseOnSurface   = Color(0xFF1A1A1A),
-    inversePrimary     = LtRose,
+    inversePrimary     = Color(0xFFE91E63),
 
     scrim              = Color(0xDD000000),
 )
