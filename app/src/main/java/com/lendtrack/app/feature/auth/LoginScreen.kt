@@ -211,8 +211,8 @@ private fun outlinedFieldColors() = OutlinedTextFieldDefaults.colors(
     unfocusedBorderColor    = MaterialTheme.colorScheme.outline,
     focusedLabelColor       = LtRose,
     unfocusedLabelColor     = MaterialTheme.colorScheme.onSurfaceVariant,
-    focusedContainerColor   = MaterialTheme.colorScheme.surface,
-    unfocusedContainerColor = MaterialTheme.colorScheme.surface,
+    focusedContainerColor   = MaterialTheme.colorScheme.background,
+    unfocusedContainerColor = MaterialTheme.colorScheme.background,
     cursorColor             = LtRose,
 )
 

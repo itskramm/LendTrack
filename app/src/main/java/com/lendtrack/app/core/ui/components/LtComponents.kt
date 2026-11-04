@@ -424,8 +424,8 @@ fun LtSearchField(
         colors = OutlinedTextFieldDefaults.colors(
             focusedBorderColor   = LtRose,
             unfocusedBorderColor = MaterialTheme.colorScheme.outline,
-            focusedContainerColor   = MaterialTheme.colorScheme.surface,
-            unfocusedContainerColor = MaterialTheme.colorScheme.surface,
+            focusedContainerColor   = MaterialTheme.colorScheme.background,
+            unfocusedContainerColor = MaterialTheme.colorScheme.background,
             cursorColor = LtRose,
         ),
         leadingIcon = if (leadingIcon != null) ({

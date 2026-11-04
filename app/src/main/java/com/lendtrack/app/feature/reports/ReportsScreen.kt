@@ -98,7 +98,7 @@ fun ReportsScreen(
                 Text(
                     "Collections $rangeFrom – $rangeTo:",
                     style = MaterialTheme.typography.bodyMedium,
-                    color = LtText,
+                    color = MaterialTheme.colorScheme.onBackground,
                 )
                 Text(
                     collectedInRange.peso(),

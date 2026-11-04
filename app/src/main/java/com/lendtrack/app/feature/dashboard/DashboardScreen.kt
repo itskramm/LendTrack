@@ -328,7 +328,7 @@ fun UpcomingPaymentsPanel(
                 DropdownMenu(
                     expanded         = expanded,
                     onDismissRequest = { expanded = false },
-                    containerColor   = LtSurface,
+                    containerColor   = MaterialTheme.colorScheme.surface,
                 ) {
                     listOf("All", "Upcoming", "Due Soon", "Overdue", "Paid").forEach { s ->
                         DropdownMenuItem(
@@ -402,7 +402,7 @@ private fun InstallmentRow(
         Text(
             text  = iwb.installment.dueDate.formatShort(),
             style = MaterialTheme.typography.bodySmall,
-            color = LtText,
+            color = MaterialTheme.colorScheme.onBackground,
             modifier = Modifier.weight(1f),
         )
         // Borrower name — tappable link to borrower profile
@@ -417,7 +417,7 @@ private fun InstallmentRow(
         Text(
             text  = iwb.installment.remaining.peso(),
             style = MaterialTheme.typography.bodySmall,
-            color = LtText,
+            color = MaterialTheme.colorScheme.onBackground,
             modifier = Modifier.weight(1f),
         )
         Box(modifier = Modifier.weight(1f)) {
@@ -459,9 +459,9 @@ fun BalanceOverviewPanel(
                 CircularProgressIndicator(
                     progress       = { 1f },
                     modifier       = Modifier.fillMaxSize(),
-                    color          = LtBlush,
+                    color          = MaterialTheme.colorScheme.surfaceVariant,
                     strokeWidth    = 22.dp,
-                    trackColor     = LtBlush,
+                    trackColor     = MaterialTheme.colorScheme.surfaceVariant,
                 )
                 CircularProgressIndicator(
                     progress    = { fraction },
@@ -487,7 +487,7 @@ fun BalanceOverviewPanel(
                     Text(
                         text  = "repaid",
                         style = MaterialTheme.typography.bodySmall,
-                        color = LtMuted,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
                     )
                 }
             }
@@ -513,7 +513,7 @@ private fun LegendRow(color: Color, label: String, value: String) {
                 .background(color),
         )
         Column {
-            Text(label, style = MaterialTheme.typography.bodySmall, color = LtMuted)
+            Text(label, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
             Text(value, style = MaterialTheme.typography.labelLarge.copy(fontWeight = FontWeight.SemiBold), color = LtBurgundy)
         }
     }
@@ -559,11 +559,11 @@ private fun ActivityRow(act: com.lendtrack.app.core.database.entities.ActivityLo
     ) {
         Text(icon, color = color, fontSize = 16.sp, modifier = Modifier.width(20.dp))
         Column(modifier = Modifier.weight(1f)) {
-            Text(act.description, style = MaterialTheme.typography.bodySmall, color = LtText)
+            Text(act.description, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onBackground)
             Text(
                 act.occurredAt.toLocalDate().formatFull(),
                 style = MaterialTheme.typography.labelSmall,
-                color = LtMuted,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
         }
     }
@@ -618,7 +618,7 @@ private fun PaymentRow(pwb: PaymentWithBorrower) {
                 Text(
                     "${pwb.payment.paymentDate.formatShort()} · ${pwb.payment.paymentMethod.label}",
                     style = MaterialTheme.typography.labelSmall,
-                    color = LtMuted,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
             }
         }
@@ -686,7 +686,7 @@ fun LtSyncBanner(pendingCount: Int) {
         Icon(Icons.Filled.Sync, contentDescription = null, tint = LtAmber, modifier = Modifier.size(18.dp))
         Text(
             "$pendingCount change${if (pendingCount != 1) "s" else ""} pending sync with server.",
-            style = MaterialTheme.typography.bodySmall.copy(color = LtText),
+            style = MaterialTheme.typography.bodySmall.copy(color = MaterialTheme.colorScheme.onBackground),
             modifier = Modifier.weight(1f),
         )
         LtSyncBadge(status = SyncStatus.PENDING)
@@ -709,7 +709,7 @@ fun InstallmentDetailDialog(
 
     AlertDialog(
         onDismissRequest = onDismiss,
-        containerColor   = LtSurface,
+        containerColor   = MaterialTheme.colorScheme.surface,
         shape            = androidx.compose.foundation.shape.RoundedCornerShape(18.dp),
         title = {
             Row(
@@ -719,7 +719,7 @@ fun InstallmentDetailDialog(
             ) {
                 Text("Installment Details", style = MaterialTheme.typography.headlineMedium)
                 IconButton(onClick = onDismiss) {
-                    Icon(Icons.Filled.Close, contentDescription = "Close", tint = LtMuted)
+                    Icon(Icons.Filled.Close, contentDescription = "Close", tint = MaterialTheme.colorScheme.onSurfaceVariant)
                 }
             }
         },
@@ -773,7 +773,7 @@ private fun InstDetailRow(label: String, value: String, valueColor: Color = LtBu
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment     = Alignment.CenterVertically,
     ) {
-        Text(label, style = MaterialTheme.typography.bodySmall, color = LtMuted)
+        Text(label, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
         Text(value, style = MaterialTheme.typography.bodySmall.copy(fontWeight = FontWeight.SemiBold, color = valueColor))
     }
 }
