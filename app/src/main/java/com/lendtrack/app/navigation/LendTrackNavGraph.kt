@@ -8,6 +8,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.lendtrack.app.feature.borrowers.BorrowerDetailScreen
 import com.lendtrack.app.feature.borrowers.BorrowersScreen
+import com.lendtrack.app.feature.borrowers.DocumentViewerScreen
 import com.lendtrack.app.feature.calendar.PaymentCalendarScreen
 import com.lendtrack.app.feature.dashboard.DashboardScreen
 import com.lendtrack.app.feature.ledger.BalanceLedgerScreen
@@ -16,6 +17,9 @@ import com.lendtrack.app.feature.payments.PaymentsScreen
 import com.lendtrack.app.feature.payments.RecordPaymentScreen
 import com.lendtrack.app.feature.reports.ReportsScreen
 import com.lendtrack.app.feature.settings.SettingsScreen
+import java.net.URLDecoder
+import java.net.URLEncoder
+import java.nio.charset.StandardCharsets
 
 @Composable
 fun LendTrackNavGraph(
@@ -58,6 +62,23 @@ fun LendTrackNavGraph(
                 onAddLoan = { borrowerId ->
                     navController.navigate("loans/add?borrowerId=$borrowerId")
                 },
+                onNavigateToDocumentViewer = { documentUri ->
+                    val encodedUri = URLEncoder.encode(documentUri, StandardCharsets.UTF_8.toString())
+                    navController.navigate("documents/view/$encodedUri")
+                }
+            )
+        }
+
+        // ── Document Viewer ────────────────────────────────────────────────
+        composable(
+            route     = "documents/view/{documentUri}",
+            arguments = listOf(navArgument("documentUri") { type = NavType.StringType }),
+        ) { backStackEntry ->
+            val encodedUri = backStackEntry.arguments?.getString("documentUri") ?: ""
+            val documentUri = URLDecoder.decode(encodedUri, StandardCharsets.UTF_8.toString())
+            DocumentViewerScreen(
+                documentUri = documentUri,
+                onClose = { navController.popBackStack() }
             )
         }
 

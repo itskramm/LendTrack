@@ -1,11 +1,13 @@
 package com.lendtrack.app.feature.borrowers
 
+import android.net.Uri
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
@@ -20,6 +22,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import coil.compose.AsyncImage
 import com.lendtrack.app.core.ui.components.*
 import com.lendtrack.app.core.ui.theme.*
 import com.lendtrack.app.domain.model.*
@@ -34,6 +37,7 @@ fun BorrowerDetailScreen(
     onNavigateBack:  () -> Unit,
     onRecordPayment: (loanId: String) -> Unit,
     onAddLoan:       (borrowerId: String) -> Unit,
+    onNavigateToDocumentViewer: (String) -> Unit = {},
     viewModel:       BorrowerDetailViewModel = hiltViewModel(),
 ) {
     val state by viewModel.uiState.collectAsStateWithLifecycle()
@@ -211,6 +215,27 @@ fun BorrowerDetailScreen(
                 LtSyncBadge(borrower.syncStatus)
             }
         }
+
+        // ── Document cards ─────────────────────────────────────────────────
+        DocumentCard(
+            title = "ID Document",
+            documentUri = borrower.idDocumentUri,
+            firebasePath = borrower.idDocumentFirebasePath,
+            onThumbnailClick = { uri -> onNavigateToDocumentViewer(uri) },
+            onUpload = { /* TODO: Implement in ViewModel */ },
+            onReplace = { /* TODO: Implement in ViewModel */ },
+            onRemove = { /* TODO: Implement in ViewModel */ }
+        )
+        
+        DocumentCard(
+            title = "Billing Address Document",
+            documentUri = borrower.billingAddressDocumentUri,
+            firebasePath = borrower.billingAddressFirebasePath,
+            onThumbnailClick = { uri -> onNavigateToDocumentViewer(uri) },
+            onUpload = { /* TODO: Implement in ViewModel */ },
+            onReplace = { /* TODO: Implement in ViewModel */ },
+            onRemove = { /* TODO: Implement in ViewModel */ }
+        )
 
         // ── Loans ──────────────────────────────────────────────────────────
         if (state.loans.isEmpty()) {
@@ -397,5 +422,109 @@ private fun LoanFinancialItem(
         Text(label, style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
         Spacer(Modifier.height(2.dp))
         Text(value, style = MaterialTheme.typography.titleSmall.copy(color = valueColor, fontWeight = FontWeight.SemiBold))
+    }
+}
+
+@Composable
+private fun DocumentCard(
+    title: String,
+    documentUri: String?,
+    firebasePath: String?,
+    onThumbnailClick: (String) -> Unit,
+    onUpload: () -> Unit,
+    onReplace: () -> Unit,
+    onRemove: () -> Unit
+) {
+    LtPanel(title = title) {
+        if (documentUri != null) {
+            // Document exists - show thumbnail and actions
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.spacedBy(12.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                // Clickable thumbnail
+                AsyncImage(
+                    model = Uri.parse(documentUri),
+                    contentDescription = title,
+                    modifier = Modifier
+                        .size(80.dp)
+                        .clip(RoundedCornerShape(8.dp))
+                        .background(MaterialTheme.colorScheme.surface)
+                        .border(1.dp, MaterialTheme.colorScheme.outline, RoundedCornerShape(8.dp))
+                        .clickable { onThumbnailClick(documentUri) }
+                )
+                
+                Column(
+                    modifier = Modifier.weight(1f),
+                    verticalArrangement = Arrangement.spacedBy(4.dp)
+                ) {
+                    // Sync status badge
+                    if (firebasePath != null) {
+                        LtSyncBadge(SyncStatus.SYNCED)
+                    } else {
+                        LtSyncBadge(SyncStatus.PENDING)
+                    }
+                    
+                    Text(
+                        "Tap to view full size",
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                }
+                
+                // Action buttons
+                Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                    LtButton(
+                        text = "Replace",
+                        onClick = onReplace,
+                        ghost = true,
+                        small = true
+                    )
+                    LtButton(
+                        text = "Remove",
+                        onClick = onRemove,
+                        ghost = true,
+                        small = true,
+                        icon = Icons.Filled.Delete
+                    )
+                }
+            }
+        } else {
+            // No document - show placeholder and upload button
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clip(RoundedCornerShape(8.dp))
+                    .background(MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.3f))
+                    .padding(16.dp),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Row(
+                    horizontalArrangement = Arrangement.spacedBy(12.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Icon(
+                        Icons.Filled.Description,
+                        contentDescription = null,
+                        modifier = Modifier.size(40.dp),
+                        tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.5f)
+                    )
+                    Text(
+                        "No document uploaded",
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                }
+                
+                LtButton(
+                    text = "Upload",
+                    onClick = onUpload,
+                    small = true,
+                    icon = Icons.Filled.Upload
+                )
+            }
+        }
     }
 }

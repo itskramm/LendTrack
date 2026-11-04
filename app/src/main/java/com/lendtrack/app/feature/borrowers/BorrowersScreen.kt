@@ -1,5 +1,9 @@
 package com.lendtrack.app.feature.borrowers
 
+import android.Manifest
+import android.net.Uri
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -14,12 +18,15 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import coil.compose.AsyncImage
 import com.lendtrack.app.core.ui.components.*
 import com.lendtrack.app.core.ui.theme.*
+import com.lendtrack.app.core.util.DocumentCaptureHelper
 import com.lendtrack.app.domain.model.PaymentMethod
 import com.lendtrack.app.feature.loans.LtDropdownField
 import java.util.Locale
@@ -144,6 +151,10 @@ data class BorrowerFormFields(
     val barangay:                     String = "",
     val occupation:                   String = "",
     val notes:                        String = "",
+    val idDocumentUri:                String? = null,
+    val billingAddressDocumentUri:    String? = null,
+    val idDocumentFirebasePath:       String? = null,
+    val billingAddressFirebasePath:   String? = null,
 )
 
 @Composable
@@ -238,6 +249,24 @@ fun AddBorrowerDialog(
                         LtFormField("Occupation", fields.occupation, modifier = Modifier.weight(1f)) { fields = fields.copy(occupation = it) }
                     }
 
+                    // Document upload sections
+                    LtSectionLabel("Document Upload")
+                    DocumentUploadSection(
+                        label = "ID Document",
+                        documentUri = fields.idDocumentUri,
+                        onUriChange = { fields = fields.copy(idDocumentUri = it) },
+                        onRemove = { fields = fields.copy(idDocumentUri = null) }
+                    )
+                    
+                    Spacer(Modifier.height(8.dp))
+                    
+                    DocumentUploadSection(
+                        label = "Billing Address Document",
+                        documentUri = fields.billingAddressDocumentUri,
+                        onUriChange = { fields = fields.copy(billingAddressDocumentUri = it) },
+                        onRemove = { fields = fields.copy(billingAddressDocumentUri = null) }
+                    )
+
                     LtFormField("Notes", fields.notes, singleLine = false) { fields = fields.copy(notes = it) }
                 }
 
@@ -289,6 +318,145 @@ fun LtFormField(
                 cursorColor             = LtRose,
             ),
         )
+    }
+}
+
+@Composable
+private fun DocumentUploadSection(
+    label: String,
+    documentUri: String?,
+    onUriChange: (String) -> Unit,
+    onRemove: () -> Unit
+) {
+    val context = LocalContext.current
+    val captureHelper = remember { DocumentCaptureHelper(context) }
+    
+    // Temporary URI for camera capture
+    var tempCameraUri by remember { mutableStateOf<Uri?>(null) }
+    
+    // Permission launcher
+    val cameraPermissionLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.RequestPermission()
+    ) { isGranted ->
+        if (!isGranted) {
+            // TODO: Show rationale dialog (will be handled in ViewModel in later steps)
+        }
+    }
+    
+    // Camera launcher
+    val cameraLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.TakePicture()
+    ) { success ->
+        if (success && tempCameraUri != null) {
+            // Image captured to tempCameraUri, it's already compressed
+            onUriChange(tempCameraUri.toString())
+        }
+    }
+    
+    // Gallery launcher
+    val galleryLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.GetContent()
+    ) { uri: Uri? ->
+        uri?.let {
+            try {
+                // For now, store the selected URI directly
+                // In production, we should compress it via DocumentCaptureHelper
+                onUriChange(it.toString())
+            } catch (e: Exception) {
+                // TODO: Show error
+            }
+        }
+    }
+    
+    Card(
+        modifier = Modifier.fillMaxWidth(),
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.3f)
+        )
+    ) {
+        Column(
+            modifier = Modifier.padding(12.dp),
+            verticalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            Text(
+                label,
+                style = MaterialTheme.typography.labelMedium,
+                color = MaterialTheme.colorScheme.onSurfaceVariant
+            )
+            
+            if (documentUri != null) {
+                // Show thumbnail preview
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.spacedBy(8.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    AsyncImage(
+                        model = Uri.parse(documentUri),
+                        contentDescription = label,
+                        modifier = Modifier
+                            .size(80.dp)
+                            .clip(RoundedCornerShape(8.dp))
+                            .background(MaterialTheme.colorScheme.surface)
+                            .border(1.dp, MaterialTheme.colorScheme.outline, RoundedCornerShape(8.dp))
+                    )
+                    
+                    Spacer(Modifier.weight(1f))
+                    
+                    LtButton(
+                        text = "Remove",
+                        onClick = onRemove,
+                        ghost = true,
+                        small = true,
+                        icon = Icons.Filled.Delete
+                    )
+                }
+            } else {
+                // Show upload buttons
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    LtButton(
+                        text = "Camera",
+                        onClick = {
+                            cameraPermissionLauncher.launch(Manifest.permission.CAMERA)
+                            // For demo purposes, create a temp file
+                            // In production, use proper borrower ID
+                            val tempFile = captureHelper.getDocumentFile(
+                                borrowerId = "temp",
+                                documentType = if (label.contains("ID")) 
+                                    DocumentCaptureHelper.ID_DOCUMENT 
+                                else 
+                                    DocumentCaptureHelper.BILLING_ADDRESS_DOCUMENT,
+                                createIfMissing = true
+                            )
+                            tempCameraUri = Uri.fromFile(tempFile)
+                            cameraLauncher.launch(tempCameraUri!!)
+                        },
+                        ghost = true,
+                        small = true,
+                        icon = Icons.Filled.CameraAlt,
+                        modifier = Modifier.weight(1f)
+                    )
+                    
+                    LtButton(
+                        text = "Gallery",
+                        onClick = { galleryLauncher.launch("image/*") },
+                        ghost = true,
+                        small = true,
+                        icon = Icons.Filled.PhotoLibrary,
+                        modifier = Modifier.weight(1f)
+                    )
+                }
+                
+                Text(
+                    "No document uploaded",
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+            }
+        }
     }
 }
 

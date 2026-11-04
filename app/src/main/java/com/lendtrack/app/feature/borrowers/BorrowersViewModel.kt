@@ -83,6 +83,10 @@ class BorrowersViewModel @Inject constructor(
                     barangay                     = fields.barangay,
                     occupation                   = fields.occupation,
                     notes                        = fields.notes,
+                    idDocumentUri                = fields.idDocumentUri,
+                    billingAddressDocumentUri    = fields.billingAddressDocumentUri,
+                    idDocumentFirebasePath       = fields.idDocumentFirebasePath,
+                    billingAddressFirebasePath   = fields.billingAddressFirebasePath,
                 )
                 dismissDialog()
             } catch (e: BorrowerValidationException) {
@@ -108,6 +112,10 @@ class BorrowersViewModel @Inject constructor(
                     barangay                     = fields.barangay,
                     occupation                   = fields.occupation,
                     notes                        = fields.notes,
+                    idDocumentUri                = fields.idDocumentUri,
+                    billingAddressDocumentUri    = fields.billingAddressDocumentUri,
+                    idDocumentFirebasePath       = fields.idDocumentFirebasePath,
+                    billingAddressFirebasePath   = fields.billingAddressFirebasePath,
                 )
                 dismissDialog()
             } catch (e: BorrowerValidationException) {
