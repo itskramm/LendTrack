@@ -69,18 +69,45 @@ class BorrowerDetailViewModel @Inject constructor(
         loanRepo.observeLoansByBorrower(borrowerId),
         paymentRepo.observePaymentsByBorrower(borrowerId),
     ) { borrower, loans, payments ->
-        val enrichedLoans = loans.map { loan ->
-            val installments = loanRepo.observeInstallments(loan.id).first()
-            val applied      = installments.sumOf { it.amountPaid }
-            LoanWithBalance(loan, installments, applied)
+        Triple(borrower, loans, payments)
+    }.flatMapLatest { (borrower, loans, payments) ->
+        // If no loans, return empty state immediately
+        if (loans.isEmpty()) {
+            return@flatMapLatest flowOf(
+                BorrowerDetailUiState(
+                    borrower         = borrower,
+                    loans            = emptyList(),
+                    payments         = payments,
+                    totalOutstanding = 0.0,
+                    isLoading        = false,
+                )
+            )
         }
-        BorrowerDetailUiState(
-            borrower         = borrower,
-            loans            = enrichedLoans,
-            payments         = payments,
-            totalOutstanding = enrichedLoans.sumOf { it.remainingBalance },
-            isLoading        = false,
-        )
+
+        // Combine all installment flows for each loan
+        val installmentFlows = loans.map { loan ->
+            loanRepo.observeInstallments(loan.id).map { installments ->
+                loan.id to installments
+            }
+        }
+
+        combine(installmentFlows) { installmentArrays ->
+            val installmentsMap = installmentArrays.toMap()
+            
+            val enrichedLoans = loans.mapNotNull { loan ->
+                val installments = installmentsMap[loan.id] ?: emptyList()
+                val applied = installments.sumOf { it.amountPaid }
+                LoanWithBalance(loan, installments, applied)
+            }
+
+            BorrowerDetailUiState(
+                borrower         = borrower,
+                loans            = enrichedLoans,
+                payments         = payments,
+                totalOutstanding = enrichedLoans.sumOf { it.remainingBalance },
+                isLoading        = false,
+            )
+        }
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), BorrowerDetailUiState())
 
     // ── Edit dialog state ──────────────────────────────────────────────────
