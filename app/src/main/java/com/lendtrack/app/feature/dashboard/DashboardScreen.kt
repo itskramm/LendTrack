@@ -495,7 +495,7 @@ fun BalanceOverviewPanel(
             // Legend
             Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
                 LegendRow(color = LtBurgundy, label = "Payments Received", value = collectedThisMonth.peso())
-                LegendRow(color = LtBlush,    label = "Remaining Balance",  value = totalOutstanding.peso())
+                LegendRow(color = MaterialTheme.colorScheme.secondaryContainer,    label = "Remaining Balance",  value = totalOutstanding.peso())
             }
         }
         Spacer(Modifier.height(8.dp))

@@ -50,7 +50,7 @@ fun SettingsScreen(
                     "All locally saved data remains on this tablet. " +
                     "You will need your email and password to sign back in.",
                     style = MaterialTheme.typography.bodyMedium,
-                    color = LtText,
+                    color = MaterialTheme.colorScheme.onBackground,
                 )
             },
             confirmButton = {
@@ -133,7 +133,7 @@ fun SettingsScreen(
                 horizontalArrangement = Arrangement.SpaceBetween,
             ) {
                 Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
-                    Text("Status", style = MaterialTheme.typography.bodyMedium, color = LtText)
+                    Text("Status", style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onBackground)
                     LtSyncBadge(syncStatus)
                 }
                 LtButton(
@@ -168,7 +168,7 @@ fun SettingsScreen(
                         strokeWidth = 2.dp,
                     )
                     Spacer(Modifier.width(8.dp))
-                    Text("Syncing...", style = MaterialTheme.typography.bodySmall, color = LtMuted)
+                    Text("Syncing...", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
                 }
             }
 
@@ -212,14 +212,14 @@ fun SettingsScreen(
                 horizontalArrangement = Arrangement.spacedBy(8.dp),
                 verticalAlignment     = Alignment.Top,
             ) {
-                Icon(Icons.Filled.Info, contentDescription = null, tint = LtDusty, modifier = Modifier.size(16.dp))
+                Icon(Icons.Filled.Info, contentDescription = null, tint = MaterialTheme.colorScheme.outline, modifier = Modifier.size(16.dp))
                 Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
                     Text("Sync diagnostics", style = MaterialTheme.typography.titleSmall, color = LtBurgundy)
                     Text(
                         "Check Logcat (tag: FirebaseSyncManager) for detailed sync logs showing " +
                         "Firebase connectivity, authentication status, and step-by-step upload progress.",
                         style = MaterialTheme.typography.bodySmall,
-                        color = LtText,
+                        color = MaterialTheme.colorScheme.onBackground,
                     )
                     Text(
                         "Tap \"Force Sync Now\" to immediately push all pending changes and see detailed logs.",
@@ -245,7 +245,7 @@ fun SettingsScreen(
                     verticalAlignment     = Alignment.CenterVertically,
                 ) {
                     LtSyncBadge(status)
-                    Text(description, style = MaterialTheme.typography.bodySmall, color = LtText)
+                    Text(description, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onBackground)
                 }
                 LtDivider()
             }
@@ -272,11 +272,11 @@ fun SettingsScreen(
                 verticalAlignment     = Alignment.CenterVertically,
             ) {
                 Column {
-                    Text("Lender Account", style = MaterialTheme.typography.bodyMedium, color = LtText)
+                    Text("Lender Account", style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onBackground)
                     Text(
                         "Managed in Firebase Console",
                         style = MaterialTheme.typography.bodySmall,
-                        color = LtMuted,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
                     )
                 }
                 Button(
@@ -307,7 +307,7 @@ private fun InfoRow(
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment     = Alignment.CenterVertically,
     ) {
-        Text(label, style = MaterialTheme.typography.bodyMedium, color = LtMuted)
+        Text(label, style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
         Text(value, style = MaterialTheme.typography.bodySmall.copy(color = valueColor, fontWeight = FontWeight.Medium))
     }
 }

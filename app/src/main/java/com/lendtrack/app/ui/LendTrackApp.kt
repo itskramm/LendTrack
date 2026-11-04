@@ -77,7 +77,7 @@ fun LendTrackApp(
 
     // Dot texture — matches prototype's radial-gradient background pattern
     // rgba(217,140,150,.13) 1px dots on 14px × 14px grid
-    val dotColor = LtDusty.copy(alpha = 0.13f)
+    val dotColor = MaterialTheme.colorScheme.outline.copy(alpha = 0.13f)
     
     Box(
         modifier = Modifier
@@ -450,8 +450,8 @@ fun LtTopBar(
                     onClick  = { notifOpen = !notifOpen },
                     modifier = Modifier
                         .clip(RoundedCornerShape(50))
-                        .background(LtSurface)
-                        .border(1.dp, LtDusty, RoundedCornerShape(50)),
+                        .background(MaterialTheme.colorScheme.surface)
+                        .border(1.dp, MaterialTheme.colorScheme.outline, RoundedCornerShape(50)),
                 ) {
                     Icon(
                         Icons.Filled.Notifications,
