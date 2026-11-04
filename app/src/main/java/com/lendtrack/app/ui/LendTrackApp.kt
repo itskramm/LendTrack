@@ -409,7 +409,7 @@ fun LtTopBar(
             Text(
                 "Lending Management",
                 style = MaterialTheme.typography.bodySmall,
-                color = LtMuted,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
         }
         
@@ -424,9 +424,9 @@ fun LtTopBar(
                 style = MaterialTheme.typography.bodyMedium.copy(
                     fontWeight = FontWeight.Medium,
                 ),
-                color = LtText,
+                color = MaterialTheme.colorScheme.onBackground,
             )
-            Text(dateStr, style = MaterialTheme.typography.bodySmall, color = LtMuted)
+            Text(dateStr, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
         }
 
         // ── G-1: Notification bell with unread badge and panel ────────────
@@ -497,7 +497,7 @@ fun LtTopBar(
                             .padding(24.dp),
                         contentAlignment = Alignment.Center,
                     ) {
-                        Text("No recent activity.", style = MaterialTheme.typography.bodySmall, color = LtMuted)
+                        Text("No recent activity.", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
                     }
                 } else {
                     activities.take(8).forEach { act ->

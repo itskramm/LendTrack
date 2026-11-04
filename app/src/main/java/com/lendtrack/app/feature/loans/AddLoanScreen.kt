@@ -169,7 +169,7 @@ fun AddLoanScreen(
                 horizontalArrangement = Arrangement.spacedBy(12.dp),
             ) {
                 Column(modifier = Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(4.dp)) {
-                    Text("Payment Frequency *", style = MaterialTheme.typography.labelSmall, color = LtMuted)
+                    Text("Payment Frequency *", style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
                     LtDropdownField(
                         label      = "",
                         selected   = fields.paymentFrequency.label,
@@ -313,7 +313,7 @@ fun RepaymentPreviewPanel(
         Spacer(Modifier.height(8.dp))
 
         Row(modifier = Modifier.fillMaxWidth().padding(horizontal = 8.dp, vertical = 4.dp)) {
-            Text("#",      style = MaterialTheme.typography.labelSmall, color = LtMuted, modifier = Modifier.width(32.dp))
+            Text("#",      style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.width(32.dp))
             Text("Due Date", style = MaterialTheme.typography.titleMedium.copy(fontSize = 12.sp), color = LtBurgundy, modifier = Modifier.weight(1f))
             Text("Amount",   style = MaterialTheme.typography.titleMedium.copy(fontSize = 12.sp), color = LtBurgundy, modifier = Modifier.weight(1f))
         }
@@ -327,7 +327,7 @@ fun RepaymentPreviewPanel(
                     .padding(horizontal = 8.dp, vertical = 7.dp),
                 verticalAlignment = Alignment.CenterVertically,
             ) {
-                Text(inst.installmentNumber.toString(), style = MaterialTheme.typography.labelSmall, color = LtMuted, modifier = Modifier.width(32.dp))
+                Text(inst.installmentNumber.toString(), style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.width(32.dp))
                 Text(inst.dueDate.formatShort(), style = MaterialTheme.typography.bodySmall, modifier = Modifier.weight(1f))
                 Text(inst.amount.peso(),         style = MaterialTheme.typography.bodySmall.copy(fontWeight = FontWeight.Medium), modifier = Modifier.weight(1f))
             }
@@ -359,7 +359,7 @@ fun RepaymentPreviewPanel(
                 "The interest method and installment schedule cannot be changed after saving. " +
                 "Review the figures above before confirming.",
                 style = MaterialTheme.typography.bodySmall,
-                color = LtText,
+                color = MaterialTheme.colorScheme.onBackground,
             )
         }
 

@@ -120,7 +120,7 @@ private fun BorrowerRow(bws: BorrowerWithSummary, onClick: () -> Unit) {
     ) {
         Text(bws.borrower.name, style = MaterialTheme.typography.bodySmall.copy(fontWeight = FontWeight.SemiBold, color = LtBurgundy), modifier = Modifier.weight(2f))
         Text(bws.borrower.contactNumber, style = MaterialTheme.typography.bodySmall, modifier = Modifier.weight(1.5f))
-        Text(bws.borrower.preferredPaymentChannel.label, style = MaterialTheme.typography.labelSmall.copy(color = LtMuted), modifier = Modifier.weight(1f))
+        Text(bws.borrower.preferredPaymentChannel.label, style = MaterialTheme.typography.labelSmall.copy(color = MaterialTheme.colorScheme.onSurfaceVariant), modifier = Modifier.weight(1f))
         Text(bws.loanCount.toString(), style = MaterialTheme.typography.bodySmall, modifier = Modifier.weight(0.7f))
         Text(bws.outstandingBalance.peso(), style = MaterialTheme.typography.bodySmall, modifier = Modifier.weight(1f))
         Text(statusText, style = MaterialTheme.typography.labelSmall.copy(color = statusColor, fontWeight = FontWeight.SemiBold), modifier = Modifier.weight(0.8f))

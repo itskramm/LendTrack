@@ -161,7 +161,7 @@ fun PaymentCalendarScreen(
                                     ),
                                     modifier = Modifier.clickable { onBorrowerClick(iwb.borrower.id) },
                                 )
-                                Text("·", color = LtMuted)
+                                Text("·", color = MaterialTheme.colorScheme.onSurfaceVariant)
                                 Text(iwb.installment.amount.peso(), style = MaterialTheme.typography.bodySmall)
                                 LtStatusBadge(iwb.installment.statusOn(today))
                             }

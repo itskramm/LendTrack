@@ -206,7 +206,7 @@ fun PaymentAllocationPreviewPanel(
                 Text(
                     "₱${"%.2f".format(preview.overpayment)} exceeds the outstanding balance. Reduce the amount before confirming.",
                     style = MaterialTheme.typography.bodySmall,
-                    color = LtText,
+                    color = MaterialTheme.colorScheme.onBackground,
                 )
             }
         }

@@ -241,7 +241,7 @@ private fun PaymentDetailSheet(pwb: PaymentWithBorrower, onDismiss: () -> Unit) 
             ) {
                 Text("Payment Details", style = MaterialTheme.typography.headlineMedium)
                 IconButton(onClick = onDismiss) {
-                    Icon(Icons.Filled.Close, contentDescription = "Close", tint = LtMuted)
+                    Icon(Icons.Filled.Close, contentDescription = "Close", tint = MaterialTheme.colorScheme.onSurfaceVariant)
                 }
             }
         },
@@ -268,7 +268,7 @@ private fun PaymentDetailSheet(pwb: PaymentWithBorrower, onDismiss: () -> Unit) 
                     horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment     = Alignment.CenterVertically,
                 ) {
-                    Text("Sync status", style = MaterialTheme.typography.bodySmall, color = LtMuted)
+                    Text("Sync status", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
                     LtSyncBadge(p.syncStatus)
                 }
                 if (p.isReversed) {
@@ -283,7 +283,7 @@ private fun PaymentDetailSheet(pwb: PaymentWithBorrower, onDismiss: () -> Unit) 
                         Column {
                             Text("Payment Reversed", style = MaterialTheme.typography.labelLarge.copy(color = LtRed, fontWeight = FontWeight.SemiBold))
                             if (p.reversalReason.isNotBlank()) {
-                                Text(p.reversalReason, style = MaterialTheme.typography.bodySmall, color = LtText)
+                                Text(p.reversalReason, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onBackground)
                             }
                         }
                     }

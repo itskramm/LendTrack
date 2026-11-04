@@ -80,7 +80,7 @@ fun EditLoanDialog(
                             "Editing will regenerate the installment schedule and re-apply payments. " +
                             "Review the preview carefully.",
                             style = MaterialTheme.typography.bodySmall,
-                            color = LtText,
+                            color = MaterialTheme.colorScheme.onBackground,
                         )
                     }
                 }
@@ -119,7 +119,7 @@ fun EditLoanDialog(
                         Text(
                             text = "Effective rate: %.1f%%".format(effectiveRate),
                             style = MaterialTheme.typography.bodySmall,
-                            color = LtMuted,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
                             modifier = Modifier.padding(start = 4.dp)
                         )
                     }
@@ -136,7 +136,7 @@ fun EditLoanDialog(
                         Text(
                             "Payment Frequency *",
                             style = MaterialTheme.typography.labelSmall,
-                            color = LtMuted
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
                         LtDropdownField(
                             label = "",
@@ -343,7 +343,7 @@ private fun EditLoanPreviewPanel(preview: LoanPreview) {
             Text(
                 "#",
                 style = MaterialTheme.typography.labelSmall,
-                color = LtMuted,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
                 modifier = Modifier.width(28.dp)
             )
             Text(
@@ -372,7 +372,7 @@ private fun EditLoanPreviewPanel(preview: LoanPreview) {
                 Text(
                     inst.installmentNumber.toString(),
                     style = MaterialTheme.typography.labelSmall,
-                    color = LtMuted,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
                     modifier = Modifier.width(28.dp)
                 )
                 Text(
@@ -392,7 +392,7 @@ private fun EditLoanPreviewPanel(preview: LoanPreview) {
         Text(
             "Last payment due: ${preview.expectedEndDate.formatFull()}",
             style = MaterialTheme.typography.bodySmall,
-            color = LtMuted,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
         )
     }
 }

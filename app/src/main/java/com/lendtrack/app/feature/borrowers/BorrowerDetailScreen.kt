@@ -190,7 +190,7 @@ fun BorrowerDetailScreen(
                         .border(1.dp, LtDusty, CardShape)
                         .padding(16.dp),
                 ) {
-                    Text("Outstanding",  style = MaterialTheme.typography.labelMedium, color = LtMuted)
+                    Text("Outstanding",  style = MaterialTheme.typography.labelMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
                     Text(
                         state.totalOutstanding.peso(),
                         style = MaterialTheme.typography.bodyLarge,
@@ -201,7 +201,7 @@ fun BorrowerDetailScreen(
                     Text(
                         "$activeCount active loan${if (activeCount != 1) "s" else ""}",
                         style = MaterialTheme.typography.bodySmall,
-                        color = LtMuted,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
                     )
                 }
             }
