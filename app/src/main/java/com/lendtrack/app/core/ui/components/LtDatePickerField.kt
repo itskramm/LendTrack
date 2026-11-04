@@ -96,7 +96,7 @@ fun LtDatePickerField(
                     }
                     showPicker = false
                 }) {
-                    Text("OK", color = LtRose)
+                    Text("OK", color = MaterialTheme.colorScheme.primary)
                 }
             },
             dismissButton = {
@@ -106,23 +106,23 @@ fun LtDatePickerField(
             },
             colors = DatePickerDefaults.colors(
                 containerColor = MaterialTheme.colorScheme.surface,
-                titleContentColor = LtBurgundy,
-                headlineContentColor = LtBurgundy,
+                titleContentColor = MaterialTheme.colorScheme.primary,
+                headlineContentColor = MaterialTheme.colorScheme.primary,
                 weekdayContentColor = MaterialTheme.colorScheme.onSurfaceVariant,
                 subheadContentColor = MaterialTheme.colorScheme.onSurfaceVariant,
-                selectedDayContainerColor = LtRose,
+                selectedDayContainerColor = MaterialTheme.colorScheme.primary,
                 selectedDayContentColor = androidx.compose.ui.graphics.Color.White,
-                todayDateBorderColor = LtRose,
-                todayContentColor = LtRose,
+                todayDateBorderColor = MaterialTheme.colorScheme.primary,
+                todayContentColor = MaterialTheme.colorScheme.primary,
             ),
         ) {
             DatePicker(
                 state = state,
                 colors = DatePickerDefaults.colors(
                     containerColor = MaterialTheme.colorScheme.surface,
-                    selectedDayContainerColor = LtRose,
-                    todayDateBorderColor = LtRose,
-                    todayContentColor = LtRose,
+                    selectedDayContainerColor = MaterialTheme.colorScheme.primary,
+                    todayDateBorderColor = MaterialTheme.colorScheme.primary,
+                    todayContentColor = MaterialTheme.colorScheme.primary,
                 ),
             )
         }
