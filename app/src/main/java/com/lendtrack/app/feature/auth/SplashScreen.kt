@@ -64,7 +64,7 @@ fun SplashScreen() {
                 "Your Lending, Organized.",
                 style = MaterialTheme.typography.headlineSmall.copy(
                     fontFamily = PlayfairDisplay,
-                    color      = LtRose,
+                    color      = MaterialTheme.colorScheme.primary,
                 ),
             )
         }

@@ -42,7 +42,7 @@ fun SettingsScreen(
     if (showSignOutDialog) {
         AlertDialog(
             onDismissRequest = { showSignOutDialog = false },
-            containerColor   = LtSurface,
+            containerColor   = MaterialTheme.colorScheme.surface,
             shape            = ModalShape,
             title   = { Text("Sign Out?", style = MaterialTheme.typography.headlineMedium) },
             text    = {
@@ -300,7 +300,7 @@ fun SettingsScreen(
 private fun InfoRow(
     label:      String,
     value:      String,
-    valueColor: Color = LtBurgundy,
+    valueColor: Color = MaterialTheme.colorScheme.primary,
 ) {
     Row(
         modifier              = Modifier.fillMaxWidth().padding(vertical = 8.dp),

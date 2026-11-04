@@ -198,7 +198,7 @@ fun BorrowerDetailScreen(
                     Text(
                         state.totalOutstanding.peso(),
                         style = MaterialTheme.typography.bodyLarge,
-                        color = if (state.totalOutstanding > 0) LtBurgundy else LtSage,
+                        color = if (state.totalOutstanding > 0) MaterialTheme.colorScheme.primary else LtSage,
                     )
                     Spacer(Modifier.height(4.dp))
                     val activeCount = state.loans.count { it.loan.status == LoanStatus.ACTIVE }
@@ -346,7 +346,7 @@ private fun LoanDetailCard(
                 label      = "Balance",
                 value      = lwb.remainingBalance.peso(),
                 modifier   = Modifier.weight(1f),
-                valueColor = if (lwb.remainingBalance > 0) LtBurgundy else LtSage,
+                valueColor = if (lwb.remainingBalance > 0) MaterialTheme.colorScheme.primary else LtSage,
             )
         }
 
@@ -416,7 +416,7 @@ private fun LoanFinancialItem(
     label:      String,
     value:      String,
     modifier:   Modifier = Modifier,
-    valueColor: Color = LtBurgundy,
+    valueColor: Color = MaterialTheme.colorScheme.primary,
 ) {
     Column(modifier = modifier) {
         Text(label, style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)

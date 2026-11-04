@@ -111,7 +111,7 @@ fun PaymentCalendarScreen(
                     LtSage   to "Paid",
                     LtAmber  to "Due Soon",
                     LtRed    to "Overdue",
-                    LtDusty  to "Upcoming",
+                    MaterialTheme.colorScheme.secondary  to "Upcoming",
                 ).forEach { (color, label) ->
                     Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(4.dp)) {
                         Box(modifier = Modifier.size(10.dp).clip(RoundedCornerShape(5.dp)).background(color))
@@ -157,7 +157,7 @@ fun PaymentCalendarScreen(
                                     iwb.borrower.name,
                                     style    = MaterialTheme.typography.bodySmall.copy(
                                         fontWeight = FontWeight.SemiBold,
-                                        color      = LtRose,
+                                        color      = MaterialTheme.colorScheme.primary,
                                     ),
                                     modifier = Modifier.clickable { onBorrowerClick(iwb.borrower.id) },
                                 )
@@ -200,7 +200,7 @@ fun LtCalendarGrid(
                 day,
                 textAlign  = TextAlign.Center,
                 style      = MaterialTheme.typography.titleMedium.copy(fontSize = 13.sp),
-                color      = LtRose,
+                color      = MaterialTheme.colorScheme.primary,
                 modifier   = Modifier.weight(1f),
             )
         }
@@ -289,7 +289,7 @@ private fun CalendarDayCell(
                     InstallmentStatus.PAID     -> LtSage
                     InstallmentStatus.DUE_SOON -> LtAmber
                     InstallmentStatus.OVERDUE  -> LtRed
-                    else                       -> LtDusty
+                    else                       -> MaterialTheme.colorScheme.secondary
                 }
                 Box(
                     modifier = Modifier

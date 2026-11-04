@@ -113,9 +113,9 @@ private fun BorrowerRow(bws: BorrowerWithSummary, onClick: () -> Unit) {
         else -> "—"
     }
     val statusColor = when (statusText) {
-        "Active" -> LtDusty
+        "Active" -> MaterialTheme.colorScheme.secondary
         "Paid"   -> LtSage
-        else     -> LtMuted
+        else     -> MaterialTheme.colorScheme.onSurfaceVariant
     }
 
     Row(
@@ -179,7 +179,7 @@ fun AddBorrowerDialog(
 
     AlertDialog(
         onDismissRequest = onDismiss,
-        containerColor   = LtSurface,
+        containerColor   = MaterialTheme.colorScheme.surface,
         shape            = ModalShape,
         title = { Text("Add Borrower", style = MaterialTheme.typography.headlineMedium) },
         text = {
@@ -311,11 +311,11 @@ fun LtFormField(
             shape         = InputShape,
             textStyle     = MaterialTheme.typography.bodyMedium,
             colors        = OutlinedTextFieldDefaults.colors(
-                focusedBorderColor      = LtRose,
+                focusedBorderColor      = MaterialTheme.colorScheme.primary,
                 unfocusedBorderColor    = MaterialTheme.colorScheme.outline,
                 focusedContainerColor   = MaterialTheme.colorScheme.background,
                 unfocusedContainerColor = MaterialTheme.colorScheme.background,
-                cursorColor             = LtRose,
+                cursorColor             = MaterialTheme.colorScheme.primary,
             ),
         )
     }

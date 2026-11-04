@@ -91,7 +91,7 @@ fun LoginScreen(
                         style = MaterialTheme.typography.headlineSmall.copy(
                             fontFamily = PlayfairDisplay,
                             fontSize   = 15.sp,
-                            color      = LtRose,
+                            color      = MaterialTheme.colorScheme.primary,
                         ),
                     )
                 }
@@ -173,7 +173,7 @@ fun LoginScreen(
                     modifier = Modifier.fillMaxWidth().height(50.dp),
                     shape    = RoundedCornerShape(10.dp),
                     colors   = ButtonDefaults.buttonColors(
-                        containerColor = LtRose,
+                        containerColor = MaterialTheme.colorScheme.primary,
                         contentColor   = Color.White,
                     ),
                 ) {
@@ -207,13 +207,13 @@ fun LoginScreen(
 
 @Composable
 private fun outlinedFieldColors() = OutlinedTextFieldDefaults.colors(
-    focusedBorderColor      = LtRose,
+    focusedBorderColor      = MaterialTheme.colorScheme.primary,
     unfocusedBorderColor    = MaterialTheme.colorScheme.outline,
-    focusedLabelColor       = LtRose,
+    focusedLabelColor       = MaterialTheme.colorScheme.primary,
     unfocusedLabelColor     = MaterialTheme.colorScheme.onSurfaceVariant,
     focusedContainerColor   = MaterialTheme.colorScheme.background,
     unfocusedContainerColor = MaterialTheme.colorScheme.background,
-    cursorColor             = LtRose,
+    cursorColor             = MaterialTheme.colorScheme.primary,
 )
 
 // Re-use BorderStroke from components

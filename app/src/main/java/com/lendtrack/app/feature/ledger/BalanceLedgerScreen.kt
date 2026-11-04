@@ -244,7 +244,7 @@ private fun LedgerRow(
             displayBalance.peso(),
             style    = MaterialTheme.typography.bodySmall.copy(
                 fontWeight = FontWeight.Bold,
-                color      = if (displayBalance > 0) LtBurgundy else LtSage,
+                color      = if (displayBalance > 0) MaterialTheme.colorScheme.primary else LtSage,
             ),
             modifier = Modifier.weight(1f),
         )

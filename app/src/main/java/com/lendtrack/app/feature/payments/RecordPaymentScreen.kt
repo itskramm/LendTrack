@@ -185,7 +185,7 @@ fun PaymentAllocationPreviewPanel(
             AllocationStat("Payment",      preview.paymentAmount.peso())
             AllocationStat("Total Remaining", preview.totalRemaining.peso())
             AllocationStat("Balance After",   preview.balanceAfter.peso(),
-                color = if (preview.balanceAfter <= 0) LtSage else LtBurgundy)
+                color = if (preview.balanceAfter <= 0) LtSage else MaterialTheme.colorScheme.primary)
             if (preview.overpayment > 0) {
                 AllocationStat("Overpayment",  preview.overpayment.peso(), color = LtAmber)
             }
@@ -296,7 +296,7 @@ private fun AllocationRow(item: AllocationLineItem, showInstallmentNumber: Boole
             modifier = Modifier.weight(1f)
         )
         Text(item.allocatedAmount.peso(),  style = MaterialTheme.typography.bodySmall.copy(fontWeight = FontWeight.SemiBold, color = LtSage), modifier = Modifier.weight(1f))
-        Text(item.remainingAfter.peso(),   style = MaterialTheme.typography.bodySmall.copy(color = if (item.remainingAfter <= 0) LtSage else LtBurgundy), modifier = Modifier.weight(1f))
+        Text(item.remainingAfter.peso(),   style = MaterialTheme.typography.bodySmall.copy(color = if (item.remainingAfter <= 0) LtSage else MaterialTheme.colorScheme.primary), modifier = Modifier.weight(1f))
     }
 }
 
